@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collège Pasteur — EPS Numérique</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #1a3eb1;
+    --blue-dark: #0f2680;
+    --orange: #f97316;
+    --orange-light: #fb923c;
+    --green: #22c55e;
+    --green-bg: #f0fdf4;
+    --white: #ffffff;
+    --gray-light: #f1f5f9;
+    --gray: #94a3b8;
+    --text: #1e293b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--gray-light);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--blue);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(15,38,128,0.18);
+  }
+
+  .logo-block { display: flex; flex-direction: column; }
+  .logo-block .brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem;
+    color: var(--white);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+  .logo-block .brand span { color: var(--orange); }
+  .logo-block .subtitle {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.7);
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .badge {
+    background: var(--orange);
+    color: white;
+    font-weight: 800;
+    font-size: 0.85rem;
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    letter-spacing: 1px;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 60%, #2563eb 100%);
+    color: white;
+    text-align: center;
+    padding: 4rem 1.5rem 3.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 40%, rgba(249,115,22,0.18) 0%, transparent 60%);
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    letter-spacing: 3px;
+    line-height: 1;
+    position: relative;
+  }
+  .hero h1 span { color: var(--orange); }
+  .hero p {
+    margin-top: 0.9rem;
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.8);
+    max-width: 500px;
+    margin-inline: auto;
+    font-weight: 600;
+    position: relative;
+  }
+
+  /* GRID */
+  .grid {
+    max-width: 1100px;
+    margin: -2.5rem auto 3rem;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* CARD */
+  .card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(26,62,177,0.10);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    border: 2px solid transparent;
+  }
+  .card:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 12px 36px rgba(26,62,177,0.18);
+    border-color: var(--orange);
+  }
+
+  .card-header {
+    padding: 1.5rem 1.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .card-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    flex-shrink: 0;
+  }
+
+  .card-title-block {}
+  .card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.35rem;
+    letter-spacing: 1.5px;
+    color: var(--blue);
+    line-height: 1;
+  }
+  .card-tag {
+    display: inline-block;
+    margin-top: 0.3rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    color: white;
+  }
+
+  .card-body {
+    padding: 0 1.5rem 1.2rem;
+    flex: 1;
+  }
+  .card-desc {
+    font-size: 0.88rem;
+    color: #475569;
+    line-height: 1.6;
+    font-weight: 600;
+  }
+
+  .card-features {
+    margin: 0.8rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .card-features li {
+    background: var(--gray-light);
+    color: var(--blue);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    border: 1.5px solid #dbeafe;
+  }
+
+  .card-footer {
+    padding: 0 1.5rem 1.5rem;
+  }
+  .btn {
+    display: block;
+    text-align: center;
+    background: var(--blue);
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: background 0.18s ease, transform 0.12s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn::after {
+    content: ' →';
+  }
+  .btn:hover {
+    background: var(--orange);
+    transform: scale(1.02);
+  }
+
+  /* Color themes per sport */
+  .raquette .card-icon { background: #dbeafe; }
+  .raquette .card-tag { background: var(--blue); }
+  .raquette .btn { background: var(--blue); }
+
+  .athletisme .card-icon { background: #fff7ed; }
+  .athletisme .card-tag { background: var(--orange); }
+  .athletisme .btn { background: var(--orange); }
+
+  .athletisme-general .card-icon { background: #fef2f2; }
+  .athletisme-general .card-tag { background: #dc2626; }
+  .athletisme-general .btn { background: #dc2626; }
+
+  .gym .card-icon { background: #f0fdf4; }
+  .gym .card-tag { background: #16a34a; }
+  .gym .btn { background: #16a34a; }
+
+  .collectif .card-icon { background: #fdf4ff; }
+  .collectif .card-tag { background: #9333ea; }
+  .collectif .btn { background: #9333ea; }
+
+  .tournoi .card-icon { background: #fef9c3; }
+  .tournoi .card-tag { background: #ca8a04; }
+  .tournoi .btn { background: #ca8a04; }
+
+  /* Statut badges */
+  .card-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    margin: 0 1.5rem 0.9rem;
+  }
+  .status-ok  { background: #dcfce7; color: #16a34a; }
+  .status-wip { background: #fef9c3; color: #b45309; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--gray);
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-top: 2px solid #e2e8f0;
+    background: white;
+  }
+  footer span { color: var(--orange); font-weight: 800; }
+
+  /* Entrance animation */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card {
+    animation: fadeUp 0.5s ease both;
+  }
+  .orientation .card-icon { background: #ecfdf5; }
+  .orientation .card-tag { background: #059669; }
+  .orientation .btn { background: #059669; }
+
+  .rallye .card-icon { background: #fff1f2; }
+  .rallye .card-tag { background: #e11d48; }
+  .rallye .btn { background: #e11d48; }
+
+  .perche .card-icon { background: #f0f9ff; }
+  .perche .card-tag { background: #0284c7; }
+  .perche .btn { background: #0284c7; }
+
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.15s; }
+  .card:nth-child(3) { animation-delay: 0.25s; }
+  .card:nth-child(4) { animation-delay: 0.35s; }
+  .card:nth-child(5) { animation-delay: 0.45s; }
+  .card:nth-child(6) { animation-delay: 0.55s; }
+  .card:nth-child(7) { animation-delay: 0.65s; }
+  .card:nth-child(8) { animation-delay: 0.75s; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-block">
+    <div class="brand">Collège <span>Pasteur</span></div>
+    <div class="subtitle">Éducation Physique &amp; Sportive · Numérique</div>
+  </div>
+  <div class="badge">2024–2028</div>
+</header>
+
+<div class="hero">
+  <h1>Mes outils <span>EPS</span><br>en ligne</h1>
+  <p>Retrouvez toutes les applications pédagogiques pour vos cours d'EPS au Collège Pasteur.</p>
+</div>
+
+<div class="grid">
+
+  <!-- Sport de Raquette -->
+  <div class="card raquette">
+    <div class="card-header">
+      <div class="card-icon">🏸</div>
+      <div class="card-title-block">
+        <div class="card-title">Sport de Raquette</div>
+        <span class="card-tag">Badminton</span>
+      </div>
+    </div>
+    <span class="card-status status-wip">🔧 En cours de mise à jour</span>
+    <div class="card-body">
+      <p class="card-desc">Organisez des situations de jeu évolutives et des compétitions variées tout au long du cycle.</p>
+      <ul class="card-features">
+        <li>🥇 Partenaire en Or</li>
+        <li>🎯 Défis</li>
+        <li>🎭 Matchs à thèmes</li>
+        <li>🏆 Ligues</li>
+        <li>🎾 Tournois</li>
+        <li>⬆️ Montantes / Descendantes</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <a href="https://louisodilonschneider-web.github.io/EPS_Badminton/" target="_blank" class="btn">Accéder au site</a>
+    </div>
+  </div>
+
+  <!-- Athlétisme EPI Jean Bouin - 3e -->
+  <div class="card athletisme">
+    <div class="card-header">
+      <div class="card-icon">🏃</div>
+      <div class="card-title-block">
+        <div class="card-title">Athlétisme · EPI</div>
+        <span class="card-tag">Jean Bouin · 3e</span>
+      </div>
+    </div>
+    <span class="card-status status-ok">✅ Exploitable</span>
+    <div class="card-body">
+      <p class="card-desc">Projet interdisciplinaire réservé aux <strong>classes de 3e</strong> : les élèves tentent de battre le record historique de Jean Bouin sur 3 000 m.</p>
+      <ul class="card-features">
+        <li>📏 3 000 m</li>
+        <li>📊 Suivi des performances</li>
+        <li>📖 Histoire du sport</li>
+        <li>🔬 Interdisciplinarité</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <a href="https://louisodilonschneider-web.github.io/EPS_Pasteur_Athletisme/" target="_blank" class="btn">Accéder au site</a>
+    </div>
+  </div>
+
+  <!-- Athlétisme Général -->
+  <div class="card athletisme-general">
+    <div class="card-header">
+      <div class="card-icon">🏟️</div>
+      <div class="card-title-block">
+        <div class="card-title">Athlétisme</div>
+        <span class="card-tag">Général · Tous niveaux</span>
+      </div>
+    </div>
+    <span class="card-status status-ok">✅ Exploitable</span>
+    <div class="card-body">
+      <p class="card-desc">Application d'athlétisme pour <strong>tous les niveaux</strong> : gestion des séances, suivi des performances et organisation des épreuves.</p>
+      <ul class="card-features">
+        <li>🏃 Courses</li>
+        <li>🤸 Sauts</li>
+        <li>🥏 Lancers</li>
+        <li>📊 Performances</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <a href="https://louisodilonschneider-web.github.io/EPS_Athletisme/" target="_blank" class="btn">Accéder au site</a>
+    </div>
+  </div>
+
+  <!-- Gymnastique -->
+  <div class="card gym">
+    <div class="card-header">
+      <div class="card-icon">🤸</div>
+      <div class="card-title-block">
+        <div class="card-title">Gymnastique</div>
+        <span class="card-tag">UNSS · Jugement</span>
+      </div>
+    </div>
+    <span class="card-status status-ok">✅ Exploitable</span>
+    <div class="card-body">
+      <p class="card-desc">Construisez votre enchaînement gymnique et initiez-vous au rôle de jeune juge.</p>
+      <ul class="card-features">
+        <li>📋 Enchaînements</li>
+        <li>⚖️ Jeune juge</li>
+        <li>🏅 UNSS</li>
+        <li>🌟 Notation</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <a href="https://louisodilonschneider-web.github.io/UNSS_Gymnastique/" target="_blank" class="btn">Accéder au site</a>
+    </div>
+  </div>
+
+  <!-- Sport Collectif -->
+  <div class="card collectif">
+    <div class="card-header">
+      <div class="card-icon">🏀</div>
+      <div class="card-title-block">
+        <div class="card-title">Sport Collectif</div>
+        <span class="card-tag">Groupements CA4</span>
+      </div>
+    </div>
+    <span class="card-status status-wip">🔧 En cours de mise à jour</span>
+    <div class="card-body">
+      <p class="card-desc">Générez facilement des groupements d'élèves adaptés pour organiser vos séances de sport collectif.</p>
+      <ul class="card-features">
+        <li>👥 Groupements</li>
+        <li>🔀 Aléatoire</li>
+        <li>📊 Par niveau</li>
+        <li>⚽ Multi-sports</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <a href="https://louisodilonschneider-web.github.io/EPS_equipe_CA4/" target="_blank" class="btn">Accéder au site</a>
+    </div>
+  </div>
+
+  <!-- Tournois -->
+  <div class="card tournoi">
+    <div class="card-header">
+      <div class="card-icon">🏆</div>
+      <div class="card-title-block">
+        <div class="card-title">Tournois</div>
+        <span class="card-tag">Sport de Raquette</span>
+      </div>
+    </div>
+    <span class="card-status status-wip">🔧 En cours de mise à jour</span>
+    <div class="card-body">
+      <p class="card-desc">Organisez des tournois complets en sport de raquette avec différents formats de compétition.</p>
+      <ul class="card-features">
+        <li>🥇 Élimination unique</li>
+        <li>🔁 Double élimination</li>
+        <li>🎖️ Consolation</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <a href="https://louisodilonschneider-web.github.io/Tournois/" target="_blank" class="btn">Accéder au site</a>
+    </div>
+  </div>
+
+  <!-- Course d'Orientation -->
+  <div class="card orientation">
+    <div class="card-header">
+      <div class="card-icon">🧭</div>
+      <div class="card-title-block">
+        <div class="card-title">Course d'Orientation</div>
+        <span class="card-tag">Plein Air</span>
+      </div>
+    </div>
+    <span class="card-status status-ok">✅ Exploitable</span>
+    <div class="card-body">
+      <p class="card-desc">Application complète pour organiser et gérer des séances et compétitions de course d'orientation.</p>
+      <ul class="card-features">
+        <li>🗺️ Gestion des postes</li>
+        <li>⏱️ Chronométrage</li>
+        <li>📍 Parcours</li>
+        <li>📊 Résultats</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <a href="https://louisodilonschneider-web.github.io/Course-Orientation/" target="_blank" class="btn">Accéder au site</a>
+    </div>
+  </div>
+
+  <!-- Rallye Photo Barbizon -->
+  <div class="card rallye">
+    <div class="card-header">
+      <div class="card-icon">📸</div>
+      <div class="card-title-block">
+        <div class="card-title">Rallye Photo</div>
+        <span class="card-tag">Voyage Scolaire</span>
+      </div>
+    </div>
+    <span class="card-status status-ok">✅ Exploitable</span>
+    <div class="card-body">
+      <p class="card-desc">Rallye photo interactif pour le voyage scolaire à Fontainebleau et Barbizon. Découverte culturelle et sportive.</p>
+      <ul class="card-features">
+        <li>🌲 Fontainebleau</li>
+        <li>🎨 Barbizon</li>
+        <li>📷 Défis photo</li>
+        <li>🏫 Voyage scolaire</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <a href="https://louisodilonschneider-web.github.io/Rallye_Photo_Barbizon/" target="_blank" class="btn">Accéder au site</a>
+    </div>
+  </div>
+
+  <!-- Saut à la Perche -->
+  <div class="card perche">
+    <div class="card-header">
+      <div class="card-icon">🏅</div>
+      <div class="card-title-block">
+        <div class="card-title">Saut à la Perche</div>
+        <span class="card-tag">Athlétisme</span>
+      </div>
+    </div>
+    <span class="card-status status-ok">✅ Exploitable</span>
+    <div class="card-body">
+      <p class="card-desc">Application pour répertorier et gérer les repères individuels utilisés en séance et en compétition de saut à la perche.</p>
+      <ul class="card-features">
+        <li>📏 Repères personnalisés</li>
+        <li>📋 Suivi par élève</li>
+        <li>🏟️ Compétition</li>
+        <li>📈 Progression</li>
+      </ul>
+    </div>
+    <div class="card-footer">
+      <a href="https://louisodilonschneider-web.github.io/Saut-a-la-perche/" target="_blank" class="btn">Accéder au site</a>
+    </div>
+  </div>
+
+</div>
+  Collège <span>Pasteur</span> · EPS Numérique · Tous droits réservés
+</footer>
+
+</body>
+</html>
