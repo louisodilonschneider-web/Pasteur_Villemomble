@@ -1,0 +1,2585 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VDC 4ème — PP EPS</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--bl:#1C3F6E;--blc:#2E6DB4;--vt:#1D9E75;--or:#E67A2B;--li:#8B44AD;--rg:#C0392B;--jn:#D4A017;--bg:#F5F7FA;--sf:#FFFFFF;--tx:#1A1A2E;--t2:#5C5C72;--bd:#E2E8F0;--r:12px;--rs:8px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:14px;line-height:1.55;}
+nav{background:var(--bl);color:#fff;display:flex;align-items:center;position:sticky;top:0;z-index:100;height:50px;padding:0 1rem;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.nt{font-weight:700;font-size:.9rem;margin-right:auto;white-space:nowrap;}
+.nl{display:flex;gap:2px;overflow-x:auto;}
+.nl a{color:rgba(255,255,255,.75);text-decoration:none;padding:5px 10px;border-radius:20px;font-size:.75rem;font-weight:500;white-space:nowrap;cursor:pointer;transition:background .15s;}
+.nl a:hover,.nl a.active{background:rgba(255,255,255,.18);color:#fff;}
+.pg{display:none;}.pg.active{display:block;}
+.hero{background:var(--bl);color:#fff;padding:1.75rem 1.5rem 1.25rem;text-align:center;}
+.hero h1{font-size:clamp(1.4rem,4vw,2.2rem);font-weight:800;line-height:1.1;}
+.hero h1 em{font-style:normal;color:var(--jn);}
+.hero-m{margin-top:.6rem;display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;font-size:.78rem;color:#CBD5E1;}
+.con{max-width:1100px;margin:0 auto;padding:1.25rem 1rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;}
+.g4{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.75rem;}
+@media(max-width:640px){.g2,.g3{grid-template-columns:1fr;}}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:1rem 1.25rem;}
+.ct{font-weight:700;font-size:.88rem;margin-bottom:.5rem;}
+.bdg{display:inline-flex;align-items:center;font-size:.67rem;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;}
+.chip{font-size:.73rem;padding:3px 9px;border-radius:20px;border:1px solid var(--bd);background:var(--bg);color:var(--t2);display:inline-flex;align-items:center;gap:.3rem;}
+.btn{padding:6px 13px;border-radius:var(--rs);border:1px solid var(--bd);cursor:pointer;font-size:.8rem;font-weight:600;background:var(--sf);color:var(--tx);transition:background .15s;display:inline-flex;align-items:center;gap:.35rem;}
+.btn:hover{background:var(--bg);}
+.bp{background:var(--bl);color:#fff;border-color:var(--bl);}.bp:hover{background:var(--blc);}
+.bd2{background:#FEF2F2;color:var(--rg);border-color:#FECACA;}
+.bs{padding:4px 10px;font-size:.73rem;}.bxs{padding:2px 7px;font-size:.69rem;}
+input[type=text],input[type=number],input[type=date],input[type=time],select,textarea{padding:6px 9px;border:1px solid var(--bd);border-radius:var(--rs);font-size:.83rem;background:var(--bg);color:var(--tx);width:100%;outline:none;font-family:inherit;transition:border-color .15s;}
+input:focus,select:focus,textarea:focus{border-color:var(--blc);}
+textarea{resize:vertical;min-height:56px;}
+label{font-size:.78rem;font-weight:600;color:var(--t2);display:block;margin-bottom:2px;}
+.fg{display:flex;flex-direction:column;gap:3px;flex:1;}
+.tn{display:flex;border-bottom:1px solid var(--bd);background:var(--sf);padding:0 1rem;overflow-x:auto;}
+.tb{padding:.55rem .9rem;font-size:.8rem;font-weight:500;cursor:pointer;border:none;background:none;color:var(--t2);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;}
+.tb.active{color:var(--bl);border-bottom-color:var(--bl);}
+.tp{display:none;}.tp.active{display:block;}
+.tbl{width:100%;border-collapse:collapse;font-size:.8rem;}
+.tbl th{background:var(--bg);padding:7px 9px;text-align:left;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);border-bottom:1px solid var(--bd);}
+.tbl td{padding:6px 9px;border-bottom:1px solid var(--bd);vertical-align:middle;}
+.tbl tr:hover td{background:#F8FAFF;}
+.tbl tr:last-child td{border-bottom:none;}
+.al{padding:.6rem .9rem;border-radius:var(--rs);font-size:.8rem;margin-bottom:.6rem;}
+.ai{background:#EFF6FF;border:1px solid #BFDBFE;color:#1E40AF;}
+.aw{background:#FFFBEB;border:1px solid #FDE68A;color:#92400E;}
+.as{background:#F0FDF4;border:1px solid #BBF7D0;color:#14532D;}
+.ar{background:#FEF2F2;border:1px solid #FECACA;color:#991B1B;}
+.mb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center;padding:1rem;}
+.mb.open{display:flex;}
+.mo{background:var(--sf);border-radius:var(--r);border:1px solid var(--bd);max-width:580px;width:100%;padding:1.25rem;max-height:90vh;overflow-y:auto;}
+.moh{display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem;}
+.moh h3{font-size:.95rem;font-weight:700;}
+.mc{background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--t2);}
+/* VDC cards */
+.vc{background:var(--sf);border-radius:var(--r);border:1px solid var(--bd);overflow:hidden;cursor:pointer;transition:box-shadow .2s,transform .15s;}
+.vc:hover{box-shadow:0 6px 24px rgba(0,0,0,.09);transform:translateY(-2px);}
+.vb{height:4px;}.vbo{padding:1rem 1.25rem;}
+.vn{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem;}
+.vt{font-size:.95rem;font-weight:700;margin-bottom:.3rem;}
+.vd{font-size:.8rem;color:var(--t2);}
+.vf{padding:.6rem 1.25rem;border-top:1px solid var(--bd);display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;}
+/* Detail */
+.dh{background:var(--sf);border-bottom:1px solid var(--bd);padding:1.1rem 1.5rem;}
+.db-back{display:inline-flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--blc);cursor:pointer;margin-bottom:.65rem;font-weight:500;}
+.db-back:hover{text-decoration:underline;}
+.db{max-width:820px;margin:0 auto;padding:1.25rem 1rem;}
+.ph{margin-bottom:1.5rem;}
+.phd{display:flex;align-items:center;gap:.6rem;border-bottom:2px solid var(--bd);padding-bottom:.45rem;margin-bottom:.7rem;}
+.pd{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.82rem;color:#fff;flex-shrink:0;}
+.sc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:.85rem 1rem;margin-bottom:.55rem;}
+.cq{margin-top:.55rem;background:#FFFBEB;border-left:3px solid var(--or);padding:.5rem .75rem;border-radius:0 var(--rs) var(--rs) 0;font-size:.8rem;font-style:italic;color:#78350F;}
+.ce{margin-top:.55rem;background:#F0FDF4;border-left:3px solid var(--vt);padding:.5rem .75rem;border-radius:0 var(--rs) var(--rs) 0;font-size:.8rem;color:#14532D;}
+.ob{background:#EFF6FF;border-left:4px solid var(--blc);border-radius:0 var(--rs) var(--rs) 0;padding:.85rem 1rem;margin-bottom:1.25rem;}
+.ob ul{list-style:none;display:flex;flex-direction:column;gap:.28rem;}
+.ob li{font-size:.84rem;display:flex;gap:.35rem;}
+.ob li::before{content:'→';color:var(--blc);font-weight:700;flex-shrink:0;}
+.sbox{background:var(--bl);color:#fff;border-radius:var(--r);padding:1.1rem;margin-top:1.1rem;}
+.sbox h3{font-size:.85rem;font-weight:700;margin-bottom:.65rem;}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;}
+.si{background:rgba(255,255,255,.1);border-radius:var(--rs);padding:.6rem .85rem;font-size:.8rem;}
+.si strong{display:block;font-size:.67rem;letter-spacing:.07em;text-transform:uppercase;color:#93C5FD;margin-bottom:.12rem;}
+.bilan-box{background:#F8FAFF;border:1px solid #BFDBFE;border-radius:var(--r);padding:.9rem 1.1rem;margin-top:.65rem;}
+/* Suivi */
+.er{display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;border-radius:var(--rs);border:1px solid var(--bd);background:var(--sf);margin-bottom:.35rem;cursor:pointer;transition:background .12s;}
+.er:hover{background:#F0F6FF;}
+.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff;flex-shrink:0;}
+.lp{background:#D1FAE5;color:#065F46;font-size:.63rem;font-weight:700;padding:1px 6px;border-radius:10px;}
+.ln{background:#FEE2E2;color:#991B1B;font-size:.63rem;font-weight:700;padding:1px 6px;border-radius:10px;}
+.li{background:#EDE9FE;color:#7C3AED;font-size:.63rem;font-weight:700;padding:1px 6px;border-radius:10px;}
+.impl-row{display:flex;gap:.4rem;align-items:center;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:.4rem .6rem;}
+.impl-row select{font-size:.78rem;padding:4px 6px;}
+.impl-row .del-impl{background:none;border:none;cursor:pointer;color:var(--t2);font-size:1rem;padding:0 2px;flex-shrink:0;}
+.impl-row .del-impl:hover{color:var(--rg);}
+/* Stat card */
+.stc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:.8rem .9rem;text-align:center;}
+.stn{font-size:1.6rem;font-weight:800;line-height:1;}
+.stl{font-size:.7rem;color:var(--t2);margin-top:.2rem;}
+/* Filter bar */
+.fb{background:var(--sf);border-bottom:1px solid var(--bd);padding:.55rem 1rem;display:flex;gap:.35rem;flex-wrap:wrap;align-items:center;}
+.fb2{padding:3px 11px;border-radius:20px;border:1px solid var(--bd);background:var(--bg);font-size:.73rem;font-weight:500;cursor:pointer;color:var(--t2);}
+.fb2.active{background:var(--bl);color:#fff;border-color:var(--bl);}
+/* Socio */
+.sl{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 50px);}
+@media(max-width:768px){.sl{grid-template-columns:1fr;}}
+.sb{background:var(--sf);border-right:1px solid var(--bd);padding:.9rem;overflow-y:auto;max-height:calc(100vh - 50px);position:sticky;top:50px;display:flex;flex-direction:column;gap:.8rem;}
+.sb h3{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);}
+.scw{position:relative;background:var(--bg);min-height:700px;overflow:hidden;}
+#svg{width:100%;min-height:700px;display:block;user-select:none;cursor:grab;}
+.sleg{position:absolute;bottom:.75rem;right:.75rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:.6rem .85rem;font-size:.72rem;display:flex;flex-direction:column;gap:.28rem;}
+.lr{display:flex;align-items:center;gap:.35rem;}
+.shi{position:absolute;top:.75rem;left:50%;transform:translateX(-50%);background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:.3rem .85rem;font-size:.72rem;color:var(--t2);pointer-events:none;white-space:nowrap;}
+.ec{display:flex;align-items:center;gap:5px;padding:3px 7px;border-radius:6px;border:1px solid var(--bd);background:var(--bg);font-size:.76rem;cursor:pointer;margin-bottom:2px;}
+.ec.sel{background:#DBEAFE;border-color:var(--blc);}
+.ltr{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:var(--rs);border:1px solid var(--bd);cursor:pointer;font-size:.78rem;margin-bottom:2px;}
+.ltr.active{border-width:2px;}
+.ib{flex:1;padding:3px 0;border-radius:var(--rs);border:1px solid var(--bd);background:var(--bg);font-size:.7rem;font-weight:600;cursor:pointer;text-align:center;}
+.ib.active{background:var(--bl);color:#fff;border-color:var(--bl);}
+/* Progress bar */
+.pb{height:5px;border-radius:3px;background:var(--bd);overflow:hidden;margin-top:3px;}
+.pf{height:100%;border-radius:3px;}
+/* PAP/PAI badges */
+.disp-badge{font-size:.67rem;font-weight:700;padding:2px 7px;border-radius:10px;display:inline-block;}
+/* Recommandations */
+.rec-item{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:.75rem;}
+.rec-date{font-size:.72rem;font-weight:700;color:var(--blc);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.06em;}
+.rec-entry{display:flex;gap:.5rem;margin-bottom:.4rem;align-items:flex-start;}
+.rec-status{width:18px;height:18px;border-radius:4px;border:2px solid var(--bd);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:2px;transition:background .15s,border-color .15s;}
+.rec-status.done{background:var(--vt);border-color:var(--vt);}
+.rec-status.done::after{content:'✓';color:white;font-size:11px;font-weight:700;}
+.rec-status:not(.done):hover{border-color:var(--blc);}
+.rec-bar{width:4px;border-radius:2px;flex-shrink:0;align-self:stretch;min-height:20px;background:var(--bd);transition:background .15s;}
+.rec-bar.done{background:var(--vt);}
+.rec-bar.todo{background:var(--or);}
+.rec-txt{font-size:.85rem;flex:1;transition:opacity .15s;}
+.rec-txt.done{opacity:.5;text-decoration:line-through;}
+.rec-new{border:1.5px dashed var(--bd);border-radius:var(--rs);padding:.5rem .75rem;font-size:.83rem;background:var(--bg);color:var(--t2);width:100%;outline:none;cursor:text;min-height:36px;}
+.rec-new:focus{border-color:var(--blc);background:var(--sf);color:var(--tx);}
+.vbtn{padding:4px 8px;border-radius:var(--rs);border:1px solid var(--bd);cursor:pointer;font-size:.73rem;font-weight:500;background:var(--bg);color:var(--t2);transition:background .12s,border-color .12s,color .12s;text-align:center;}
+.vbtn:hover{background:var(--sf);border-color:var(--blc);color:var(--bl);}
+.vbtn.active{background:var(--bl);color:#fff;border-color:var(--bl);}
+.sg-chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:.73rem;font-weight:600;margin:2px;}
+/* Print / PDF */
+@media print{nav,.fb,.db-back,.tn,.sb,.sleg,.shi,button,.btn{display:none!important;}.pg{display:block!important;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nt">🏃 VDC 4ème · PP EPS</span>
+  <div class="nl">
+    <a class="active" onclick="goTo('idx',this)">Séances</a>
+    <a onclick="goTo('elv',this)">Élèves</a>
+    <a onclick="goTo('suv',this)">Suivi</a>
+    <a onclick="goTo('abs',this)">Absences</a>
+    <a onclick="goTo('soc',this)">Sociogramme</a>
+    <a onclick="goTo('rec',this)">Recommandations</a>
+  </div>
+</nav>
+
+<div id="idx-pg" class="pg active">
+  <div class="hero">
+    <div style="font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#93C5FD;margin-bottom:.4rem;">Classe de 4ème · Professeur Principal EPS</div>
+    <h1>13 vies de classe · <em>fédérer</em> ta classe</h1>
+    <div class="hero-m"><span>📅 Année complète</span><span>⏱ 55 min/séance</span><span>📐 Admin + Cohésion + Conflits + Projet + Bilans</span></div>
+  </div>
+  <div class="fb">
+    <span style="font-size:.7rem;font-weight:600;color:var(--t2);">Filtrer :</span>
+    <button class="fb2 active" onclick="fCards(null,this)">Toutes</button>
+    <button class="fb2" onclick="fCards('admin',this)">Admin</button>
+    <button class="fb2" onclick="fCards('cohesion',this)">Cohésion</button>
+    <button class="fb2" onclick="fCards('identite',this)">Identité</button>
+    <button class="fb2" onclick="fCards('conflits',this)">Conflits</button>
+    <button class="fb2" onclick="fCards('projet',this)">Projet</button>
+    <button class="fb2" onclick="fCards('bilan',this)">Bilans</button>
+  </div>
+  <div class="con"><div class="g4" id="cg"></div></div>
+</div>
+<div id="det-pg" class="pg"><div id="det-c"></div></div>
+
+<div id="elv-pg" class="pg">
+  <div class="con">
+    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap;">
+      <h2 style="font-size:1.05rem;font-weight:700;">Gestion de la classe</h2>
+      <div style="margin-left:auto;display:flex;gap:.4rem;flex-wrap:wrap;">
+        <label class="btn bp bs" style="cursor:pointer;">📂 Élèves CSV<input type="file" accept=".csv" id="fi-elv" style="display:none;" onchange="importEleves(this)"></label>
+        <button class="btn bs" onclick="oM('m-ae')">+ Ajouter</button>
+        <label class="btn bs" style="cursor:pointer;">📊 Notes CSV<input type="file" accept=".csv" id="fi-nt" style="display:none;" onchange="importNotes(this)"></label>
+        <button class="btn bs" onclick="exportAllPDF()">📄 Export PDF classe</button>
+        <button class="btn bs" onclick="exportJSON()">💾 Export JSON</button>
+        <label class="btn bs" style="cursor:pointer;" title="Restaurer une sauvegarde JSON">📥 Importer sauvegarde<input type="file" accept=".json" style="display:none;" onchange="importJSON(this)"></label>
+        <button class="btn bs bd2" onclick="clearData()" title="Effacer toutes les données locales">🗑 Effacer tout</button>
+      </div>
+    </div>
+    <div id="csv-msg" style="display:none;"></div>
+    <div class="card" style="margin-bottom:.75rem;font-size:.77rem;color:var(--t2);">
+      <strong>CSV Élèves :</strong> colonnes <code>prenom</code>, <code>nom</code> + optionnel : <code>naissance</code>, <code>sexe</code>, <code>responsable1</code>, <code>responsable2</code>, <code>telephone</code>, <code>telephone2</code>, <code>email</code> · séparateur <code>;</code> ou <code>,</code><br>
+      <strong>CSV Notes :</strong> <code>prenom</code>, <code>nom</code>, <code>matiere</code>, <code>note</code> + optionnel : <code>coef</code>, <code>trimestre</code>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.65rem;">
+        <span class="ct" style="margin:0;">Élèves</span>
+        <span class="bdg" id="nb-badge" style="background:#EFF6FF;color:var(--bl);">0</span>
+        <div style="margin-left:auto;"><input type="text" id="s-elv" placeholder="Rechercher…" style="width:170px;" oninput="rEtbl()"></div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="tbl"><thead><tr><th>Élève</th><th>Naissance</th><th>Responsables</th><th>Dispositifs</th><th>Statut</th><th>Actions</th></tr></thead>
+        <tbody id="etbl"></tbody></table>
+      </div>
+    </div>
+    <div class="card" style="margin-top:.75rem;">
+      <div class="ct">Notes par matière</div>
+      <div id="nt-tabs" style="display:flex;gap:3px;flex-wrap:wrap;border-bottom:1px solid var(--bd);padding-bottom:0;margin-bottom:.65rem;"></div>
+      <div id="nt-c"><span style="font-size:.8rem;color:var(--t2);">Importez un CSV de notes.</span></div>
+    </div>
+  </div>
+</div>
+
+<div id="suv-pg" class="pg">
+  <div class="con">
+    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem;flex-wrap:wrap;">
+      <h2 style="font-size:1.05rem;font-weight:700;">Suivi individuel</h2>
+      <button class="btn bp bs" style="margin-left:auto;" onclick="oM('m-ev')">+ Événement</button>
+    </div>
+    <div class="g4" id="suv-stats" style="margin-bottom:.9rem;"></div>
+    <div style="display:flex;gap:.4rem;margin-bottom:.65rem;flex-wrap:wrap;">
+      <input type="text" id="s-suv" placeholder="Filtrer élève…" style="width:170px;" oninput="rSuv()">
+      <select id="ft-type" style="width:165px;" onchange="rSuv()">
+        <option value="">Tous les types</option>
+        <option>Colle</option><option>Mot dans carnet</option><option>Appel parents</option>
+        <option>Incident</option><option>Rapport</option><option>Convocation</option>
+        <option>Info salle des profs</option><option>Suivi médical</option><option>Félicitations</option><option>Autre</option>
+      </select>
+      <select id="ft-tri" style="width:125px;" onchange="rSuv()">
+        <option value="">Tous trim.</option><option value="1">T1</option><option value="2">T2</option><option value="3">T3</option>
+      </select>
+    </div>
+    <div class="card" style="margin-bottom:.75rem;overflow-x:auto;">
+      <table class="tbl"><thead><tr><th>Date</th><th>Élève</th><th>Type</th><th>Description</th><th>T.</th><th>Impliqué(s)</th><th>Suite</th><th>⚙</th></tr></thead>
+      <tbody id="stbl"></tbody></table>
+    </div>
+    <div class="card"><div class="ct">Dashboard par élève</div><div id="edash"></div></div>
+  </div>
+</div>
+
+<div id="abs-pg" class="pg">
+  <div class="con">
+    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem;flex-wrap:wrap;">
+      <h2 style="font-size:1.05rem;font-weight:700;">Absences, demi-journées &amp; retards</h2>
+      <button class="btn bp bs" style="margin-left:auto;" onclick="oM('m-ab')">+ Saisir</button>
+    </div>
+    <div class="g4" id="abs-stats" style="margin-bottom:.9rem;"></div>
+    <div style="display:flex;gap:.4rem;margin-bottom:.65rem;flex-wrap:wrap;">
+      <input type="text" id="s-abs" placeholder="Filtrer élève…" style="width:170px;" oninput="rAbs()">
+      <select id="ft-abs-type" style="width:155px;" onchange="rAbs()">
+        <option value="">Tous les types</option>
+        <option>Absence journée</option><option>Absence demi-journée</option><option>Retard</option>
+      </select>
+      <select id="ft-abs-just" style="width:135px;" onchange="rAbs()">
+        <option value="">Justifié / non</option><option value="oui">Justifié</option><option value="non">Non justifié</option>
+      </select>
+    </div>
+    <div class="card" style="overflow-x:auto;">
+      <table class="tbl"><thead><tr><th>Date</th><th>Élève</th><th>Type</th><th>Durée / heure</th><th>Justifié</th><th>Motif</th><th>⚙</th></tr></thead>
+      <tbody id="atbl"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<div id="soc-pg" class="pg">
+  <div class="sl">
+    <div class="sb">
+
+      <!-- VUES -->
+      <div>
+        <h3 style="margin-bottom:.35rem;">Vue</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+          <button class="vbtn active" id="vbtn-cercle" onclick="setVue('cercle',this)">⭕ Cercle</button>
+          <button class="vbtn" id="vbtn-force" onclick="setVue('force',this)">🌐 Force</button>
+          <button class="vbtn" id="vbtn-affin" onclick="setVue('affin',this)">💙 Affinités</button>
+          <button class="vbtn" id="vbtn-tension" onclick="setVue('tension',this)">⚡ Tensions</button>
+          <button class="vbtn" id="vbtn-neutre" onclick="setVue('neutre',this)">○ Neutre</button>
+          <button class="vbtn" id="vbtn-sgroup" onclick="setVue('sgroup',this)">👥 Sous-groupes</button>
+        </div>
+      </div>
+
+      <!-- REGROUPEMENT -->
+      <div>
+        <h3 style="margin-bottom:.35rem;">Regrouper les élèves</h3>
+        <div style="display:flex;flex-direction:column;gap:3px;">
+          <button class="vbtn" onclick="regroup('affin')" title="Former des équipes selon les affinités">💙 Maximiser affinités</button>
+          <button class="vbtn" onclick="regroup('balance')" title="Équilibrer les sous-groupes en mixant les cliques">⚖️ Équilibrer sous-groupes</button>
+          <button class="vbtn" onclick="regroup('isolés')" title="Intégrer les élèves isolés dans des groupes">🔗 Relier les isolés</button>
+          <button class="vbtn" onclick="regroup('conflict')" title="Éviter de mettre ensemble des élèves en tension">🛡 Réduire les conflits</button>
+        </div>
+        <div id="regroup-result" style="margin-top:.4rem;font-size:.75rem;color:var(--t2);"></div>
+      </div>
+
+      <!-- TYPE DE LIEN -->
+      <div>
+        <h3 style="margin-bottom:.35rem;">Saisir un lien</h3>
+        <div class="ltr active" id="lt-affin" onclick="setLT('affin')" style="border-color:#3B8BD4;"><div style="width:9px;height:9px;border-radius:50%;background:#3B8BD4;"></div>Affinité</div>
+        <div class="ltr" id="lt-neutre" onclick="setLT('neutre')"><div style="width:9px;height:9px;border-radius:50%;background:#888;"></div>Neutre</div>
+        <div class="ltr" id="lt-tension" onclick="setLT('tension')"><div style="width:9px;height:9px;border-radius:50%;background:#C0392B;"></div>Tension</div>
+        <div style="margin-top:.35rem;">
+          <div style="font-size:.68rem;color:var(--t2);margin-bottom:.2rem;">Intensité</div>
+          <div style="display:flex;gap:3px;">
+            <div class="ib active" onclick="setLI(1,this)">Faible</div>
+            <div class="ib" onclick="setLI(2,this)">Moyen</div>
+            <div class="ib" onclick="setLI(3,this)">Fort</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LISTE ÉLÈVES -->
+      <div>
+        <h3 style="margin-bottom:.35rem;">Élèves <span id="s-nb" style="font-weight:400;text-transform:none;font-size:.76rem;"></span></h3>
+        <div id="s-elist" style="max-height:180px;overflow-y:auto;"></div>
+      </div>
+
+      <!-- LIENS -->
+      <div>
+        <h3 style="margin-bottom:.35rem;">Liens <span id="s-nl" style="font-weight:400;text-transform:none;font-size:.76rem;"></span></h3>
+        <div id="s-liens" style="max-height:100px;overflow-y:auto;"></div>
+      </div>
+
+      <!-- LEADERS -->
+      <div>
+        <h3 style="margin-bottom:.35rem;">Leaders</h3>
+        <div id="s-leaders" style="display:flex;flex-direction:column;gap:3px;font-size:.76rem;"></div>
+      </div>
+
+      <!-- STATS -->
+      <div>
+        <h3 style="margin-bottom:.35rem;">Stats</h3>
+        <div id="s-stats" style="font-size:.76rem;color:var(--t2);display:flex;flex-direction:column;gap:3px;"></div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div style="display:flex;flex-direction:column;gap:.3rem;margin-top:auto;">
+        <button class="btn bs" onclick="oM('m-sq')">❓ Questions socio</button>
+        <button class="btn bs" onclick="toggleNotes()">📊 Notes on/off</button>
+        <button class="btn bs bd2" onclick="clearLiens()">Effacer liens</button>
+        <button class="btn bp bs" onclick="exportSVG()">⬇ SVG</button>
+      </div>
+    </div>
+
+    <!-- CANVAS -->
+    <div class="scw" id="sw">
+      <div class="shi" id="shi">Sélectionne deux élèves pour créer un lien</div>
+      <div id="regroup-panel" style="display:none;position:absolute;top:.75rem;left:.75rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:.85rem 1rem;max-width:340px;z-index:10;box-shadow:0 4px 16px rgba(0,0,0,.1);">
+        <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.6rem;">
+          <div id="rp-icon" style="font-size:1.1rem;"></div>
+          <div id="rp-title" style="font-weight:700;font-size:.88rem;"></div>
+          <button onclick="closeRegroupPanel()" style="margin-left:auto;background:none;border:none;cursor:pointer;color:var(--t2);font-size:1rem;">✕</button>
+        </div>
+        <div id="rp-body" style="font-size:.82rem;display:flex;flex-direction:column;gap:.5rem;"></div>
+      </div>
+      <svg id="svg" xmlns="http://www.w3.org/2000/svg" style="cursor:grab;"></svg>
+      <div class="zoom-bar">
+        <button onclick="zoomSocio(-0.15)" title="Zoom arrière">−</button>
+        <span id="zoom-pct" style="min-width:36px;text-align:center;color:var(--t2);">100%</span>
+        <button onclick="zoomSocio(0.15)" title="Zoom avant">+</button>
+        <button onclick="resetZoom()" title="Réinitialiser">⊙</button>
+        <button onclick="fitAll()" title="Tout afficher">⊞</button>
+      </div>
+      <div class="sleg" id="sleg">
+        <div style="font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);margin-bottom:3px;">Légende</div>
+        <div class="lr"><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#3B8BD4;margin-right:3px;"></span>Garçon ○</div>
+        <div class="lr"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:#E91E8C;margin-right:3px;"></span>Fille ▢</div>
+        <div class="lr"><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#ddd;border:2px dashed #888;margin-right:3px;"></span>Isolé</div>
+        <div class="lr"><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#16A34A;margin-right:3px;border:2px solid #15803D;"></span>⭐ Leader +</div>
+        <div class="lr"><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#C0392B;margin-right:3px;border:2px solid #991B1B;"></span>⚠️ Leader −</div>
+        <div class="lr"><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#7C3AED;margin-right:3px;border:2px solid #7C3AED;"></span>💜 Influent</div>
+        <div style="margin-top:4px;border-top:1px solid var(--bd);padding-top:4px;">
+        <div class="lr"><svg width="26" height="7"><line x1="0" y1="3.5" x2="26" y2="3.5" stroke="#1a1a2e" stroke-width="2.5"/></svg>Affinité forte</div>
+        <div class="lr"><svg width="26" height="7"><line x1="0" y1="3.5" x2="26" y2="3.5" stroke="#1a1a2e80" stroke-width="1"/></svg>Affinité faible</div>
+        <div class="lr"><svg width="26" height="7"><line x1="0" y1="3.5" x2="26" y2="3.5" stroke="#C0392B" stroke-width="2.5" stroke-dasharray="5 3"/></svg>Tension forte</div>
+        <div class="lr"><svg width="26" height="7"><line x1="0" y1="3.5" x2="26" y2="3.5" stroke="#C0392B60" stroke-width="1" stroke-dasharray="3 4"/></svg>Tension faible</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="rec-pg" class="pg">
+  <div class="con">
+    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem;flex-wrap:wrap;">
+      <h2 style="font-size:1.05rem;font-weight:700;">Recommandations &amp; rapports des élèves</h2>
+      <button class="btn bp bs" style="margin-left:auto;" onclick="addRecDate()">+ Nouvelle date</button>
+      <button class="btn bs" onclick="exportRecPDF()">📄 PDF</button>
+    </div>
+    <div class="al ai" style="margin-bottom:.9rem;font-size:.8rem;">Les élèves ont rapporté… Chaque bloc correspond à une date. Saisissez la première remarque puis appuyez sur <strong>Entrée</strong> ou cliquez hors du champ pour en ajouter une autre.</div>
+    <div id="rec-list"></div>
+  </div>
+</div>
+<!-- MODALS -->
+<div class="mb" id="m-ae">
+  <div class="mo" style="max-width:640px;">
+    <div class="moh"><h3>Ajouter / modifier un élève</h3><button class="mc" onclick="cM('m-ae')">✕</button></div>
+    <div class="tn" style="padding:0;margin-bottom:.75rem;">
+      <button class="tb active" onclick="swMT(this,'mt-base')">Identité</button>
+      <button class="tb" onclick="swMT(this,'mt-sport')">Sports &amp; loisirs</button>
+      <button class="tb" onclick="swMT(this,'mt-disp')">Dispositifs</button>
+    </div>
+    <div class="tp active" id="mt-base">
+      <div class="g2" style="gap:.5rem;margin-bottom:.5rem;">
+        <div class="fg"><label>Prénom *</label><input type="text" id="ae-p" placeholder="Léa"></div>
+        <div class="fg"><label>Nom *</label><input type="text" id="ae-n" placeholder="Martin"></div>
+      </div>
+      <div class="g2" style="gap:.5rem;margin-bottom:.5rem;">
+        <div class="fg"><label>Date de naissance</label><input type="date" id="ae-dn"></div>
+        <div class="fg"><label>Sexe</label><select id="ae-sx"><option value="">—</option><option>F</option><option>M</option></select></div>
+      </div>
+      <div class="fg" style="margin-bottom:.5rem;"><label>PP année précédente</label><input type="text" id="ae-pp" placeholder="M. Dupont — 5ème B"></div>
+      <div class="g2" style="gap:.5rem;margin-bottom:.5rem;">
+        <div class="fg"><label>Responsable 1</label><input type="text" id="ae-r1" placeholder="Nom Prénom"></div>
+        <div class="fg"><label>Responsable 2</label><input type="text" id="ae-r2" placeholder="Nom Prénom"></div>
+      </div>
+      <div class="g2" style="gap:.5rem;margin-bottom:.5rem;">
+        <div class="fg"><label>Téléphone 1</label><input type="text" id="ae-t1" placeholder="06…"></div>
+        <div class="fg"><label>Téléphone 2</label><input type="text" id="ae-t2" placeholder="06…"></div>
+      </div>
+      <div class="fg" style="margin-bottom:.5rem;"><label>Email famille</label><input type="text" id="ae-em" placeholder="email@…"></div>
+      <div class="fg" style="margin-bottom:.5rem;"><label>Modèle médiatique</label><input type="text" id="ae-mm" placeholder="Ex : Kylian Mbappé (sportif), Aya Nakamura (chanteur)…"></div>
+      <div class="fg"><label>Statut leadership</label>
+        <select id="ae-ld"><option value="">Aucun</option><option value="pos">Leader positif ⭐</option><option value="neg">Leader négatif ⚠</option><option value="inf">Influent 💜</option></select>
+      </div>
+    </div>
+    <div class="tp" id="mt-sport">
+      <div class="g2" style="gap:.5rem;margin-bottom:.5rem;">
+        <div class="fg"><label>Sport 1</label><input type="text" id="ae-s1" placeholder="Football"></div>
+        <div class="fg"><label>Ville (sport 1)</label><input type="text" id="ae-sv1" placeholder="Lyon"></div>
+      </div>
+      <div class="g2" style="gap:.5rem;margin-bottom:.5rem;">
+        <div class="fg"><label>Sport 2</label><input type="text" id="ae-s2" placeholder="Natation"></div>
+        <div class="fg"><label>Ville (sport 2)</label><input type="text" id="ae-sv2" placeholder="Villeurbanne"></div>
+      </div>
+      <div class="g2" style="gap:.5rem;margin-bottom:.5rem;">
+        <div class="fg"><label>Loisir 1</label><input type="text" id="ae-l1" placeholder="Dessin, musique…"></div>
+        <div class="fg"><label>Loisir 2</label><input type="text" id="ae-l2" placeholder="Jeux vidéo, lecture…"></div>
+      </div>
+    </div>
+    <div class="tp" id="mt-disp">
+      <div style="display:flex;flex-direction:column;gap:.55rem;">
+        <div style="display:flex;align-items:center;gap:.5rem;padding:.6rem .85rem;border-radius:var(--rs);border:1px solid var(--bd);">
+          <input type="checkbox" id="ae-pap" style="width:auto;margin:0;"><label for="ae-pap" style="margin:0;font-size:.83rem;font-weight:600;color:var(--tx);flex:1;">PAP — Plan d'Accompagnement Personnalisé</label>
+        </div>
+        <div class="fg"><label style="color:var(--t2);">Détail PAP (aménagements, modalités…)</label><textarea id="ae-pap-d" rows="2" placeholder="Ex : tiers-temps, supports adaptés…"></textarea></div>
+        <div style="display:flex;align-items:center;gap:.5rem;padding:.6rem .85rem;border-radius:var(--rs);border:1px solid var(--bd);">
+          <input type="checkbox" id="ae-ppre" style="width:auto;margin:0;"><label for="ae-ppre" style="margin:0;font-size:.83rem;font-weight:600;color:var(--tx);flex:1;">PPRE — Programme Personnalisé de Réussite Éducative</label>
+        </div>
+        <div class="fg"><label style="color:var(--t2);">Détail PPRE</label><textarea id="ae-ppre-d" rows="2" placeholder="Objectifs, intervenants…"></textarea></div>
+        <div style="display:flex;align-items:center;gap:.5rem;padding:.6rem .85rem;border-radius:var(--rs);border:1px solid var(--bd);">
+          <input type="checkbox" id="ae-pai" style="width:auto;margin:0;"><label for="ae-pai" style="margin:0;font-size:.83rem;font-weight:600;color:var(--tx);flex:1;">PAI — Projet d'Accueil Individualisé</label>
+        </div>
+        <div class="fg"><label style="color:var(--t2);">Détail PAI (protocole médical, allergie…)</label><textarea id="ae-pai-d" rows="2" placeholder="Protocole, contacts urgence…"></textarea></div>
+        <div style="display:flex;align-items:center;gap:.5rem;padding:.6rem .85rem;border-radius:var(--rs);border:1px solid var(--bd);">
+          <input type="checkbox" id="ae-pps" style="width:auto;margin:0;"><label for="ae-pps" style="margin:0;font-size:.83rem;font-weight:600;color:var(--tx);flex:1;">PPS — Projet Personnalisé de Scolarisation (MDPH)</label>
+        </div>
+        <div class="fg"><label style="color:var(--t2);">Détail PPS</label><textarea id="ae-pps-d" rows="2" placeholder="Structure, AVS/AESH…"></textarea></div>
+      </div>
+    </div>
+    <button class="btn bp" style="width:100%;margin-top:.75rem;" onclick="saveEleve()">Enregistrer</button>
+  </div>
+</div>
+
+<div class="mb" id="m-ev">
+  <div class="mo" style="max-width:600px;">
+    <div class="moh"><h3>Ajouter un événement</h3><button class="mc" onclick="cM('m-ev')">✕</button></div>
+    <div style="display:flex;flex-direction:column;gap:.5rem;">
+      <div class="g2">
+        <div class="fg"><label>Date *</label><input type="date" id="ev-dt"></div>
+        <div class="fg"><label>Trimestre</label><select id="ev-tr"><option value="1">T1</option><option value="2">T2</option><option value="3">T3</option></select></div>
+      </div>
+      <div class="fg"><label>Élève concerné *</label><select id="ev-el"><option value="">— Choisir —</option></select></div>
+      <div class="fg"><label>Type *</label>
+        <select id="ev-ty"><option>Colle</option><option>Mot dans carnet</option><option>Appel parents</option><option>Incident</option><option>Rapport</option><option>Convocation</option><option>Info salle des profs</option><option>Suivi médical</option><option>Félicitations</option><option>Autre</option></select>
+      </div>
+      <div class="fg"><label>Description</label><textarea id="ev-ds" rows="2" placeholder="Détail…"></textarea></div>
+      <div class="fg"><label>Suite donnée</label><input type="text" id="ev-su" placeholder="Ex : transmis au CPE, convocation…"></div>
+
+      <!-- IMPACT SOCIOGRAMME SECTION -->
+      <div style="border:1px solid var(--bd);border-radius:var(--r);padding:.75rem 1rem;background:var(--bg);">
+        <div style="font-size:.8rem;font-weight:700;color:var(--bl);margin-bottom:.6rem;">🔗 Impact sur le sociogramme</div>
+        <div style="font-size:.75rem;color:var(--t2);margin-bottom:.5rem;">Ajoute un ou plusieurs élèves et choisis le type de relation créée avec l'élève concerné.</div>
+        <div id="ev-impl-list" style="display:flex;flex-direction:column;gap:.4rem;margin-bottom:.5rem;"></div>
+        <button class="btn bs" style="font-size:.75rem;" onclick="addImplique()">+ Ajouter un élève</button>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:.4rem;"><input type="checkbox" id="ev-cf" style="width:auto;margin:0;"><label for="ev-cf" style="margin:0;font-size:.8rem;font-weight:500;">🔒 Confidentiel</label></div>
+      <button class="btn bp" onclick="saveEvent()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div class="mb" id="m-ab">
+  <div class="mo">
+    <div class="moh"><h3>Saisir une absence / retard</h3><button class="mc" onclick="cM('m-ab')">✕</button></div>
+    <div style="display:flex;flex-direction:column;gap:.5rem;">
+      <div class="g2"><div class="fg"><label>Date *</label><input type="date" id="ab-dt"></div><div class="fg"><label>Trimestre</label><select id="ab-tr"><option value="1">T1</option><option value="2">T2</option><option value="3">T3</option></select></div></div>
+      <div class="fg"><label>Élève *</label><select id="ab-el"><option value="">— Choisir —</option></select></div>
+      <div class="fg"><label>Type *</label>
+        <select id="ab-ty"><option>Absence journée</option><option>Absence demi-journée</option><option>Retard</option></select>
+      </div>
+      <div class="fg"><label>Heure (retard) ou demi-journée (matin/après-midi)</label><input type="text" id="ab-hr" placeholder="Ex : 8h30, matin, après-midi"></div>
+      <div class="fg"><label>Justifié</label>
+        <select id="ab-ju"><option value="non">Non justifié</option><option value="oui">Justifié</option></select>
+      </div>
+      <div class="fg"><label>Motif</label><input type="text" id="ab-mo" placeholder="Médical, familial, non communiqué…"></div>
+      <div class="fg"><label>Remarques</label><textarea id="ab-rm" rows="2" placeholder="Observations…"></textarea></div>
+      <button class="btn bp" onclick="saveAbsence()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div class="mb" id="m-fiche">
+  <div class="mo" style="max-width:660px;">
+    <div class="moh"><h3 id="fiche-t">Fiche élève</h3>
+      <div style="display:flex;gap:.4rem;">
+        <button class="btn bs" onclick="exportFichePDF()">📄 PDF</button>
+        <button class="mc" onclick="cM('m-fiche')">✕</button>
+      </div>
+    </div>
+    <div id="fiche-c"></div>
+  </div>
+</div>
+
+<div class="mb" id="m-bilan">
+  <div class="mo">
+    <div class="moh"><h3 id="bl-t">Bilan de séance</h3><button class="mc" onclick="cM('m-bilan')">✕</button></div>
+    <div style="display:flex;flex-direction:column;gap:.5rem;">
+      <div class="fg"><label>Date</label><input type="date" id="bl-dt"></div>
+      <div class="fg"><label>Points positifs</label><textarea id="bl-p" rows="2" placeholder="Ce qui a bien fonctionné…"></textarea></div>
+      <div class="fg"><label>Points à améliorer</label><textarea id="bl-n" rows="2" placeholder="Difficultés rencontrées…"></textarea></div>
+      <div class="fg"><label>Observations élèves</label><textarea id="bl-o" rows="2" placeholder="Comportements, isolement…"></textarea></div>
+      <div class="fg"><label>Prochaines étapes</label><textarea id="bl-nx" rows="2" placeholder="Actions avant la prochaine séance…"></textarea></div>
+      <button class="btn bp" onclick="saveBilan()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div class="mb" id="m-sq">
+  <div class="mo" style="max-width:680px;">
+    <div class="moh"><h3>Questions socio — Saisie &amp; interprétation</h3><button class="mc" onclick="cM('m-sq')">✕</button></div>
+    <div class="tn" style="padding:0;margin-bottom:.75rem;">
+      <button class="tb active" onclick="swMT(this,'sq-guide')">Guide</button>
+      <button class="tb" onclick="swMT(this,'sq-saisie')">Saisir réponses</button>
+    </div>
+    <div class="tp active" id="sq-guide">
+      <div class="g2" style="gap:.75rem;">
+        <div>
+          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:.4rem;">🤝 Affinités</div>
+          <div style="font-size:.8rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:.6rem .85rem;margin-bottom:.35rem;"><strong>Q1</strong> Cite 3 élèves avec qui tu aimes travailler. <em style="color:var(--t2);">(→ affinité forte)</em></div>
+          <div style="font-size:.8rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:.6rem .85rem;margin-bottom:.35rem;"><strong>Q2</strong> Qui choisirais-tu pour réviser ? <em style="color:var(--t2);">(→ confiance)</em></div>
+          <div style="font-size:.8rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:.6rem .85rem;margin-bottom:.35rem;"><strong>Q3</strong> Avec qui passes-tu du temps hors cours ? <em style="color:var(--t2);">(→ affinité hors classe)</em></div>
+          <div style="font-size:.8rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:.6rem .85rem;margin-bottom:.35rem;"><strong>Q4</strong> Vers qui te tournerais-tu si tu avais un problème ? <em style="color:var(--t2);">(→ confiance forte)</em></div>
+          <div style="font-size:.8rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:.6rem .85rem;"><strong>Q5</strong> Qui met de la bonne ambiance ? <em style="color:var(--t2);">(→ leader positif)</em></div>
+        </div>
+        <div>
+          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:.4rem;">⚡ Tensions</div>
+          <div style="font-size:.8rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:.6rem .85rem;margin-bottom:.35rem;"><strong>Q6</strong> Avec qui as-tu du mal à travailler ? <em style="color:var(--t2);">(→ tension)</em></div>
+          <div style="font-size:.8rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:.6rem .85rem;margin-bottom:.35rem;"><strong>Q7</strong> T'es-tu déjà senti mis·e de côté ? <em style="color:var(--t2);">(→ isolement)</em></div>
+          <div style="font-size:.8rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:.6rem .85rem;margin-bottom:.35rem;"><strong>Q8</strong> Qui crée des tensions selon toi ? <em style="color:var(--t2);">(→ leader négatif)</em></div>
+          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin:.5rem 0 .4rem;">🏃 EPS</div>
+          <div style="font-size:.8rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:.6rem .85rem;margin-bottom:.35rem;"><strong>Q9</strong> Qui choisis-tu en premier en EPS ? <em style="color:var(--t2);">(→ affinité sportive)</em></div>
+          <div style="font-size:.8rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:.6rem .85rem;margin-bottom:.35rem;"><strong>Q10</strong> Qui est leader naturel en EPS ? <em style="color:var(--t2);">(→ leader sportif)</em></div>
+          <div style="font-size:.8rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:.6rem .85rem;"><strong>Q11</strong> Comment te sens-tu dans la classe ? (1–5) <em style="color:var(--t2);">(→ bien-être)</em></div>
+        </div>
+      </div>
+      <div class="al ai" style="margin-top:.75rem;font-size:.78rem;"><strong>Interprétation :</strong> Citations multiples = affinité forte (intensité 3). Citation unique = moyenne (2). Q5/Q10 cité 3× = leader positif. Q8 cité = leader négatif. Croisez avec le suivi (incidents, colles) pour calibrer.</div>
+    </div>
+    <div class="tp" id="sq-saisie">
+      <div class="al aw" style="font-size:.78rem;">Sélectionnez un élève, saisissez ses réponses. Les liens sont générés automatiquement mais restent modifiables dans le sociogramme.</div>
+      <div class="fg" style="margin-bottom:.6rem;"><label>Élève qui répond</label><select id="sq-el"><option value="">— Choisir —</option></select></div>
+      <div style="display:flex;flex-direction:column;gap:.5rem;" id="sq-form">
+        <div class="fg"><label>Q1 — 3 élèves avec qui tu aimes travailler (→ affinité forte)</label><input type="text" id="sq-q1" placeholder="Prénoms séparés par des virgules"></div>
+        <div class="fg"><label>Q2 — Pour réviser ensemble (→ affinité moyenne)</label><input type="text" id="sq-q2" placeholder="Prénom"></div>
+        <div class="fg"><label>Q3 — Temps hors cours (→ affinité faible)</label><input type="text" id="sq-q3" placeholder="Prénoms"></div>
+        <div class="fg"><label>Q5 — Qui met de la bonne ambiance (→ leader positif)</label><input type="text" id="sq-q5" placeholder="Prénom"></div>
+        <div class="fg"><label>Q6 — Avec qui du mal à travailler (→ tension moyenne)</label><input type="text" id="sq-q6" placeholder="Prénoms"></div>
+        <div class="fg"><label>Q8 — Qui crée des tensions (→ tension forte / leader négatif)</label><input type="text" id="sq-q8" placeholder="Prénom (facultatif)"></div>
+        <div class="fg"><label>Q9 — Choisi en premier en EPS (→ affinité sportive)</label><input type="text" id="sq-q9" placeholder="Prénom"></div>
+        <div class="fg"><label>Q10 — Leader en EPS (→ leader sportif positif)</label><input type="text" id="sq-q10" placeholder="Prénom"></div>
+        <div class="fg"><label>Q11 — Bien-être dans la classe (1 = très mal, 5 = très bien)</label>
+          <select id="sq-q11"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+        </div>
+        <div class="fg"><label>Observation PP (propre à cet élève — confidentiel)</label><textarea id="sq-obs" rows="2" placeholder="Ce que j'observe moi, PP EPS, sur cet élève dans le groupe…"></textarea></div>
+      </div>
+      <button class="btn bp" style="width:100%;margin-top:.6rem;" onclick="applySocioQuestionnaire()">Générer les liens</button>
+      <div id="sq-result" style="margin-top:.5rem;"></div>
+    </div>
+  </div>
+</div>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+const AC={admin:'#64748B',cohesion:'#3B8BD4',identite:'#1D9E75',conflits:'#E67A2B',projet:'#8B44AD',bilan:'#D4A017'};
+const NC=['#3B8BD4','#1D9E75','#E67A2B','#8B44AD','#C0392B','#D4A017','#1C7C5A','#6B3FA0','#2E6DB4','#A0522D','#0891B2','#9333EA','#B45309','#047857'];
+
+// Format YYYY-MM-DD → DD/MM/YYYY for display
+function fmtDate(d){
+  if(!d)return '';
+  const m=d.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return m?m[3]+'/'+m[2]+'/'+m[1]:d;
+}
+// Calculate age from YYYY-MM-DD
+function calcAge(d){
+  if(!d)return '';
+  const b=new Date(d),now=new Date();
+  let age=now.getFullYear()-b.getFullYear();
+  if(now<new Date(now.getFullYear(),b.getMonth(),b.getDate()))age--;
+  return age>0?age+' ans':'';
+}
+let eleves=[],notes=[],events=[],absences=[],liens=[],bilans={},recs=[],
+    zoomK=1, panX=0, panY=0, isPanning=false, panStartX=0, panStartY=0;
+    selEl=null,linkT='affin',linkI=1,showN=false,curBilan=null,curFiche=null,editEleveId=null;
+
+// ═══════════════════════════════════════════════════════════════
+// NAV / MODAL
+// ═══════════════════════════════════════════════════════════════
+function goTo(id,el){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nl a').forEach(a=>a.classList.remove('active'));
+  document.getElementById(id+'-pg').classList.add('active');
+  if(el)el.classList.add('active');
+  if(id==='elv'){rEtbl();rNtabs();}
+  if(id==='suv')rSuv();
+  if(id==='abs')rAbs();
+  if(id==='soc')rSocio();
+  if(id==='rec')rRec();
+}
+function oM(id){
+  if(id==='m-ev'||id==='m-ab'){fillSel(id==='m-ev'?'ev-el':'ab-el');}
+  if(id==='m-sq'){fillSel('sq-el');}
+  document.getElementById(id).classList.add('open');
+}
+function cM(id){
+  document.getElementById(id).classList.remove('open');
+  if(id==='m-ae'){editEleveId=null;clearAEform();}
+  if(id==='m-ev'){impliques=[];const c=document.getElementById('ev-impl-list');if(c)c.innerHTML='';}
+}
+document.addEventListener('click',e=>{if(e.target.classList.contains('mb'))e.target.classList.remove('open');});
+function swMT(btn,id){
+  const mo=btn.closest('.mo');
+  mo.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
+  btn.closest('.tn').querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById(id);if(p)p.classList.add('active');
+  btn.classList.add('active');
+}
+function fillSel(sid){
+  const s=document.getElementById(sid);if(!s)return;
+  s.innerHTML='<option value="">— Choisir —</option>'+
+    [...eleves].sort((a,b)=>(a.n||'').localeCompare(b.n||'')||(a.p||'').localeCompare(b.p||''))
+    .map(e=>`<option value="${e.id}">${e.n||''} ${e.p||''}</option>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VDC DATA (compact)
+// ═══════════════════════════════════════════════════════════════
+const VDC=[
+{id:'A1',mois:'Sep (rentrée)',trim:1,axe:'admin',titre:'Séance de rentrée',desc:'Accueil, administratif, présentation PP et délégués',duree:'55 min',
+objectifs:['Accueillir et créer un premier lien','Distribuer les documents administratifs','Présenter le rôle du PP et des délégués','Poser le cadre de l\'année'],
+phases:[
+{t:'Présentation PP EPS',d:'10 min',c:'#64748B',s:[{t:'Se présenter',x:'Parcours, rôle de PP, sens de la vie de classe.',q:'"Je suis votre prof d\'EPS ET votre PP. Voici ce que ça veut dire concrètement."',e:'Avantage : vous vous verrez plusieurs fois par semaine en EPS.'}]},
+{t:'Tour de table',d:'8 min',c:'#475569',s:[{t:'Premier contact',x:'Prénom + une attente ou une crainte pour l\'année.',q:'"Pas de bonne réponse."',e:''}]},
+{t:'Administratif',d:'20 min',c:'#334155',s:[{t:'Documents',x:'Fiche de renseignements · Règlement intérieur · Pronote/ENT · Agenda scolaire · Carnet de correspondance',q:'',e:''},{t:'Agenda de l\'année',x:'Calendrier des conseils de classe, VDC prévues, grandes échéances.',q:'',e:''}]},
+{t:'Délégués',d:'10 min',c:'#1C3F6E',s:[{t:'Rôle + candidatures',x:'Expliquer le rôle. Appel à candidatures. Fixer la date de vote.',q:'"Un délégué représente la classe entière."',e:'Parallèle capitaine d\'équipe.'}]},
+{t:'Clôture',d:'7 min',c:'#8B44AD',s:[{t:'Questions libres',x:'Toutes questions sur l\'organisation, les règles, votre rôle.',q:'',e:''}]},
+],synthese:[{l:'Type',v:'Admin + accueil'},{l:'Production',v:'Documents collectés, agenda complété'},{l:'EPS',v:'PP ET enseignant EPS'}],
+timeline:[{t:'0–10',l:'Présentation'},{t:'10–18',l:'Tour de table'},{t:'18–38',l:'Administratif'},{t:'38–48',l:'Délégués'},{t:'48–55',l:'Questions'}]},
+
+{id:'A2',mois:'Oct (délégués)',trim:1,axe:'admin',titre:'Séance délégués',desc:'Vote démocratique, formation, premières responsabilités',duree:'55 min',
+objectifs:['Organiser le vote à bulletins secrets','Former les délégués à leur rôle','Poser les bases de la représentation','Créer le lien délégués/classe'],
+phases:[
+{t:'Vote',d:'15 min',c:'#64748B',s:[{t:'Bulletins secrets',x:'1 titulaire + 1 suppléant. Dépouillement devant la classe.',q:'"Voter pour quelqu\'un en qui on a confiance."',e:''}]},
+{t:'Formation',d:'20 min',c:'#475569',s:[{t:'Rôle et limites',x:'✓ Assiste aux conseils · ✓ Remonte les problèmes collectifs\n✗ N\'est pas informateur · ✗ N\'a pas de pouvoir disciplinaire',q:'"Délégué = responsabilité, pas privilège."',e:''}]},
+{t:'Premières responsabilités',d:'12 min',c:'#334155',s:[{t:'Bilan de rentrée',x:'Les délégués préparent un premier bilan pour le conseil.',q:'"Pour le prochain conseil : comment la classe se sent-elle ?"',e:''}]},
+{t:'Clôture',d:'8 min',c:'#1C3F6E',s:[{t:'Carnet + investiture',x:'Remettre le carnet dédié. Tour de table : une chose à défendre.',q:'',e:''}]},
+],synthese:[{l:'Type',v:'Institutionnel + citoyenneté'},{l:'Production',v:'Délégués formés + carnet'},{l:'EPS',v:'Capitaine/délégué : même logique'}],
+timeline:[{t:'0–15',l:'Vote'},{t:'15–35',l:'Formation'},{t:'35–47',l:'Responsabilités'},{t:'47–55',l:'Clôture'}]},
+
+{id:'P0',mois:'Sep (avant VDC 1)',trim:1,axe:'identite',titre:"Qu'est-ce qu'apprendre et comment le faire ?",desc:"Comprendre les mécanismes de l'apprentissage pour mieux apprendre ensemble",duree:'55 min',
+objectifs:[
+  "Comprendre ce que signifie vraiment apprendre (et démystifier l'échec)",
+  "Identifier ses propres stratégies d'apprentissage et leurs limites",
+  "Découvrir les apports des neurosciences sur la mémoire et l'effort",
+  "Construire collectivement des habitudes d'apprentissage efficaces",
+],
+phases:[
+{t:'Accroche — La question qui dérange',d:'8 min',c:'#1C3F6E',s:[
+  {t:'Question de départ',x:"Poser la question sans prévenir : \"Selon vous, c'est quoi apprendre ?\"\n1 min de réflexion silencieuse. Recueillir 4-5 réponses au tableau sans commenter.",q:'"Et si apprendre, c\'était justement ne pas encore savoir faire quelque chose ?"',e:"En EPS, l'apprentissage est visible : on rate, on réessaie, on progresse. C'est un terrain idéal pour illustrer la notion d'effort et de répétition."},
+  {t:'Deuxième question',x:"\"Pensez à quelque chose que vous savez faire très bien aujourd'hui. Comment vous l'avez appris ?\"\nPartages en binômes 2 min, puis 2-3 exemples en grand groupe.",q:'"Est-ce que quelqu\'un vous a tout expliqué une seule fois et ça a suffi ?"',e:''},
+]},
+{t:'Les mécanismes de la mémoire',d:'12 min',c:'#3B8BD4',s:[
+  {t:'3 faits sur le cerveau qui apprend',x:"Présenter simplement (schéma ou à l'oral) :\n• La mémoire à court terme est limitée : on ne retient pas tout en une fois\n• La répétition espacée ancre les souvenirs durablement\n• L'erreur est indispensable : le cerveau apprend mieux de ses erreurs que de ses réussites",q:'"Qui a déjà révisé la veille pour un contrôle et tout oublié le lendemain ?"',e:"Faire le lien avec l'EPS : on ne maîtrise pas un geste technique en le faisant une seule fois. La répétition sur plusieurs séances est clé."},
+  {t:'Le mythe du talent',x:"Discussion courte : est-ce qu'on naît bon en maths ? En sport ? En musique ?\nIntroduire la notion de croissance (growth mindset) : l'intelligence se développe, elle n'est pas fixe.",q:'"Si un élève est nul en EPS, c\'est sa faute ou pas ?"',e:"Le PP EPS est particulièrement légitime pour aborder ce sujet : les progrès sportifs sont mesurables, concrets, visibles."},
+]},
+{t:'Activité — Mes stratégies d\'apprentissage',d:'15 min',c:'#1D9E75',s:[
+  {t:'Questionnaire individuel rapide',x:"Chaque élève répond sur un post-it :\n(1) Comment tu révises d'habitude ?\n(2) Est-ce que ça marche vraiment ?\n(3) Qu'est-ce que tu n'as jamais essayé ?",q:'"Soyez honnêtes. Ce n\'est pas noté."',e:''},
+  {t:'Stratégies efficaces vs inefficaces',x:"Présenter 6 stratégies classées en deux colonnes :\n✗ Relire ses cours (impression de connaître mais faible rétention)\n✗ Surligner (passif, peu ancré)\n✓ Se tester soi-même (retrieval practice)\n✓ Expliquer à quelqu\'un d\'autre (effet protégé)\n✓ Espacer ses révisions sur plusieurs jours\n✓ Faire des erreurs et les analyser",q:'"Laquelle vous étonne le plus ?"',e:"Lien EPS : s'auto-évaluer en sport (vidéo, miroir, feedback d'un partenaire) = même logique que le retrieval practice."},
+]},
+{t:'Apprendre ENSEMBLE — la force du groupe',d:'12 min',c:'#E67A2B',s:[
+  {t:'Ce que le groupe ajoute à l\'apprentissage individuel',x:"Discussion : apprend-on mieux seul ou en groupe ? Pourquoi ?\nIntroduire la notion de zone proximale de développement : on progresse plus vite quand on est légèrement au-delà de ce qu'on sait faire, avec l'aide d'un pair.",q:'"Vous avez déjà appris quelque chose grâce à un camarade ? Comment ça s\'est passé ?"',e:"En EPS : observation des coéquipiers, feedback entre pairs, correction mutuelle des gestes."},
+  {t:'Le droit à l\'erreur dans cette classe',x:"Proposer une règle collective : dans cette classe, se tromper n'est pas un problème, c'est une étape. Qui accepte cette règle ?",q:'"Qu\'est-ce qui nous empêche parfois de prendre le risque de se tromper en classe ?"',e:''},
+]},
+{t:'Clôture — Ma boussole d\'apprentissage',d:'8 min',c:'#8B44AD',s:[
+  {t:'Production individuelle',x:"Chaque élève écrit sur une fiche (gardée par lui) :\n• Une chose que j'ai apprise sur comment j'apprends\n• Une stratégie que je vais essayer\n• Une chose que je veux changer dans ma façon de travailler",q:'"On y reviendra en fin de trimestre : est-ce que vous l\'avez fait ?"',e:"Clôture EPS : \"Apprendre à apprendre en EPS, c'est observer, essayer, rater, recommencer. Vous le faites déjà — maintenant vous savez pourquoi ça marche.\""},
+]},
+],
+synthese:[
+  {l:'Axe',v:'Identité & méthodes'},
+  {l:'Notions clés',v:'Mémoire, répétition espacée, growth mindset, erreur constructive'},
+  {l:'Lien EPS',v:'Apprentissage moteur = modèle concret des neurosciences de l\'apprentissage'},
+  {l:'Production',v:'Fiche "Ma boussole d\'apprentissage" individuelle conservée'},
+],
+timeline:[
+  {t:'0–8',l:'Accroche'},
+  {t:'8–20',l:'Mécanismes mémoire'},
+  {t:'20–35',l:'Stratégies apprentissage'},
+  {t:'35–47',l:'Apprendre ensemble'},
+  {t:'47–55',l:'Boussole individuelle'},
+]},
+
+{id:1,mois:'Sep',trim:1,axe:'cohesion',titre:'Qui sommes-nous ?',desc:'Se découvrir, poser les bases du vivre-ensemble',duree:'55 min',
+objectifs:['Apprendre les prénoms et 3 traits de chaque élève','Identifier les talents de la classe','Formuler une charte collective'],
+phases:[
+{t:'Accroche EPS',d:'8 min',c:'#1C3F6E',s:[{t:'Métaphore sportive',x:'Une équipe se connaît avant de jouer. La classe aussi.',q:'"Si la classe était une équipe sportive, dans quelle discipline seriez-vous ?"',e:'Anecdote des premières séances EPS.'}]},
+{t:'Blason personnel',d:'15 min',c:'#3B8BD4',s:[{t:'4 cases',x:'Sport préféré · Passion hors sport · Valeur · Super-pouvoir.',q:'7 min pour remplir, présentation en binômes 2 min.',e:'La case sport permet un premier contact individualisé.'}]},
+{t:'Bingo humain',d:'12 min',c:'#1D9E75',s:[{t:'Grille 4×4',x:'16 caractéristiques à trouver. 4-5 cases EPS.',q:'"Trouvez quelqu\'un qui correspond et faites-le signer."',e:'"peut courir 2 km", "a fait de l\'escalade"…'}]},
+{t:'Charte de classe',d:'12 min',c:'#E67A2B',s:[{t:'Post-its + vote',x:'1 règle par élève, regroupement, vote, signature collective.',q:'"La règle la plus importante selon toi."',e:'Parallèle règles du jeu EPS.'}]},
+{t:'Clôture',d:'8 min',c:'#8B44AD',s:[{t:'Tour de table',x:'Un mot pour résumer.',q:'"Comme après un match, qu\'est-ce qu\'on retient ?"',e:''}]},
+],synthese:[{l:'Axe',v:'Cohésion'},{l:'Production',v:'Blason + Charte affichés'},{l:'EPS',v:'Métaphore équipe'}],
+timeline:[{t:'0–8',l:'Accroche'},{t:'8–23',l:'Blason'},{t:'23–35',l:'Bingo'},{t:'35–47',l:'Charte'},{t:'47–55',l:'Clôture'}]},
+
+{id:2,mois:'Oct',trim:1,axe:'cohesion',titre:'Coopérer sans se marcher dessus',desc:'Compétition saine vs rivalité destructive',duree:'55 min',
+objectifs:['Distinguer coopération et compétition','Identifier les 3 modes de groupe','Créer une carte mentale collective'],
+phases:[
+{t:'Accroche',d:'7 min',c:'#1C3F6E',s:[{t:'Sport coop vs compét',x:'2 images : équipe qui célèbre / sportif seul sur podium.',q:'"La compétition et la coopération, c\'est opposé ?"',e:'Observations EPS récentes.'}]},
+{t:'Tour de papier',d:'15 min',c:'#3B8BD4',s:[{t:'Défi en îlots',x:'20 feuilles A4 + scotch. Tour la plus haute en 8 min.',q:'"Qui décide ? Tout le monde est-il écouté ?"',e:'Le PP observe comme un entraîneur.'}]},
+{t:'3 modes de groupe',d:'12 min',c:'#1D9E75',s:[{t:'Apport notionnel',x:'Compétition interne · Passivité · Coopération.',q:'"Vous étiez en mode 1, 2 ou 3 ?"',e:'Équivalents en sports collectifs.'}]},
+{t:'Carte mentale',d:'13 min',c:'#E67A2B',s:[{t:'Conditions du bon fonctionnement',x:'Tableau collectif participatif.',q:'"Venez écrire une condition pour que NOTRE classe fonctionne bien."',e:''}]},
+{t:'Clôture',d:'8 min',c:'#8B44AD',s:[{t:'Engagement',x:'Post-it individuel : "Cette semaine, je vais…"',q:'"Un engagement concret."',e:''}]},
+],synthese:[{l:'Axe',v:'Cohésion'},{l:'Production',v:'Carte mentale + engagements'},{l:'EPS',v:'Débriefer comme après un match'}],
+timeline:[{t:'0–7',l:'Accroche'},{t:'7–22',l:'Tour papier'},{t:'22–34',l:'3 modes'},{t:'34–47',l:'Carte'},{t:'47–55',l:'Clôture'}]},
+
+{id:3,mois:'Nov',trim:1,axe:'identite',titre:'Mes rôles dans le groupe',desc:'Explorer les postures selon les contextes',duree:'55 min',
+objectifs:['Identifier ses rôles dans un groupe','Comprendre que les rôles évoluent','Valoriser la diversité des profils'],
+phases:[
+{t:'Accroche',d:'7 min',c:'#1C3F6E',s:[{t:'Le capitaine',x:'Est-ce le meilleur joueur qui est toujours capitaine ?',q:'"Citez des sportifs capitaines sans être les meilleurs."',e:'Exemples EPS récents.'}]},
+{t:'6 rôles',d:'12 min',c:'#3B8BD4',s:[{t:'Leader · Organisateur · Médiateur · Créatif · Observateur · Porte-parole',x:'Chaque rôle avec exemples sportifs ET scolaires.',q:'"Vous connaissez quelqu\'un comme ça ?"',e:''}]},
+{t:'Post-its anonymes',d:'12 min',c:'#1D9E75',s:[{t:'Quel rôle je joue / veux jouer',x:'2 post-its de couleurs différentes.',q:'"25 leaders dans une équipe, ça donne quoi ?"',e:''}]},
+{t:'EPS vs classe',d:'12 min',c:'#E67A2B',s:[{t:'Mon rôle change-t-il ?',x:'En EPS, en classe, en famille, avec les amis.',q:'"Un moment précis en EPS : quel rôle ?"',e:'Le PP nomme positivement un élève observé.'}]},
+{t:'Constellation',d:'12 min',c:'#8B44AD',s:[{t:'Affiche collective',x:'Rôles représentés dans la classe.',q:'"La force d\'une classe = diversité des profils."',e:''}]},
+],synthese:[{l:'Axe',v:'Identité & rôles'},{l:'Production',v:'Affiche Constellation'},{l:'EPS',v:'Capitaine ≠ meilleur joueur'}],
+timeline:[{t:'0–7',l:'Accroche'},{t:'7–19',l:'6 rôles'},{t:'19–31',l:'Post-its'},{t:'31–43',l:'EPS/classe'},{t:'43–55',l:'Constellation'}]},
+
+{id:'B1',mois:'Déc',trim:1,axe:'bilan',titre:'Bilan T1 — Ressentis',desc:'Charte, ressentis anonymes, intentions T2',duree:'55 min',
+objectifs:['Évaluer le T1 collectivement','Recueillir les ressentis anonymes','Préparer le conseil de classe','Fixer des intentions T2'],
+phases:[
+{t:'Charte — bilan',d:'10 min',c:'#D4A017',s:[{t:'Relecture + vote',x:'Pouce levé/baissé/horizontal pour chaque règle.',q:'"Honnêtement : on l\'a tenue ?"',e:''}]},
+{t:'Questionnaire anonyme',d:'15 min',c:'#B8860B',s:[{t:'Mon T1 en 4 questions',x:'(1) Mon trimestre en 1 mot · (2) Ce qui m\'a aidé · (3) Ce qui m\'a pesé · (4) Attentes T2',q:'"Anonyme. Sincère."',e:''}]},
+{t:'Synthèse',d:'15 min',c:'#92400E',s:[{t:'3 colonnes',x:'✓ Bien · △ Mitigé · ✗ À changer',q:'',e:'Relier aux comportements EPS.'}]},
+{t:'Conseil de classe',d:'10 min',c:'#1C3F6E',s:[{t:'Message délégués',x:'Synthèse à porter au conseil. Validation collective.',q:'"Ce que vous voulez qu\'on dise à votre place."',e:''}]},
+{t:'Intentions T2',d:'5 min',c:'#8B44AD',s:[{t:'Post-it',x:'Conservé pour être redistribué en janvier.',q:'"Une intention, pas une promesse."',e:''}]},
+],synthese:[{l:'Type',v:'Bilan T1'},{l:'Production',v:'Synthèse T1 + intentions T2'},{l:'EPS',v:'Comportements EPS reliés au bilan'}],
+timeline:[{t:'0–10',l:'Charte'},{t:'10–25',l:'Questionnaire'},{t:'25–40',l:'Synthèse'},{t:'40–50',l:'Conseil'},{t:'50–55',l:'Intentions'}]},
+
+{id:4,mois:'Jan',trim:2,axe:'conflits',titre:'Quand ça frotte : les tensions',desc:'Vocabulaire émotionnel, CNV, transition T1→T2',duree:'55 min',
+objectifs:['Nommer les tensions en sécurité','Développer le vocabulaire émotionnel','Introduire la CNV','Bilan de transition'],
+phases:[
+{t:'Boîte à tensions',d:'15 min',c:'#1C3F6E',s:[{t:'Lecture anonymisée',x:'Slips collectés la semaine précédente.',q:'"Rien n\'est moqué, rien n\'est jugé."',e:'Tensions EPS incluses.'}]},
+{t:'Roue des émotions',d:'12 min',c:'#3B8BD4',s:[{t:'Vocabulaire précis',x:'Colère / frustration / honte / peur / tristesse.',q:'"Un mot précis = 50% du travail."',e:'Émotions après un match perdu.'}]},
+{t:'CNV',d:'10 min',c:'#1D9E75',s:[{t:'La formule',x:'"Je me sens [émotion] quand [situation] parce que j\'ai besoin de [besoin]."',q:'Entraînement oral.',e:''}]},
+{t:'Bilan',d:'10 min',c:'#E67A2B',s:[{t:'Redistribution intentions T1',x:'Lecture individuelle silencieuse.',q:'"La charte de septembre, on l\'a tenue ?"',e:''}]},
+{t:'Intention T2',d:'8 min',c:'#8B44AD',s:[{t:'Post-it',x:'Gardé par chaque élève.',q:'"Une intention, pas une promesse."',e:''}]},
+],synthese:[{l:'Axe',v:'Conflits'},{l:'Outil',v:'CNV : je me sens… parce que…'},{l:'EPS',v:'Émotions sportives comme terrain'}],
+timeline:[{t:'0–15',l:'Boîte tensions'},{t:'15–27',l:'Émotions'},{t:'27–37',l:'CNV'},{t:'37–47',l:'Bilan'},{t:'47–55',l:'Intention'}]},
+
+{id:5,mois:'Fév',trim:2,axe:'conflits',titre:'La parole comme outil',desc:'CNV pratique, protocole, médiateurs',duree:'55 min',
+objectifs:['Pratiquer la CNV en situation','Construire un protocole de résolution','Élire des médiateurs'],
+phases:[
+{t:'Retour intentions',d:'8 min',c:'#1C3F6E',s:[{t:'Post-its redistribués',x:'Lecture silencieuse, partages volontaires.',q:'"L\'honnêteté compte plus que la performance."',e:''}]},
+{t:'Jeux de rôles',d:'18 min',c:'#3B8BD4',s:[{t:'Reformuler en CNV',x:'1 dit la phrase agressive · 1 reformule · 1 évalue.',q:'"Ce n\'est pas naturel au début. C\'est normal."',e:'Scénarios EPS anonymisés.'}]},
+{t:'Protocole',d:'15 min',c:'#1D9E75',s:[{t:'Construction + vote',x:'Boîte à paroles · médiateur tournant · signal d\'arrêt.',q:'"Les litiges existent — mais on sait comment les régler."',e:'Parallèle arbitrage EPS.'}]},
+{t:'Médiateurs',d:'6 min',c:'#E67A2B',s:[{t:'2 volontaires',x:'En plus des délégués.',q:'"Le médiateur aide à parler, il ne juge pas."',e:''}]},
+{t:'Clôture',d:'8 min',c:'#8B44AD',s:[{t:'Affichage',x:'Le protocole est affiché en classe.',q:'',e:''}]},
+],synthese:[{l:'Axe',v:'Conflits'},{l:'Production',v:'Protocole + médiateurs'},{l:'EPS',v:'Arbitrage = réguler sans punir'}],
+timeline:[{t:'0–8',l:'Intentions'},{t:'8–26',l:'Jeux rôles'},{t:'26–41',l:'Protocole'},{t:'41–47',l:'Médiateurs'},{t:'47–55',l:'Clôture'}]},
+
+{id:6,mois:'Fév',trim:2,axe:'identite',titre:'Confiance en soi, regard des autres',desc:'Estime de soi, lettres de forces, pression du groupe',duree:'55 min',
+objectifs:['Distinguer estime de soi et regard des autres','Expérimenter les lettres de forces','Résister à la pression sociale'],
+phases:[
+{t:'Peur du regard',d:'8 min',c:'#1C3F6E',s:[{t:'Tour de table',x:'"Avez-vous évité de répondre par peur de vous tromper ?"',q:'"Juste un hochement de tête."',e:'Corps visible en EPS : peur du regard exacerbée.'}]},
+{t:'Lettres de forces',d:'20 min',c:'#3B8BD4',s:[{t:'Qualités sincères + enveloppes',x:'Une qualité spécifique par camarade. Lecture silencieuse.',q:'"Une qualité vraie, pas une formule polie."',e:'Inclure des qualités EPS.'}]},
+{t:'Pression du groupe',d:'15 min',c:'#1D9E75',s:[{t:'Jeu de rôle Asch',x:'3 élèves convainquent le 4ème d\'une fausseté. Il résiste.',q:'"Qu\'est-ce qui se passe quand tout le monde dit que tu as tort ?"',e:'Balle in/out.'}]},
+{t:'Clôture',d:'12 min',c:'#E67A2B',s:[{t:'Réflexion',x:'"Quand est-ce que tu n\'es pas toi-même ?" — Post-it gardé.',q:'',e:''}]},
+],synthese:[{l:'Axe',v:'Identité'},{l:'Production',v:'Enveloppes de qualités'},{l:'EPS',v:'Performance publique + regard'}],
+timeline:[{t:'0–8',l:'Peur regard'},{t:'8–28',l:'Lettres forces'},{t:'28–43',l:'Pression'},{t:'43–55',l:'Clôture'}]},
+
+{id:7,mois:'Mar',trim:2,axe:'cohesion',titre:'Sortie de cohésion',desc:'Expérience partagée hors des murs',duree:'Demi-journée',
+objectifs:['Vivre une expérience collective mémorable','Observer les dynamiques hors cadre','Renforcer le sentiment d\'appartenance'],
+phases:[
+{t:'Briefing',d:'15 min',c:'#1C3F6E',s:[{t:'Mission collective',x:'Pas de compétition. Observer un camarade différent.',q:'"Ce soir : une chose apprise sur ce camarade."',e:'Groupes mixtes préparés à l\'avance.'}]},
+{t:'Activité',d:'90 min',c:'#3B8BD4',s:[{t:'Escalade / orienteering / aventure',x:'Groupes de 5-6. PP observe sans diriger.',q:'"Qui peut aider ? Pas forcément qui on croit."',e:'Observer les rôles naturels.'}]},
+{t:'Debriefing',d:'25 min',c:'#1D9E75',s:[{t:'Cercle de partage',x:'1 découverte · 1 moment qui a bien marché · 1 difficulté.',q:'"On parle du groupe, pas des performances."',e:''}]},
+{t:'Production',d:'20 min',c:'#E67A2B',s:[{t:'Création collective',x:'Photo + légende ou carte du territoire.',q:'"Ce document = le souvenir."',e:''}]},
+],synthese:[{l:'Axe',v:'Cohésion'},{l:'Type',v:'Sortie demi-journée'},{l:'EPS',v:'PP dans son élément naturel'}],
+timeline:[{t:'0–15',l:'Briefing'},{t:'15–105',l:'Activité'},{t:'105–130',l:'Debriefing'},{t:'130–150',l:'Production'}]},
+
+{id:'B2',mois:'Avr',trim:2,axe:'bilan',titre:'Bilan T2 — Ressentis',desc:'Météo de classe, engagements, orientations T3',duree:'55 min',
+objectifs:['Évaluer le T2','Relire les engagements passés','Préparer le T3'],
+phases:[
+{t:'Météo de classe',d:'10 min',c:'#D4A017',s:[{t:'Pictogramme',x:'Chaque élève choisit sa météo du T2.',q:'"Soleil, nuages, orage, vent ?"',e:''}]},
+{t:'Intentions T2',d:'12 min',c:'#B8860B',s:[{t:'Post-its redistribués',x:'Retour sur l\'intention de janvier.',q:'"On avait dit vouloir faire différemment. Est-ce qu\'on l\'a fait ?"',e:''}]},
+{t:'Bilan VDC',d:'15 min',c:'#92400E',s:[{t:'Ce qui est resté vivant',x:'Relire charte, protocole, engagements.',q:'',e:''}]},
+{t:'Préparer T3',d:'12 min',c:'#1C3F6E',s:[{t:'1 à finir / 1 à commencer',x:'En petits groupes.',q:'',e:''}]},
+{t:'Délégués',d:'6 min',c:'#8B44AD',s:[{t:'Prochain conseil',x:'Ce qu\'ils porteront.',q:'',e:''}]},
+],synthese:[{l:'Type',v:'Bilan T2'},{l:'Production',v:'Météo + orientations T3'},{l:'EPS',v:'Progrès EPS reliés'}],
+timeline:[{t:'0–10',l:'Météo'},{t:'10–22',l:'Intentions'},{t:'22–37',l:'Bilan'},{t:'37–49',l:'T3'},{t:'49–55',l:'Délégués'}]},
+
+{id:8,mois:'Avr',trim:3,axe:'conflits',titre:'Harcèlement et effet spectateur',desc:'Mécanismes des exclusions, stratégies d\'action',duree:'55 min',
+objectifs:['Comprendre l\'effet spectateur','Identifier les signaux faibles','Développer 3 niveaux d\'action'],
+phases:[
+{t:'Vidéo',d:'12 min',c:'#1C3F6E',s:[{t:'Latané & Darley',x:'Pourquoi on n\'agit pas en groupe ?',q:'"Est-ce que ça vous est arrivé ?"',e:'Si quelqu\'un est blessé et tout le monde attend.'}]},
+{t:'Scénarios',d:'13 min',c:'#3B8BD4',s:[{t:'3 situations',x:'A : seul à la cantine · B : sourires moqueurs · C : exclu des échanges EPS.',q:'"Ce que VOUS feriez vraiment."',e:'Scénario C lié à l\'EPS.'}]},
+{t:'3 niveaux',d:'12 min',c:'#1D9E75',s:[{t:'Agir / Alerter / Signaler',x:'1-Parler. 2-Alerter un adulte. 3-Signaler (CPE, 3018).',q:'"Rester silencieux = aussi un choix."',e:''}]},
+{t:'Affiche',d:'10 min',c:'#E67A2B',s:[{t:'"Si ça arrive…"',x:'Promesse collective signée.',q:'"C\'est une promesse qu\'on se fait."',e:''}]},
+{t:'Clôture',d:'8 min',c:'#8B44AD',s:[{t:'Ressources',x:'3018 · CPE · médiateurs · PP.',q:'',e:'EPS = espace propice aux confidences.'}]},
+],synthese:[{l:'Axe',v:'Conflits'},{l:'Notion',v:'Effet spectateur + 3 niveaux'},{l:'EPS',v:'Exclusion sportive = signal d\'alerte'}],
+timeline:[{t:'0–12',l:'Vidéo'},{t:'12–25',l:'Scénarios'},{t:'25–37',l:'3 niveaux'},{t:'37–47',l:'Affiche'},{t:'47–55',l:'Clôture'}]},
+
+{id:9,mois:'Mai',trim:3,axe:'projet',titre:'Qui je suis, qui je veux être',desc:'Projet personnel et métiers du mouvement',duree:'55 min',
+objectifs:['Identifier ses valeurs et compétences','Découvrir les métiers du mouvement','Préparer le parcours Avenir'],
+phases:[
+{t:'RIASEC',d:'15 min',c:'#1C3F6E',s:[{t:'6 dimensions',x:'Passation 10 min + partage.',q:'"Ce test n\'est pas une vérité. C\'est un déclencheur."',e:'Dimension R (Réaliste) fréquente chez les sportifs.'}]},
+{t:'Témoignage',d:'15 min',c:'#3B8BD4',s:[{t:'Métiers du mouvement',x:'Kiné · coach · préparateur mental · arbitre · éducateur sportif…',q:'"Les questions que vous n\'osez pas poser à un conseiller."',e:'Le PP témoigne de son parcours.'}]},
+{t:'Fiche profil',d:'15 min',c:'#1D9E75',s:[{t:'Ce que j\'aime / fais bien / valeur / métier',x:'Fiche individuelle conservée.',q:'"Pour vous, pas pour moi."',e:''}]},
+{t:'Clôture',d:'10 min',c:'#8B44AD',s:[{t:'Tour de table',x:'Une chose portée.',q:'',e:''}]},
+],synthese:[{l:'Axe',v:'Projet'},{l:'EPS',v:'Dimension R + métiers sport'},{l:'Production',v:'Fiche profil individuelle'}],
+timeline:[{t:'0–15',l:'RIASEC'},{t:'15–30',l:'Témoignage'},{t:'30–45',l:'Fiche'},{t:'45–55',l:'Clôture'}]},
+
+{id:10,mois:'Juin',trim:3,axe:'projet',titre:'Bilan d\'année — Ce qu\'on garde',desc:'Célébrer les progrès, lettres capsule, diplômes',duree:'55 min',
+objectifs:['Mesurer le chemin parcouru','Valoriser les progrès collectifs et individuels','Laisser un héritage'],
+phases:[
+{t:'Charte de septembre',d:'12 min',c:'#1C3F6E',s:[{t:'Bilan honnête',x:'Vote pouce levé/baissé/horizontal.',q:'"C\'est un inventaire, pas un procès."',e:'Bilan EPS intégré.'}]},
+{t:'Lettres à soi-même',d:'15 min',c:'#3B8BD4',s:[{t:'Capsule temporelle',x:'Lettre pour la 3ème. Enveloppe scellée.',q:'"Soyez honnêtes."',e:''}]},
+{t:'Diplômes',d:'15 min',c:'#1D9E75',s:[{t:'Une qualité unique par élève',x:'Préparés en amont. Incluent des observations EPS.',q:'"Ce n\'est pas de la flatterie. C\'est une observation."',e:''}]},
+{t:'Clôture',d:'13 min',c:'#8B44AD',s:[{t:'Tour de table + mot du PP',x:'Un mot pour l\'année. Métaphore sportive.',q:'"En septembre, on ne savait pas encore dans quelle discipline on jouait. Aujourd\'hui, on sait jouer ensemble."',e:''}]},
+],synthese:[{l:'Axe',v:'Projet & bilan annuel'},{l:'Symboles',v:'Diplômes + lettres capsule'},{l:'EPS',v:'Métaphore de clôture'}],
+timeline:[{t:'0–12',l:'Charte'},{t:'12–27',l:'Lettres'},{t:'27–42',l:'Diplômes'},{t:'42–55',l:'Clôture'}]},
+
+{id:'B3',mois:'Juin (fin)',trim:3,axe:'bilan',titre:'Bilan annuel — Ressentis finaux',desc:'Questionnaire final, héritage de classe',duree:'55 min',
+objectifs:['Bilan sincère de l\'année','Identifier ce qui a changé','Créer un héritage pour la classe suivante'],
+phases:[
+{t:'Questionnaire final',d:'15 min',c:'#D4A017',s:[{t:'5 questions anonymes',x:'(1) Année en 3 mots · (2) Meilleure VDC · (3) Ce qui a changé · (4) Ce que j\'emporte · (5) Message pour mon PP',q:'"Anonyme, sincère, complet."',e:''}]},
+{t:'Synthèse',d:'15 min',c:'#B8860B',s:[{t:'Grandes tendances',x:'Qu\'est-ce qui a réellement changé depuis septembre ?',q:'',e:''}]},
+{t:'Héritage',d:'12 min',c:'#92400E',s:[{t:'Message à la classe suivante',x:'En petits groupes : conseil à la future 4ème.',q:'"Qu\'auriez-vous aimé savoir en arrivant ?"',e:''}]},
+{t:'Clôture définitive',d:'13 min',c:'#1C3F6E',s:[{t:'Cercle final',x:'Un mot pour l\'année. Discours du PP.',q:'"Ce que vous emportez, c\'est ce que vous savez faire ensemble."',e:''}]},
+],synthese:[{l:'Type',v:'Bilan annuel final'},{l:'Production',v:'Questionnaire + lettres héritage'},{l:'EPS',v:'L\'équipe de l\'année'}],
+timeline:[{t:'0–15',l:'Questionnaire'},{t:'15–30',l:'Synthèse'},{t:'30–42',l:'Héritage'},{t:'42–55',l:'Clôture'}]},
+];
+// ═══════════════════════════════════════════════════════════════
+// INDEX + DETAIL
+// ═══════════════════════════════════════════════════════════════
+function rCards(f){
+  const g=document.getElementById('cg');g.innerHTML='';
+  VDC.filter(v=>!f||v.axe===f).forEach(v=>{
+    const c=AC[v.axe]||'#888',b=bilans[v.id];
+    const d=document.createElement('div');d.className='vc';d.onclick=()=>rDetail(v);
+    d.innerHTML=`<div class="vb" style="background:${c}"></div><div class="vbo">
+      <div class="vn" style="color:${c}">VDC ${v.id} · ${v.mois}</div>
+      <div class="vt">${v.titre}</div><div class="vd">${v.desc}</div></div>
+      <div class="vf"><span class="bdg" style="background:${c}20;color:${c};">${v.axe}</span>
+      <span class="chip">T${v.trim}</span><span class="chip">${v.duree}</span>
+      ${b?'<span class="bdg" style="background:#F0FDF4;color:#14532D;">✓ Bilan</span>':''}</div>`;
+    g.appendChild(d);
+  });
+}
+function fCards(axe,btn){
+  document.querySelectorAll('.fb2').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');rCards(axe);
+}
+function rDetail(v){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
+  document.getElementById('det-pg').classList.add('active');
+  const c=AC[v.axe]||'#888',b=bilans[v.id];
+  const phases=(v.phases||[]).map((ph,pi)=>`<div class="ph">
+    <div class="phd"><div class="pd" style="background:${ph.c}">${pi+1}</div>
+      <div><div style="font-weight:700;font-size:.88rem;">${ph.t}</div>
+      <div style="font-size:.73rem;color:var(--t2);">⏱ ${ph.d}</div></div></div>
+    ${(ph.s||[]).map(s=>`<div class="sc">
+      <div style="font-weight:600;font-size:.88rem;margin-bottom:.28rem;">📌 ${s.t}</div>
+      <p style="font-size:.82rem;color:#374151;">${s.x.replace(/\n/g,'<br>')}</p>
+      ${s.q?`<div class="cq">🗣 ${s.q}</div>`:''}
+      ${s.e?`<div class="ce"><strong>🏃 EPS :</strong> ${s.e}</div>`:''}
+    </div>`).join('')}</div>`).join('');
+  const tl=(v.timeline||[]).map(t=>`<div style="position:relative;padding:0 0 .85rem 1rem;">
+    <div style="position:absolute;left:-1.3rem;top:4px;width:9px;height:9px;border-radius:50%;background:var(--sf);border:2px solid ${c};"></div>
+    <div style="font-size:.68rem;font-weight:700;color:${c};text-transform:uppercase;">${t.t} min</div>
+    <div style="font-size:.84rem;font-weight:600;">${t.l}</div>
+  </div>`).join('');
+  const synth=(v.synthese||[]).map(s=>`<div class="si"><strong>${s.l}</strong>${s.v}</div>`).join('');
+  const bHTML=b?`<div class="bilan-box">
+    <div style="font-weight:700;font-size:.86rem;color:var(--vt);margin-bottom:.45rem;">✓ Bilan — ${b.date}</div>
+    ${b.p?`<div style="margin-bottom:.3rem;"><div style="font-size:.68rem;font-weight:700;color:var(--vt);text-transform:uppercase;margin-bottom:2px;">Points positifs</div><p style="font-size:.81rem;">${b.p}</p></div>`:''}
+    ${b.n?`<div style="margin-bottom:.3rem;"><div style="font-size:.68rem;font-weight:700;color:var(--or);text-transform:uppercase;margin-bottom:2px;">À améliorer</div><p style="font-size:.81rem;">${b.n}</p></div>`:''}
+    ${b.o?`<div style="margin-bottom:.3rem;"><div style="font-size:.68rem;font-weight:700;color:var(--rg);text-transform:uppercase;margin-bottom:2px;">Observations</div><p style="font-size:.81rem;">${b.o}</p></div>`:''}
+    ${b.nx?`<div><div style="font-size:.68rem;font-weight:700;color:var(--blc);text-transform:uppercase;margin-bottom:2px;">Prochaines étapes</div><p style="font-size:.81rem;">${b.nx}</p></div>`:''}
+    <div style="margin-top:.45rem;display:flex;gap:.35rem;">
+      <button class="btn bs" onclick="oBilan('${v.id}','${v.titre}')">Modifier</button>
+      <button class="btn bs bd2" onclick="delBilan('${v.id}')">Supprimer</button>
+    </div></div>`
+  :`<div class="al ai">Aucun bilan. <button class="btn bp bs" onclick="oBilan('${v.id}','${v.titre}')">+ Ajouter</button></div>`;
+  document.getElementById('det-c').innerHTML=`<div>
+    <div class="dh">
+      <div class="db-back" onclick="backIdx()">← Toutes les séances</div>
+      <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.55rem;">
+        <div style="width:40px;height:40px;border-radius:50%;background:${c};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.78rem;color:#fff;flex-shrink:0;text-align:center;line-height:1.2;">VDC<br>${v.id}</div>
+        <div><div style="font-size:1.2rem;font-weight:800;">${v.titre}</div>
+        <div style="font-size:.82rem;color:var(--t2);">${v.desc}</div></div>
+      </div>
+      <div style="display:flex;gap:.35rem;flex-wrap:wrap;">
+        <span class="chip">📅 ${v.mois} · T${v.trim}</span><span class="chip">⏱ ${v.duree}</span>
+        <span class="bdg" style="background:${c}20;color:${c};">${v.axe}</span>
+      </div>
+    </div>
+    <div class="tn">
+      <button class="tb active" onclick="swT(this,'dp-plan')">Plan</button>
+      <button class="tb" onclick="swT(this,'dp-chrono')">Chrono</button>
+      <button class="tb" onclick="swT(this,'dp-bilan')">Bilan</button>
+    </div>
+    <div class="db">
+      <div class="tp active" id="dp-plan">
+        <div class="ob"><div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--bl);margin-bottom:.4rem;">🎯 Objectifs</div>
+          <ul>${(v.objectifs||[]).map(o=>`<li>${o}</li>`).join('')}</ul></div>
+        ${phases}
+        <div class="sbox"><h3>🗂 Synthèse</h3><div class="sg">${synth}</div></div>
+      </div>
+      <div class="tp" id="dp-chrono">
+        <div class="card"><div class="ct">⏱ Déroulé</div>
+          <div style="border-left:2px solid var(--bd);margin-left:8px;padding-left:1rem;margin-top:.65rem;">${tl}</div></div>
+      </div>
+      <div class="tp" id="dp-bilan">
+        ${bHTML}
+        <button class="btn bs" style="margin-top:.45rem;" onclick="oBilan('${v.id}','${v.titre}')">${b?'Modifier':'+ Ajouter'} le bilan</button>
+      </div>
+    </div>
+  </div>`;
+  window.scrollTo(0,0);
+}
+function backIdx(){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
+  document.getElementById('idx-pg').classList.add('active');
+  document.querySelectorAll('.nl a')[0].classList.add('active');
+  rCards(null);
+}
+function swT(btn,id){
+  const db=btn.closest('.db');
+  if(db)db.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
+  btn.closest('.tn').querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById(id);if(p)p.classList.add('active');btn.classList.add('active');
+}
+function swFT(btn,id){
+  const mo=btn.closest('.mo');
+  if(mo)mo.querySelectorAll('.tp').forEach(p=>p.classList.remove('active'));
+  btn.closest('.tn').querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
+  const p=document.getElementById(id);if(p)p.classList.add('active');btn.classList.add('active');
+}
+
+// ─── BILAN ────────────────────────────────────────────────────
+function oBilan(id,titre){
+  curBilan=id;
+  document.getElementById('bl-t').textContent='Bilan — '+titre;
+  const b=bilans[id]||{};
+  document.getElementById('bl-dt').value=b.date||new Date().toISOString().slice(0,10);
+  ['p','n','o','nx'].forEach(k=>document.getElementById('bl-'+k).value=b[k]||'');
+  oM('m-bilan');
+}
+function saveBilan(){
+  if(!curBilan)return;
+  bilans[curBilan]={date:document.getElementById('bl-dt').value,p:document.getElementById('bl-p').value,n:document.getElementById('bl-n').value,o:document.getElementById('bl-o').value,nx:document.getElementById('bl-nx').value};
+  cM('m-bilan');saveData();
+  const v=VDC.find(x=>String(x.id)===String(curBilan));if(v)rDetail(v);
+  rCards(null);
+}
+function delBilan(id){delete bilans[id];saveData();const v=VDC.find(x=>String(x.id)===String(id));if(v)rDetail(v);rCards(null);}
+
+// ─── IMPORT CSV ───────────────────────────────────────────────
+function importEleves(input){
+  const file=input.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    let raw=e.target.result.replace(/^\uFEFF/,'');
+
+    function parseCSVLine(line,sep){
+      const res=[];let cur='',inQ=false;
+      for(let i=0;i<line.length;i++){
+        const c=line[i];
+        if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}
+        else if(c===sep&&!inQ){res.push(cur.trim());cur='';}
+        else cur+=c;
+      }
+      res.push(cur.trim());return res;
+    }
+
+    const lines=raw.split(/\r?\n/).filter(l=>l.trim());
+    if(!lines.length){showMsg('Fichier vide','w');return;}
+
+    const firstLine=lines[0];
+    const sep=firstLine.split(';').length>firstLine.split(',').length?';':',';
+
+    const norm=s=>s
+      .replace(/^\uFEFF/,'')
+      .replace(/[\u0022\u0027\u00AB\u00BB\u2018\u2019\u201C\u201D]/g,'')
+      .trim().toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/\s+/g,' ');
+
+    const hdrs=parseCSVLine(lines[0],sep).map(norm);
+
+    const GET=(row,aliases)=>{
+      for(const a of aliases){const v=row[a];if(v!==undefined&&String(v).trim()!=='')return String(v).trim();}
+      return '';
+    };
+
+    // Parse Pronote "DUPONT Jean-Pierre" format
+    function splitPronoteNom(full){
+      full=full.replace(/^['"]+|['"]+$/g,'').trim();
+      if(!full)return {prenom:'',nom:''};
+      const tokens=full.split(/\s+/);
+      const particles=/^(DE|LE|LA|LES|DU|DES|VAN|VON|EL|AL|BEN)$/i;
+      let nomParts=[],prenomParts=[],inPrenom=false;
+      for(const tok of tokens){
+        if(!inPrenom&&(tok===tok.toUpperCase()||particles.test(tok))){nomParts.push(tok);}
+        else{inPrenom=true;prenomParts.push(tok);}
+      }
+      if(!prenomParts.length&&nomParts.length>1){prenomParts=[nomParts.pop()];}
+      const capFirst=t=>t.charAt(0).toUpperCase()+t.slice(1).toLowerCase();
+      return {
+        nom:nomParts.map(capFirst).join(' '),
+        prenom:prenomParts.map(capFirst).join(' ')
+      };
+    }
+
+    function normSexe(raw){
+      const v=raw.trim().toUpperCase();
+      if(['M','M.','MASCULIN','GARCON','H'].includes(v))return 'M';
+      if(['F','F.','FEMININ','FILLE'].includes(v))return 'F';
+      return raw.trim();
+    }
+
+    let added=0,skipped=0,debugLines=[];
+
+    for(let i=1;i<lines.length;i++){
+      if(!lines[i].trim())continue;
+      const vals=parseCSVLine(lines[i],sep).map(v=>v.replace(/^['"]+|['"]+$/g,'').trim());
+      const row={};hdrs.forEach((h,idx)=>row[h]=vals[idx]||'');
+
+      let finalP='',finalN='';
+
+      // Pronote: single column "eleves" containing "NOM Prenom"
+      const eleveCol=GET(row,[
+        'eleves','eleve',
+        'nom et prenom','nom prenom','eleve (nom prenom)'
+      ]);
+      if(eleveCol){
+        const parsed=splitPronoteNom(eleveCol);
+        finalN=parsed.nom;finalP=parsed.prenom;
+      }
+
+      // Generic: separate columns
+      if(!finalP&&!finalN){
+        finalP=GET(row,['prenom','prenoms','firstname','first name']);
+        finalN=GET(row,['nom','name','lastname','last name','nom usuel','nom de naissance']);
+      }
+
+      if(!finalP&&!finalN){
+        if(debugLines.length<3)debugLines.push('Ligne '+i+': '+vals.slice(0,5).join(' | '));
+        skipped++;continue;
+      }
+
+      if(eleves.find(el=>el.p.toLowerCase()===finalP.toLowerCase()&&el.n.toLowerCase()===finalN.toLowerCase())){skipped++;continue;}
+
+      const rawDn=GET(row,[
+        'ne(e) le','nee le','naissance',
+        'date de naissance','date naissance','birthday'
+      ]);
+      // Convert Pronote date format DD/MM/YYYY → YYYY-MM-DD (HTML date input format)
+      let dn=rawDn;
+      if(rawDn){
+        const m=rawDn.match(/^(\d{2})[\/\-\.](\d{2})[\/\-\.](\d{4})$/);
+        if(m)dn=m[3]+'-'+m[2]+'-'+m[1]; // DD/MM/YYYY → YYYY-MM-DD
+        else{const m2=rawDn.match(/^(\d{4})[\/\-\.](\d{2})[\/\-\.](\d{2})$/);if(m2)dn=rawDn;} // already YYYY-MM-DD
+      }
+      const rawSx=GET(row,['sexe','genre','sex','gender','civilite']);
+      const email=GET(row,[
+        'adresse e-mail','adresse e mail','adresse email',
+        'email','mail','courriel'
+      ]);
+      const r1=GET(row,['responsable1','responsable 1','tuteur','representant 1','representant1']);
+      const r2=GET(row,['responsable2','responsable 2','representant 2','representant2']);
+      const t1=GET(row,['telephone','tel','phone','tel. 1','telephone1']);
+      const t2=GET(row,['telephone2','tel2','tel. 2']);
+
+      eleves.push({
+        id:Date.now()+i, p:finalP, n:finalN, dn:dn,
+        sx:normSexe(rawSx), r1:r1, r2:r2, t1:t1, t2:t2, em:email,
+        pp:'',mm:'',s1:'',sv1:'',s2:'',sv2:'',l1:'',l2:'',
+        pap:false,papd:'',ppre:false,ppred:'',pai:false,paid:'',pps:false,ppsd:'',
+        leader:'',color:NC[eleves.length%NC.length],
+        x:100+Math.random()*600,y:80+Math.random()*400,np:[]
+      });
+      added++;
+    }
+
+    if(added===0){
+      let msg='0 eleve importe. ';
+      msg+='En-tetes ('+hdrs.length+') : '+hdrs.slice(0,8).join(' | ')+'. ';
+      msg+='Separateur : "'+sep+'". Lignes : '+(lines.length-1)+'.';
+      if(debugLines.length)msg+=' Exemples : '+debugLines.join(' / ');
+      msg+=' Colonne Pronote attendue : "Eleves" (NOM Prenom).';
+      showMsg(msg,'w');
+    } else {
+      const boys=eleves.filter(e=>e.sx==='M').length;
+      const girls=eleves.filter(e=>e.sx==='F').length;
+      const sexeStr=boys||girls?` (${boys}G / ${girls}F)`:'';
+      showMsg(added+' eleve(s) importe(s)'+sexeStr+(skipped?' · '+skipped+' ignore(s)':''),'s');
+    }
+    rEtbl();rSocio();saveData();input.value='';
+  };
+  r.readAsText(file,'UTF-8');
+}
+
+function importNotes(input){
+  const file=input.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    let raw=e.target.result.replace(/^\uFEFF/,'');
+    function parseCSVLine(line,sep){const result=[];let cur='',inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}else if(c===sep&&!inQ){result.push(cur.trim());cur='';}else cur+=c;}result.push(cur.trim());return result;}
+    const lines=raw.split(/\r?\n/).filter(l=>l.trim());if(!lines.length)return;
+    const sep=lines[0].split(';').length>lines[0].split(',').length?';':',';
+    const normalize=s=>s.replace(/['"«»]/g,'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');
+    const hdrs=parseCSVLine(lines[0],sep).map(normalize);
+    const GET=(row,aliases)=>{for(const a of aliases){if(row[a]!==undefined&&row[a]!=='')return row[a];}return '';};
+    let n=0;
+    for(let i=1;i<lines.length;i++){
+      if(!lines[i].trim())continue;
+      const vals=parseCSVLine(lines[i],sep).map(v=>v.replace(/^['"]+|['"]+$/g,'').trim());
+      const row={};hdrs.forEach((h,idx)=>row[h]=vals[idx]||'');
+      const p=GET(row,['prenom','nom de famille','prenoms','firstname']);
+      const mat=GET(row,['matiere','matière','subject','discipline','cours'])||'Autre';
+      const rawNote=GET(row,['note','grade','valeur','resultat','résultat']).replace(',','.');
+      const nt=parseFloat(rawNote);
+      if(!p||isNaN(nt))continue;
+      notes.push({p,n:GET(row,['nom','name','lastname']),m:mat,v:nt,c:parseFloat(GET(row,['coef','coefficient'])||1)||1,t:GET(row,['trimestre','periode','période'])||'1'});n++;
+    }
+    showMsg(n?`✓ ${n} note(s) importée(s).`:`⚠ 0 note importée. En-têtes: ${hdrs.slice(0,6).join(' | ')}`,n?'s':'w');
+    rNtabs();rSocio();saveData();input.value='';
+  };
+  r.readAsText(file,'UTF-8');
+}
+
+function showMsg(msg,type){
+  const el=document.getElementById('csv-msg');el.style.display='block';
+  el.className='al '+(type==='s'?'as':type==='w'?'aw':'ar');el.textContent=msg;
+}
+
+// ─── ÉLÈVES ───────────────────────────────────────────────────
+function clearAEform(){
+  ['ae-p','ae-n','ae-pp','ae-r1','ae-r2','ae-t1','ae-t2','ae-em','ae-mm','ae-s1','ae-sv1','ae-s2','ae-sv2','ae-l1','ae-l2'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['ae-dn'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['ae-sx','ae-ld'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['ae-pap','ae-ppre','ae-pai','ae-pps'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false;});
+  ['ae-pap-d','ae-ppre-d','ae-pai-d','ae-pps-d'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+function oAddEleve(){editEleveId=null;clearAEform();oM('m-ae');}
+function oEditEleve(id){
+  const e=eleves.find(el=>el.id===id);if(!e)return;
+  editEleveId=id;
+  const set=(fid,val)=>{const el=document.getElementById(fid);if(el)el.value=val||'';};
+  set('ae-p',e.p);set('ae-n',e.n);set('ae-dn',e.dn);set('ae-pp',e.pp);
+  document.getElementById('ae-sx').value=e.sx||'';
+  document.getElementById('ae-ld').value=e.leader||'';
+  set('ae-r1',e.r1);set('ae-r2',e.r2);set('ae-t1',e.t1);set('ae-t2',e.t2);set('ae-em',e.em);set('ae-mm',e.mm);
+  set('ae-s1',e.s1);set('ae-sv1',e.sv1);set('ae-s2',e.s2);set('ae-sv2',e.sv2);
+  set('ae-l1',e.l1);set('ae-l2',e.l2);
+  ['pap','ppre','pai','pps'].forEach(k=>{
+    document.getElementById('ae-'+k).checked=e[k]||false;
+    document.getElementById('ae-'+k+'-d').value=e[k+'d']||'';
+  });
+  oM('m-ae');
+}
+function saveEleve(){
+  const p=document.getElementById('ae-p').value.trim();if(!p)return;
+  const data={p,n:document.getElementById('ae-n').value.trim(),dn:document.getElementById('ae-dn').value,
+    sx:document.getElementById('ae-sx').value,pp:document.getElementById('ae-pp').value,
+    r1:document.getElementById('ae-r1').value,r2:document.getElementById('ae-r2').value,
+    t1:document.getElementById('ae-t1').value,t2:document.getElementById('ae-t2').value,
+    em:document.getElementById('ae-em').value,mm:document.getElementById('ae-mm').value,
+    s1:document.getElementById('ae-s1').value,sv1:document.getElementById('ae-sv1').value,
+    s2:document.getElementById('ae-s2').value,sv2:document.getElementById('ae-sv2').value,
+    l1:document.getElementById('ae-l1').value,l2:document.getElementById('ae-l2').value,
+    leader:document.getElementById('ae-ld').value,
+    pap:document.getElementById('ae-pap').checked,papd:document.getElementById('ae-pap-d').value,
+    ppre:document.getElementById('ae-ppre').checked,ppred:document.getElementById('ae-ppre-d').value,
+    pai:document.getElementById('ae-pai').checked,paid:document.getElementById('ae-pai-d').value,
+    pps:document.getElementById('ae-pps').checked,ppsd:document.getElementById('ae-pps-d').value};
+  if(editEleveId){
+    const idx=eleves.findIndex(el=>el.id===editEleveId);
+    if(idx>=0){const old=eleves[idx];eleves[idx]={...old,...data};}
+  } else {
+    data.id=Date.now();data.color=NC[eleves.length%NC.length];
+    data.x=80+Math.random()*500;data.y=80+Math.random()*380;data.np=[];
+    eleves.push(data);
+  }
+  cM('m-ae');rEtbl();rSocio();saveData();
+}
+function delEleve(id){
+  if(!confirm('Supprimer cet élève ?'))return;
+  eleves=eleves.filter(e=>e.id!==id);
+  liens=liens.filter(l=>l.f!==id&&l.t!==id);
+  events=events.filter(ev=>ev.eid!==id);
+  absences=absences.filter(a=>a.eid!==id);
+  rEtbl();rSocio();saveData();
+}
+function setLeader(id,type){const e=eleves.find(el=>el.id===id);if(!e)return;e.leader=e.leader===type?'':type;rEtbl();rSocio();}
+
+function rEtbl(){
+  const q=(document.getElementById('s-elv')||{}).value?.toLowerCase()||'';
+  const tbody=document.getElementById('etbl');if(!tbody)return;
+  const nb=document.getElementById('nb-badge');if(nb)nb.textContent=eleves.length+' élève'+(eleves.length>1?'s':'');
+  const list=eleves.filter(e=>!q||(e.p+' '+e.n).toLowerCase().includes(q));
+  const DC={pap:'#3B8BD4',ppre:'#1D9E75',pai:'#E67A2B',pps:'#8B44AD'};
+  tbody.innerHTML=list.map(e=>{
+    const bad=events.filter(ev=>ev.eid===e.id&&['Colle','Incident','Rapport'].includes(ev.ty)).length;
+    const alert=bad>=3;
+    const disps=['pap','ppre','pai','pps'].filter(k=>e[k]).map(k=>`<span class="disp-badge" style="background:${DC[k]}20;color:${DC[k]};">${k.toUpperCase()}</span>`).join(' ');
+    const lbl=e.leader==='pos'?'<span class="lp">Leader +</span>':e.leader==='neg'?'<span class="ln">Leader −</span>':e.leader==='inf'?'<span class="li">Influent</span>':'';
+    return `<tr style="${alert?'background:#FFF8F8;':''}">
+      <td><span style="display:inline-flex;align-items:center;gap:5px;">
+        <span style="width:24px;height:24px;border-radius:50%;background:${e.color};display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:.62rem;font-weight:700;">${(e.p[0]||'')+((e.n||'')[0]||'')}</span>
+        <strong>${e.p} ${e.n}</strong></span></td>
+      <td style="font-size:.78rem;">${e.dn?fmtDate(e.dn):'—'}</td>
+      <td style="font-size:.78rem;">${[e.r1,e.r2].filter(Boolean).join('<br>')||'—'}</td>
+      <td>${disps||'—'}</td>
+      <td>${lbl||'—'} ${alert?'<span class="bdg" style="background:#FEE2E2;color:#991B1B;">⚠</span>':''}</td>
+      <td style="display:flex;gap:3px;flex-wrap:wrap;">
+        <button class="btn bxs bp" onclick="oFiche(${e.id})">👁 Fiche</button>
+        <button class="btn bxs" onclick="oEditEleve(${e.id})">✏️</button>
+        <button class="btn bxs" onclick="setLeader(${e.id},'pos')" title="Leader positif" style="color:#15803D;">⭐</button>
+        <button class="btn bxs bd2" onclick="setLeader(${e.id},'neg')" title="Leader négatif">⚠</button>
+        <button class="btn bxs" onclick="setLeader(${e.id},'inf')" title="Influent" style="color:#7C3AED;">💜</button>
+        <button class="btn bxs bd2" onclick="delEleve(${e.id})">✕</button>
+      </td></tr>`;
+  }).join('');
+}
+
+// ─── NOTES PANEL ──────────────────────────────────────────────
+function rNtabs(){
+  const nav=document.getElementById('nt-tabs'),c=document.getElementById('nt-c');if(!nav||!c)return;
+  const mats=[...new Set(notes.map(n=>n.m))];
+  if(!mats.length){nav.innerHTML='';c.innerHTML='<span style="font-size:.8rem;color:var(--t2);">Importez un CSV de notes.</span>';return;}
+  nav.innerHTML=mats.map((m,i)=>`<button class="tb ${i===0?'active':''}" onclick="showNotesMat('${m}',this)">${m}</button>`).join('');
+  showNotesMat(mats[0],nav.querySelector('.tb'));
+}
+function showNotesMat(mat,btn){
+  document.querySelectorAll('#nt-tabs .tb').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');
+  const c=document.getElementById('nt-c');
+  const mn=notes.filter(n=>n.m===mat);
+  const byE={};mn.forEach(n=>{const k=(n.p+' '+n.n).trim();if(!byE[k])byE[k]=[];byE[k].push(n);});
+  const trims=[...new Set(mn.map(n=>n.t))].sort();
+  const rows=Object.entries(byE).sort((a,b)=>{const ma=a[1].reduce((s,n)=>s+n.v,0)/a[1].length,mb=b[1].reduce((s,n)=>s+n.v,0)/b[1].length;return mb-ma;}).map(([name,ns])=>{
+    const moy=ns.reduce((a,n)=>a+n.v,0)/ns.length;
+    const col=moy>=14?'#14532D':moy>=10?'#1D9E75':moy>=7?'#E67A2B':'#C0392B';
+    const e=eleves.find(el=>el.p.toLowerCase()===name.toLowerCase().split(' ')[0]);
+    const lbl=e?.leader==='pos'?'⭐':e?.leader==='neg'?'⚠':'';
+    return `<tr><td>${lbl} ${name}</td>
+      ${trims.map(t=>{const tn=ns.filter(n=>n.t===t);const tm=tn.length?tn.reduce((a,n)=>a+n.v,0)/tn.length:null;
+        return `<td style="text-align:center;">${tm!==null?`<strong style="color:${tm>=10?'var(--vt)':'var(--rg)'};">${tm.toFixed(1)}</strong>`:'—'}</td>`;}).join('')}
+      <td style="text-align:center;"><strong style="color:${col};">${moy.toFixed(1)}</strong></td>
+      <td style="width:60px;"><div class="pb"><div class="pf" style="width:${moy*5}%;background:${col};"></div></div></td>
+    </tr>`;
+  }).join('');
+  c.innerHTML=`<div style="overflow-x:auto;"><table class="tbl"><thead><tr><th>Élève</th>${trims.map(t=>`<th style="text-align:center;">T${t}</th>`).join('')}<th style="text-align:center;">Moy.</th><th>Barre</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+// ─── FICHE ÉLÈVE ──────────────────────────────────────────────
+function oFiche(id){
+  curFiche=id;
+  const e=eleves.find(el=>el.id===id);if(!e)return;
+  const myEv=events.filter(ev=>ev.eid===id).sort((a,b)=>b.dt.localeCompare(a.dt));
+  const myNt=notes.filter(n=>n.p.toLowerCase()===e.p.toLowerCase());
+  const myAb=absences.filter(a=>a.eid===id);
+  const myLi=liens.filter(l=>l.f===id||l.t===id);
+  const cnt={};['Colle','Mot dans carnet','Appel parents','Incident','Rapport','Convocation','Info salle des profs','Suivi médical','Félicitations','Autre'].forEach(t=>cnt[t]=0);
+  myEv.forEach(ev=>{if(cnt[ev.ty]!==undefined)cnt[ev.ty]++;});
+  const alert=myEv.filter(ev=>['Colle','Incident','Rapport'].includes(ev.ty)).length>=3;
+  const absJ=myAb.filter(a=>a.ty==='Absence journée').length;
+  const absDJ=myAb.filter(a=>a.ty==='Absence demi-journée').length;
+  const retards=myAb.filter(a=>a.ty==='Retard').length;
+  const absNJ=myAb.filter(a=>a.ty!=='Retard'&&a.ju==='non').length;
+  const mats=[...new Set(myNt.map(n=>n.m))];
+  const notesHTML=mats.length?mats.map(m=>{
+    const ns=myNt.filter(n=>n.m===m);
+    const moy=ns.reduce((a,n)=>a+n.v,0)/ns.length;
+    const col=moy>=14?'#14532D':moy>=10?'#1D9E75':moy>=7?'#E67A2B':'#C0392B';
+    const trims=[...new Set(ns.map(n=>n.t))].sort();
+    return `<div style="display:flex;align-items:center;gap:.45rem;padding:5px 0;border-bottom:1px solid var(--bd);font-size:.8rem;">
+      <span style="min-width:105px;color:var(--t2);">${m}</span>
+      ${trims.map(t=>{const tn=ns.filter(n=>n.t===t);const tm=tn.reduce((a,n)=>a+n.v,0)/tn.length;return `<span style="min-width:50px;text-align:center;"><small style="color:var(--t2);">T${t} </small><strong style="color:${tm>=10?'var(--vt)':'var(--rg)'};">${tm.toFixed(1)}</strong></span>`;}).join('')}
+      <span style="margin-left:auto;font-weight:700;color:${col};">${moy.toFixed(1)}/20</span>
+      <div style="width:50px;"><div class="pb"><div class="pf" style="width:${moy*5}%;background:${col};"></div></div></div>
+    </div>`;
+  }).join(''):'<span style="font-size:.8rem;color:var(--t2);">Aucune note importée</span>';
+  const TC={Colle:'#C0392B',Incident:'#E67A2B','Mot dans carnet':'#D4A017','Appel parents':'#8B44AD',Rapport:'#3B8BD4',Convocation:'#1C3F6E','Info salle des profs':'#64748B','Suivi médical':'#0F6E56',Félicitations:'#1D9E75',Autre:'#888'};
+  const evHTML=myEv.length?myEv.map(ev=>{const c=TC[ev.ty]||'#888';return `<div style="padding:7px 0;border-bottom:1px solid var(--bd);">
+    <div style="display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;">
+      <span style="font-size:.72rem;color:var(--t2);">${ev.dt}</span>
+      <span class="bdg" style="background:${c}20;color:${c};">${ev.ty}</span>
+      <span style="font-size:.7rem;color:var(--t2);">T${ev.tr}</span>
+      ${ev.cf?'<span style="font-size:.63rem;background:#FEF3C7;color:#92400E;padding:1px 5px;border-radius:8px;">🔒</span>':''}
+      <button class="btn bxs bd2" style="margin-left:auto;" onclick="delEv(${ev.id});oFiche(${id})">✕</button>
+    </div>
+    ${ev.ds?`<div style="font-size:.8rem;margin-top:2px;">${ev.ds}</div>`:''}
+    ${ev.im?`<div style="font-size:.72rem;color:var(--t2);margin-top:1px;">👥 ${ev.im}</div>`:''}
+    ${ev.su?`<div style="font-size:.72rem;color:var(--blc);margin-top:1px;">→ ${ev.su}</div>`:''}
+  </div>`;}).join(''):'<span style="font-size:.8rem;color:var(--t2);">Aucun événement</span>';
+  const abHTML=myAb.length?myAb.sort((a,b)=>b.dt.localeCompare(a.dt)).map(ab=>`<div style="padding:6px 0;border-bottom:1px solid var(--bd);">
+    <div style="display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;">
+      <span style="font-size:.72rem;color:var(--t2);">${ab.dt}</span>
+      <span class="bdg" style="background:${ab.ty==='Retard'?'#D4A01720;color:#D4A017':'#C0392B20;color:#C0392B'}">${ab.ty}</span>
+      <span style="font-size:.7rem;background:${ab.ju==='oui'?'#F0FDF4;color:#14532D':'#FEF2F2;color:#991B1B'};padding:1px 6px;border-radius:8px;">${ab.ju==='oui'?'✓ Justifié':'✗ Non justifié'}</span>
+      <button class="btn bxs bd2" style="margin-left:auto;" onclick="delAb(${ab.id});oFiche(${id})">✕</button>
+    </div>
+    ${ab.hr?`<span style="font-size:.75rem;color:var(--t2);">${ab.hr}</span>`:''}
+    ${ab.mo?`<span style="font-size:.75rem;color:var(--t2);margin-left:.5rem;">${ab.mo}</span>`:''}
+  </div>`).join(''):'<span style="font-size:.8rem;color:var(--t2);">Aucune absence/retard</span>';
+  const npHTML=(e.np||[]).length?(e.np||[]).slice().reverse().map((np,ri)=>{const real=(e.np.length-1-ri);return `<div style="padding:6px 0;border-bottom:1px solid var(--bd);">
+    <div style="display:flex;gap:.35rem;align-items:center;"><span style="font-size:.72rem;color:var(--t2);">${np.dt}</span><span style="font-size:.7rem;font-weight:600;color:var(--blc);">${np.src}</span>
+    <button class="btn bxs bd2" style="margin-left:auto;" onclick="delNP(${id},${real});oFiche(${id})">✕</button></div>
+    <div style="font-size:.81rem;margin-top:2px;">${np.tx}</div>
+  </div>`;}).join(''):'<span style="font-size:.8rem;color:var(--t2);">Aucune note privée</span>';
+  const lienHTML=myLi.map(l=>{const other=l.f===id?eleves.find(x=>x.id===l.t):eleves.find(x=>x.id===l.f);if(!other)return'';const C={affin:'#3B8BD4',tension:'#C0392B',neutre:'#888'},il=['','faible','moyen','fort'][l.i||1]||'';return `<span class="chip" style="color:${C[l.ty]};">${other.p} (${l.ty} ${il})</span>`;}).join('')||'<span style="color:var(--t2);font-size:.8rem;">Aucun lien</span>';
+  const DC={pap:'#3B8BD4',ppre:'#1D9E75',pai:'#E67A2B',pps:'#8B44AD'};
+  const DL={pap:'PAP — Plan d\'Accompagnement Personnalisé',ppre:'PPRE — Programme Personnalisé de Réussite Éducative',pai:'PAI — Projet d\'Accueil Individualisé',pps:'PPS — Projet Personnalisé de Scolarisation'};
+  const dispHTML=['pap','ppre','pai','pps'].filter(k=>e[k]).map(k=>`<div style="margin-bottom:.5rem;"><div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.2rem;"><span class="bdg" style="background:${DC[k]}20;color:${DC[k]};">${k.toUpperCase()}</span><span style="font-size:.82rem;font-weight:600;">${DL[k]}</span></div>${e[k+'d']?`<p style="font-size:.8rem;color:var(--t2);padding:.4rem .7rem;background:var(--bg);border-radius:var(--rs);">${e[k+'d']}</p>`:''}</div>`).join('')||'<span style="font-size:.8rem;color:var(--t2);">Aucun dispositif personnalisé</span>';
+  document.getElementById('fiche-t').textContent=`${e.p} ${e.n}`;
+  document.getElementById('fiche-c').innerHTML=`
+    <div class="tn" style="padding:0;margin-bottom:.65rem;">
+      <button class="tb active" onclick="swFT(this,'ft-info')">Infos</button>
+      <button class="tb" onclick="swFT(this,'ft-notes')">Notes</button>
+      <button class="tb" onclick="swFT(this,'ft-abs')">Absences</button>
+      <button class="tb" onclick="swFT(this,'ft-suivi')">Suivi</button>
+      <button class="tb" onclick="swFT(this,'ft-perso')">Notes perso</button>
+      <button class="tb" onclick="swFT(this,'ft-disp')">Dispositifs</button>
+      <button class="tb" onclick="swFT(this,'ft-liens')">Liens</button>
+    </div>
+
+    <div class="tp active" id="ft-info">
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.65rem;">
+        ${[{n:cnt['Colle'],l:'Colle(s)',c:'var(--rg)'},{n:cnt['Mot dans carnet'],l:'Mot(s)',c:'var(--or)'},{n:cnt['Appel parents'],l:'Appel(s)',c:'var(--li)'},{n:cnt['Incident'],l:'Incident(s)',c:'var(--or)'},{n:cnt['Rapport'],l:'Rapport(s)',c:'#3B8BD4'},{n:absJ,l:'Abs. journée',c:'#C0392B'},{n:absDJ,l:'Abs. DJ',c:'#E67A2B'},{n:retards,l:'Retard(s)',c:'#D4A017'},{n:absNJ,l:'Non justifié(s)',c:'#991B1B'}].map(s=>`<div class="stc" style="min-width:62px;padding:.5rem;"><div class="stn" style="color:${s.c};font-size:1.1rem;">${s.n}</div><div class="stl">${s.l}</div></div>`).join('')}
+      </div>
+      ${alert?'<div class="al ar" style="margin-bottom:.45rem;">⚠ <strong>Alerte :</strong> 3+ colles/incidents/rapports</div>':''}
+      ${e.leader?`<div class="al ${e.leader==='pos'?'as':e.leader==='inf'?'':'ar'}" style="margin-bottom:.45rem;${e.leader==='inf'?'background:#EDE9FE;border-color:#C4B5FD;color:#6D28D9;':''}"><strong>${e.leader==='pos'?'Leader positif ⭐':e.leader==='neg'?'Leader négatif ⚠':'Élève influent 💜'}</strong></div>`:''}
+      <div style="font-size:.82rem;display:flex;flex-direction:column;gap:3px;margin-bottom:.65rem;">
+        ${e.dn?`<div><strong>Naissance :</strong> ${fmtDate(e.dn)} ${calcAge(e.dn)?'('+calcAge(e.dn)+')':''}</div>`:''}${e.sx?`<div><strong>Sexe :</strong> ${e.sx}</div>`:''}
+        ${e.pp?`<div><strong>PP précédent :</strong> ${e.pp}</div>`:''}
+        ${e.r1?`<div><strong>Resp. 1 :</strong> ${e.r1}</div>`:''}${e.r2?`<div><strong>Resp. 2 :</strong> ${e.r2}</div>`:''}
+        ${e.t1?`<div><strong>Tél. 1 :</strong> ${e.t1}</div>`:''}${e.t2?`<div><strong>Tél. 2 :</strong> ${e.t2}</div>`:''}
+        ${e.em?`<div><strong>Email :</strong> ${e.em}</div>`:''}
+        ${e.mm?`<div><strong>Modèle médiatique :</strong> ${e.mm}</div>`:''}
+        ${e.s1?`<div><strong>Sport 1 :</strong> ${e.s1}${e.sv1?' — '+e.sv1:''}</div>`:''}
+        ${e.s2?`<div><strong>Sport 2 :</strong> ${e.s2}${e.sv2?' — '+e.sv2:''}</div>`:''}
+        ${e.l1?`<div><strong>Loisir 1 :</strong> ${e.l1}</div>`:''}
+        ${e.l2?`<div><strong>Loisir 2 :</strong> ${e.l2}</div>`:''}
+      </div>
+      <div style="display:flex;gap:.35rem;flex-wrap:wrap;">
+        <button class="btn bs" onclick="oEditEleve(${id});cM('m-fiche')">✏️ Modifier</button>
+        <button class="btn bs" onclick="setLeader(${id},'pos');oFiche(${id})" style="border-color:#15803D;color:#15803D;">⭐ Leader+</button>
+        <button class="btn bs bd2" onclick="setLeader(${id},'neg');oFiche(${id})">⚠ Leader−</button>
+        <button class="btn bs" onclick="setLeader(${id},'inf');oFiche(${id})" style="border-color:#7C3AED;color:#7C3AED;">💜 Influent</button>
+        <button class="btn bp bs" onclick="cM('m-fiche');openEvFor(${id})">+ Événement</button>
+        <button class="btn bs" onclick="cM('m-fiche');openAbFor(${id})">+ Absence</button>
+      </div>
+    </div>
+
+    <div class="tp" id="ft-notes">${notesHTML}</div>
+
+    <div class="tp" id="ft-abs">
+      <div style="margin-bottom:.5rem;display:flex;gap:.4rem;">
+        <button class="btn bp bs" onclick="cM('m-fiche');openAbFor(${id})">+ Ajouter</button>
+      </div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:.6rem;">
+        <div class="stc" style="min-width:70px;padding:.5rem;"><div class="stn" style="color:var(--rg);font-size:1.2rem;">${absJ}</div><div class="stl">Jours</div></div>
+        <div class="stc" style="min-width:70px;padding:.5rem;"><div class="stn" style="color:var(--or);font-size:1.2rem;">${absDJ}</div><div class="stl">Demi-j.</div></div>
+        <div class="stc" style="min-width:70px;padding:.5rem;"><div class="stn" style="color:var(--jn);font-size:1.2rem;">${retards}</div><div class="stl">Retards</div></div>
+        <div class="stc" style="min-width:70px;padding:.5rem;"><div class="stn" style="color:#991B1B;font-size:1.2rem;">${absNJ}</div><div class="stl">Non justif.</div></div>
+      </div>
+      ${abHTML}
+    </div>
+
+    <div class="tp" id="ft-suivi">
+      <div style="margin-bottom:.5rem;"><button class="btn bp bs" onclick="cM('m-fiche');openEvFor(${id})">+ Ajouter un événement</button></div>
+      ${evHTML}
+    </div>
+
+    <div class="tp" id="ft-perso">
+      <div class="al ai" style="margin-bottom:.55rem;font-size:.78rem;">Notes confidentielles — salle des profs, parents, observations personnelles.</div>
+      <div style="display:flex;flex-direction:column;gap:.4rem;margin-bottom:.6rem;">
+        <textarea id="np-tx" rows="2" placeholder="Note, observation, info reçue…"></textarea>
+        <div style="display:flex;gap:.4rem;">
+          <select id="np-sr" style="flex:1;"><option>Salle des profs</option><option>Appel parent</option><option>Courrier / message</option><option>Réunion</option><option>Observation EPS</option><option>CPE / direction</option><option>Médical</option><option>Autre</option></select>
+          <input type="date" id="np-dt" style="flex:1;" value="${new Date().toISOString().slice(0,10)}">
+          <button class="btn bp bs" onclick="addNP(${id})">+</button>
+        </div>
+      </div>
+      <div id="np-list">${npHTML}</div>
+    </div>
+
+    <div class="tp" id="ft-disp">${dispHTML}</div>
+
+    <div class="tp" id="ft-liens"><div style="display:flex;gap:.35rem;flex-wrap:wrap;">${lienHTML}</div></div>
+  `;
+  oM('m-fiche');
+}
+function _addNPmarker(id){
+  const e=eleves.find(el=>el.id===id);if(!e)return;
+  const tx=document.getElementById('np-tx').value.trim();if(!tx)return;
+  if(!e.np)e.np=[];
+  e.np.push({tx,src:document.getElementById('np-sr').value,dt:document.getElementById('np-dt').value});
+  document.getElementById('np-tx').value='';oFiche(id);
+}
+function delNP(eid,idx){const e=eleves.find(el=>el.id===eid);if(e&&e.np)e.np.splice(idx,1);}
+
+// ─── SUIVI ────────────────────────────────────────────────────
+function openEvFor(id){
+  fillSel('ev-el');
+  document.getElementById('ev-el').value=id||'';
+  document.getElementById('ev-dt').value=new Date().toISOString().slice(0,10);
+  // Reset impliqués
+  impliques=[];
+  const c=document.getElementById('ev-impl-list');if(c)c.innerHTML='';
+  oM('m-ev');
+}
+// ─── Impact sociogramme rows ─────────────────────────────────────────────
+let impliques=[]; // [{eleveId, lienType, intensite}]
+
+function addImplique(){
+  const container=document.getElementById('ev-impl-list');
+  if(!container)return;
+  const idx=impliques.length;
+  impliques.push({eleveId:'',lienType:'tension',intensite:2});
+
+  const row=document.createElement('div');
+  row.className='impl-row';
+  row.id='impl-row-'+idx;
+
+  // Élève select
+  const selEl=document.createElement('select');
+  selEl.style.flex='1';
+  selEl.innerHTML='<option value="">— Élève —</option>'+
+    [...eleves].sort((a,b)=>(a.n||'').localeCompare(b.n||'')||(a.p||'').localeCompare(b.p||''))
+    .map(e=>`<option value="${e.id}">${e.p} ${e.n||''}</option>`).join('');
+  selEl.onchange=()=>{impliques[idx].eleveId=parseInt(selEl.value)||'';};
+
+  // Type select
+  const selType=document.createElement('select');
+  selType.style.minWidth='130px';
+  selType.innerHTML=`
+    <option value="tension_fort">⚡ Tension forte</option>
+    <option value="tension_moyen" selected>⚡ Tension moy.</option>
+    <option value="tension_faible">⚡ Tension faible</option>
+    <option value="affin_fort">💙 Affinité forte</option>
+    <option value="affin_moyen">💙 Affinité moy.</option>
+    <option value="neutre">○ Neutre</option>`;
+  selType.value='tension_moyen';
+  selType.onchange=()=>{impliques[idx].lienType=selType.value;};
+
+  // Delete button
+  const del=document.createElement('button');
+  del.className='del-impl';del.textContent='✕';
+  del.onclick=()=>{
+    impliques.splice(idx,1);
+    row.remove();
+    // Re-index remaining rows
+    document.querySelectorAll('.impl-row').forEach((r,i)=>{r.id='impl-row-'+i;});
+  };
+
+  row.appendChild(selEl);row.appendChild(selType);row.appendChild(del);
+  container.appendChild(row);
+}
+
+function saveEvent(){
+  const eid=parseInt(document.getElementById('ev-el').value);
+  const ty=document.getElementById('ev-ty').value;if(!eid||!ty)return;
+
+  // Collect impliqués display string for event log
+  const implStr=impliques
+    .filter(r=>r.eleveId)
+    .map(r=>{const e=eleves.find(el=>el.id===r.eleveId);return e?e.p:''})
+    .filter(Boolean).join(', ');
+
+  const ev={
+    id:Date.now(),
+    dt:document.getElementById('ev-dt').value,
+    tr:document.getElementById('ev-tr').value,
+    eid,ty,
+    ds:document.getElementById('ev-ds').value,
+    im:implStr,
+    su:document.getElementById('ev-su').value,
+    cf:document.getElementById('ev-cf').checked,
+    // Store detailed impliqués for sociogramme
+    implDetails:impliques.filter(r=>r.eleveId).map(r=>({...r}))
+  };
+  events.push(ev);
+
+  // Apply sociogramme links
+  const TM={tension_fort:'tension',tension_moyen:'tension',tension_faible:'tension',affin_fort:'affin',affin_moyen:'affin',neutre:'neutre'};
+  const IM={tension_fort:3,tension_moyen:2,tension_faible:1,affin_fort:3,affin_moyen:2,neutre:1};
+
+  ev.implDetails.forEach(r=>{
+    const ie=eleves.find(el=>el.id===r.eleveId);
+    if(!ie||ie.id===eid)return;
+    const lt=TM[r.lienType],li=IM[r.lienType];
+    if(!lt)return;
+    const ex=liens.find(l=>l.f===eid&&l.t===ie.id&&l.ty===lt);
+    if(ex){ex.i=Math.min(3,li);}
+    else liens.push({f:eid,t:ie.id,ty:lt,i:li});
+  });
+
+  detectLeaders();cM('m-ev');saveData();
+
+  // Reset form
+  document.getElementById('ev-ds').value='';
+  document.getElementById('ev-su').value='';
+  document.getElementById('ev-cf').checked=false;
+  impliques=[];
+  const c=document.getElementById('ev-impl-list');if(c)c.innerHTML='';
+  rSuv();rSocio();
+}
+function delEv(id){events=events.filter(e=>e.id!==id);detectLeaders();rSuv();saveData();}
+function detectLeaders(){
+  eleves.forEach(e=>{
+    const bad=events.filter(ev=>ev.eid===e.id&&['Colle','Incident','Rapport'].includes(ev.ty)).length;
+    // Auto: 3+ incidents → leader négatif (sauf si déjà leader positif ou influent défini manuellement)
+    if(bad>=3&&e.leader!=='pos'&&e.leader!=='inf')e.leader='neg';
+  });rSocio();rEtbl();
+}
+function rSuv(){
+  const q=(document.getElementById('s-suv')||{}).value?.toLowerCase()||'';
+  const tf=(document.getElementById('ft-type')||{}).value||'';
+  const tri=(document.getElementById('ft-tri')||{}).value||'';
+  const tbody=document.getElementById('stbl');if(!tbody)return;
+  const TC={Colle:'#C0392B',Incident:'#E67A2B','Mot dans carnet':'#D4A017','Appel parents':'#8B44AD',Rapport:'#3B8BD4',Convocation:'#1C3F6E','Info salle des profs':'#64748B','Suivi médical':'#0F6E56',Félicitations:'#1D9E75',Autre:'#888'};
+  const filt=events.filter(ev=>{const e=eleves.find(el=>el.id===ev.eid);const nm=e?(e.p+' '+e.n).toLowerCase():'';return(!q||nm.includes(q))&&(!tf||ev.ty===tf)&&(!tri||ev.tr===tri);});
+  tbody.innerHTML=filt.sort((a,b)=>b.dt.localeCompare(a.dt)).map(ev=>{
+    const e=eleves.find(el=>el.id===ev.eid);const c=TC[ev.ty]||'#888';
+    return `<tr><td>${ev.dt}</td>
+      <td style="cursor:pointer;color:var(--blc);" onclick="oFiche(${ev.eid})">${e?e.p+' '+e.n:'?'}</td>
+      <td><span class="bdg" style="background:${c}20;color:${c};">${ev.ty}</span>${ev.cf?' 🔒':''}</td>
+      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${ev.ds||'—'}</td>
+      <td>T${ev.tr}</td><td>${ev.im||'—'}</td><td>${ev.su||'—'}</td>
+      <td><button class="btn bxs bd2" onclick="delEv(${ev.id})">✕</button></td></tr>`;
+  }).join('')||'<tr><td colspan="8" style="text-align:center;color:var(--t2);padding:1rem;">Aucun événement</td></tr>';
+  const sg=document.getElementById('suv-stats');
+  if(sg){const tot=events.length,co=events.filter(e=>e.ty==='Colle').length,ap=events.filter(e=>e.ty==='Appel parents').length,inc=events.filter(e=>e.ty==='Incident').length,ra=events.filter(e=>e.ty==='Rapport').length,fe=events.filter(e=>e.ty==='Félicitations').length;
+    sg.innerHTML=[{n:tot,l:'Total',c:'var(--blc)'},{n:co,l:'Colles',c:'var(--rg)'},{n:ap,l:'Appels',c:'var(--li)'},{n:inc,l:'Incidents',c:'var(--or)'},{n:ra,l:'Rapports',c:'#3B8BD4'},{n:fe,l:'Félicit.',c:'var(--vt)'}].map(s=>`<div class="stc"><div class="stn" style="color:${s.c};">${s.n}</div><div class="stl">${s.l}</div></div>`).join('');}
+  const dash=document.getElementById('edash');
+  if(dash){const sum=eleves.map(e=>{const my=events.filter(ev=>ev.eid===e.id);if(!my.length)return null;const co=my.filter(ev=>ev.ty==='Colle').length,mo=my.filter(ev=>ev.ty==='Mot dans carnet').length,ap=my.filter(ev=>ev.ty==='Appel parents').length,inc=my.filter(ev=>ev.ty==='Incident').length,ra=my.filter(ev=>ev.ty==='Rapport').length,fe=my.filter(ev=>ev.ty==='Félicitations').length;return{e,co,mo,ap,inc,ra,fe,tot:my.length,al:co+inc+ra>=3};}).filter(Boolean).sort((a,b)=>b.tot-a.tot);
+    dash.innerHTML=sum.map(s=>`<div class="er" onclick="oFiche(${s.e.id})">
+      <div class="av" style="background:${s.e.color};">${s.e.p[0]}${s.e.n?s.e.n[0]:''}</div>
+      <div style="flex:1;"><div style="display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;">
+        <span style="font-weight:600;">${s.e.p} ${s.e.n}</span>
+        ${s.e.leader==='neg'?'<span class="ln">Leader −</span>':''}${s.e.leader==='pos'?'<span class="lp">Leader +</span>':''}${s.e.leader==='inf'?'<span class="li">Influent</span>':''}
+        ${s.al?'<span class="bdg" style="background:#FEE2E2;color:#991B1B;">⚠ Alerte</span>':''}
+      </div>
+      <div style="display:flex;gap:.3rem;flex-wrap:wrap;margin-top:2px;">
+        ${s.co?`<span class="chip" style="color:var(--rg);">🔴 ${s.co}</span>`:''}${s.mo?`<span class="chip" style="color:var(--or);">📝 ${s.mo}</span>`:''}
+        ${s.ap?`<span class="chip" style="color:var(--li);">📞 ${s.ap}</span>`:''}${s.inc?`<span class="chip" style="color:var(--or);">⚡ ${s.inc}</span>`:''}
+        ${s.ra?`<span class="chip" style="color:#3B8BD4;">📋 ${s.ra}</span>`:''}${s.fe?`<span class="chip" style="color:var(--vt);">⭐ ${s.fe}</span>`:''}
+      </div></div><span style="color:var(--blc);font-size:.75rem;">→</span>
+    </div>`).join('')||'<span style="color:var(--t2);font-size:.8rem;">Aucun événement.</span>';}
+}
+
+// ─── ABSENCES ──────────────────────────────────────────────────
+function openAbFor(id){fillSel('ab-el');document.getElementById('ab-el').value=id;document.getElementById('ab-dt').value=new Date().toISOString().slice(0,10);oM('m-ab');}
+function saveAbsence(){
+  const eid=parseInt(document.getElementById('ab-el').value);if(!eid)return;
+  absences.push({id:Date.now(),dt:document.getElementById('ab-dt').value,tr:document.getElementById('ab-tr').value,eid,
+    ty:document.getElementById('ab-ty').value,hr:document.getElementById('ab-hr').value,
+    ju:document.getElementById('ab-ju').value,mo:document.getElementById('ab-mo').value,
+    rm:document.getElementById('ab-rm').value});
+  cM('m-ab');saveData();['ab-hr','ab-mo','ab-rm'].forEach(id=>document.getElementById(id).value='');
+  rAbs();
+}
+function delAb(id){absences=absences.filter(a=>a.id!==id);rAbs();saveData();}
+function rAbs(){
+  const q=(document.getElementById('s-abs')||{}).value?.toLowerCase()||'';
+  const tf=(document.getElementById('ft-abs-type')||{}).value||'';
+  const tj=(document.getElementById('ft-abs-just')||{}).value||'';
+  const tbody=document.getElementById('atbl');if(!tbody)return;
+  const filt=absences.filter(ab=>{const e=eleves.find(el=>el.id===ab.eid);const nm=e?(e.p+' '+e.n).toLowerCase():'';return(!q||nm.includes(q))&&(!tf||ab.ty===tf)&&(!tj||ab.ju===tj);});
+  tbody.innerHTML=filt.sort((a,b)=>b.dt.localeCompare(a.dt)).map(ab=>{
+    const e=eleves.find(el=>el.id===ab.eid);
+    const tc=ab.ty==='Retard'?'#D4A017':ab.ty==='Absence demi-journée'?'#E67A2B':'#C0392B';
+    return `<tr><td>${ab.dt}</td>
+      <td style="cursor:pointer;color:var(--blc);" onclick="oFiche(${ab.eid})">${e?e.p+' '+e.n:'?'}</td>
+      <td><span class="bdg" style="background:${tc}20;color:${tc};">${ab.ty}</span></td>
+      <td>${ab.hr||'—'}</td>
+      <td><span style="font-size:.73rem;padding:1px 7px;border-radius:10px;background:${ab.ju==='oui'?'#F0FDF4;color:#14532D':'#FEF2F2;color:#991B1B'};">${ab.ju==='oui'?'Justifié':'Non justifié'}</span></td>
+      <td>${ab.mo||'—'}</td>
+      <td><button class="btn bxs bd2" onclick="delAb(${ab.id})">✕</button></td></tr>`;
+  }).join('')||'<tr><td colspan="7" style="text-align:center;color:var(--t2);padding:1rem;">Aucune absence</td></tr>';
+  const sg=document.getElementById('abs-stats');
+  if(sg){const j=absences.filter(a=>a.ty==='Absence journée').length,dj=absences.filter(a=>a.ty==='Absence demi-journée').length,re=absences.filter(a=>a.ty==='Retard').length,nj=absences.filter(a=>a.ty!=='Retard'&&a.ju==='non').length;
+    sg.innerHTML=[{n:j,l:'Absences journée',c:'var(--rg)'},{n:dj,l:'Demi-journées',c:'var(--or)'},{n:re,l:'Retards',c:'var(--jn)'},{n:nj,l:'Non justifiées',c:'#991B1B'}].map(s=>`<div class="stc"><div class="stn" style="color:${s.c};">${s.n}</div><div class="stl">${s.l}</div></div>`).join('');}
+}
+// ─── SOCIOGRAMME ──────────────────────────────────────────────
+function setLT(t){linkT=t;const C={affin:'#3B8BD4',neutre:'#888',tension:'#C0392B'};['affin','neutre','tension'].forEach(x=>{const el=document.getElementById('lt-'+x);el.classList.toggle('active',x===t);el.style.borderColor=x===t?C[x]:'var(--bd)';});}
+function setLI(v,btn){linkI=v;document.querySelectorAll('.ib').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function doCercle(){
+  const wrap=document.getElementById('sw');
+  const w=(wrap||{}).clientWidth||900,h=Math.max((wrap||{}).clientHeight||650,650),n=eleves.length;
+  if(!n)return;
+  const cx=w/2,cy=h/2;
+  // Radius scales with number of students to avoid overlap
+  const minGap=60; // min arc gap between nodes
+  const minR=Math.min(w,h)*0.36;
+  const arcR=Math.max(minR, (n*minGap)/(2*Math.PI));
+  const r=Math.min(arcR, Math.min(w,h)*0.46);
+  eleves.forEach((e,i)=>{
+    e.x=cx+r*Math.cos(2*Math.PI*i/n-Math.PI/2);
+    e.y=cy+r*Math.sin(2*Math.PI*i/n-Math.PI/2);
+  });
+  sgrouping=[];rSocio();setTimeout(fitAll,30);
+}
+function doForce(){
+  const wrap=document.getElementById('sw');
+  const W=Math.max((wrap||{}).clientWidth||900, 900);
+  const H=Math.max((wrap||{}).clientHeight||700, 700);
+  if(!eleves.length)return;
+
+  const n=eleves.length;
+  const cx=W/2, cy=H/2;
+
+  // NODE dimensions: circle radius + label space below
+  const NODE_R=22;          // visual radius
+  const LABEL_H=36;         // space below for name + leader label
+  const SAFE=NODE_R*2+LABEL_H+12; // minimum center-to-center distance
+
+  // Start from a well-spread circle big enough to avoid initial overlap
+  const initR=Math.max(Math.min(W,H)*0.40, (n*SAFE*1.1)/(2*Math.PI));
+  eleves.forEach((e,i)=>{
+    e.x=cx+initR*Math.cos(2*Math.PI*i/n - Math.PI/2)+( Math.random()-0.5)*10;
+    e.y=cy+initR*Math.sin(2*Math.PI*i/n - Math.PI/2)+( Math.random()-0.5)*10;
+  });
+  sgrouping=[];
+
+  // ── Simulation ──────────────────────────────────────────────────────────
+  const ITERS=350;
+  for(let it=0;it<ITERS;it++){
+    const cool=Math.max(0.01, 1-it/(ITERS*0.8));
+
+    eleves.forEach(e1=>{
+      let fx=0,fy=0;
+
+      // 1. Strong repulsion from every other node — prevents ANY overlap
+      eleves.forEach(e2=>{
+        if(e1.id===e2.id)return;
+        let dx=e1.x-e2.x, dy=e1.y-e2.y;
+        const d=Math.sqrt(dx*dx+dy*dy)||0.1;
+        // Account for label space: repulsion acts as if node is taller
+        const effectiveSafe=SAFE;
+        if(d<effectiveSafe*2.5){
+          const force = d<effectiveSafe
+            ? 12000/(d*d)   // very hard: overlapping
+            : 4000/(d*d);   // softer: nearby but not touching
+          fx+=dx/d*force; fy+=dy/d*force;
+        }
+      });
+
+      // 2. Affinity attraction (pull toward connected friends)
+      liens.filter(l=>l.ty==='affin'&&(l.f===e1.id||l.t===e1.id)).forEach(l=>{
+        const o=eleves.find(e=>e.id===(l.f===e1.id?l.t:l.f));
+        if(!o)return;
+        const dx=e1.x-o.x, dy=e1.y-o.y;
+        const d=Math.sqrt(dx*dx+dy*dy)||0.1;
+        const strength=(l.i||1);
+        // Target distance: close enough to see link but not overlapping
+        const target=SAFE*1.2 + (3-strength)*30;
+        if(d>target){
+          const att=(d-target)*0.03*strength;
+          fx-=dx/d*att; fy-=dy/d*att;
+        }
+      });
+
+      // 3. Tension repulsion (push away conflicting students)
+      liens.filter(l=>l.ty==='tension'&&(l.f===e1.id||l.t===e1.id)).forEach(l=>{
+        const o=eleves.find(e=>e.id===(l.f===e1.id?l.t:l.f));
+        if(!o)return;
+        const dx=e1.x-o.x, dy=e1.y-o.y;
+        const d=Math.sqrt(dx*dx+dy*dy)||0.1;
+        const target=SAFE*2.5*(l.i||1);
+        if(d<target){
+          const rep=(target-d)*0.04*(l.i||1);
+          fx+=dx/d*rep; fy+=dy/d*rep;
+        }
+      });
+
+      // 4. Gentle gravity toward center (prevent drift)
+      fx+=(cx-e1.x)*0.006;
+      fy+=(cy-e1.y)*0.006;
+
+      // Apply displacement with cooling
+      const step=cool*0.18;
+      e1.x=Math.max(NODE_R+5,Math.min(W-NODE_R-5, e1.x+fx*step));
+      e1.y=Math.max(NODE_R+5,Math.min(H-NODE_R-LABEL_H-5, e1.y+fy*step));
+    });
+  }
+
+  // ── Post-process: nudge any remaining overlaps ─────────────────────────
+  for(let pass=0;pass<30;pass++){
+    let moved=false;
+    for(let i=0;i<eleves.length;i++){
+      for(let j=i+1;j<eleves.length;j++){
+        const a=eleves[i],b=eleves[j];
+        const dx=a.x-b.x, dy=a.y-b.y;
+        const d=Math.sqrt(dx*dx+dy*dy)||0.1;
+        if(d<SAFE){
+          const push=(SAFE-d)/2+1;
+          const nx=dx/d, ny=dy/d;
+          a.x+=nx*push; a.y+=ny*push;
+          b.x-=nx*push; b.y-=ny*push;
+          // Keep in bounds
+          a.x=Math.max(NODE_R+5,Math.min(W-NODE_R-5,a.x));
+          a.y=Math.max(NODE_R+5,Math.min(H-NODE_R-LABEL_H-5,a.y));
+          b.x=Math.max(NODE_R+5,Math.min(W-NODE_R-5,b.x));
+          b.y=Math.max(NODE_R+5,Math.min(H-NODE_R-LABEL_H-5,b.y));
+          moved=true;
+        }
+      }
+    }
+    if(!moved)break;
+  }
+
+  // After layout: auto-fit all nodes in view
+  rSocio();
+  setTimeout(fitAll, 50);
+}
+
+function enableDrag(){
+  const svg=document.getElementById('svg');if(!svg)return;
+  svg.querySelectorAll('.snd').forEach((node,i)=>{
+    let dr=false,sx,sy,ox,oy;
+    node.addEventListener('mousedown',ev=>{
+      if(ev.button!==0)return;
+      dr=false;sx=ev.clientX;sy=ev.clientY;
+      ox=eleves[i]?.x||0;oy=eleves[i]?.y||0;
+      // Stop propagation so canvas pan doesn't trigger
+      ev.stopPropagation();
+      const mm=e=>{
+        const dx=(e.clientX-sx)/zoomK, dy=(e.clientY-sy)/zoomK;
+        if(Math.abs(dx)+Math.abs(dy)>3)dr=true;
+        if(dr&&eleves[i]){
+          eleves[i].x=ox+dx;
+          eleves[i].y=oy+dy;
+          rSocio();
+        }
+      };
+      const mu=()=>{
+        document.removeEventListener('mousemove',mm);
+        document.removeEventListener('mouseup',mu);
+        // If it was just a click (no drag), let clickNode handle it
+      };
+      document.addEventListener('mousemove',mm);
+      document.addEventListener('mouseup',mu);
+      ev.preventDefault();
+    });
+  });
+}
+function rSocioSide(){
+  const el=document.getElementById('s-elist');
+  if(el)el.innerHTML=eleves.map(e=>{
+    const gc=e.sx==='M'?'#3B8BD4':e.sx==='F'?'#E91E8C':'#888';
+    return `<div class="ec ${e.id===selEl?'sel':''}" onclick="clickNode(${e.id})">
+      <div style="width:9px;height:9px;border-radius:${e.sx==='F'?'2px':'50%'};background:${gc};flex-shrink:0;"></div>
+      <span style="flex:1;font-size:.76rem;">${e.p} ${e.n||''}</span>
+      ${e.leader==='pos'?'⭐':e.leader==='neg'?'⚠':''}
+    </div>`}).join('');
+  const ll=document.getElementById('s-liens');
+  if(ll){ll.innerHTML=liens.map((l,i)=>{const f=eleves.find(e=>e.id===l.f),t=eleves.find(e=>e.id===l.t);if(!f||!t)return'';
+    const C={affin:'#1a1a2e',tension:'#C0392B',neutre:'#888'},il=['','faible','moyen','fort'][l.i||1]||'';
+    const arr=l.f===f.id?'→':'←';
+    return `<div style="display:flex;align-items:center;gap:4px;font-size:.73rem;padding:2px 0;border-bottom:1px solid var(--bd);">
+      <div style="width:7px;height:7px;border-radius:50%;background:${C[l.ty]};flex-shrink:0;"></div>
+      <span style="flex:1;">${f.p}${arr}${t.p} <span style="color:var(--t2);">(${il})</span></span>
+      <span style="cursor:pointer;color:var(--t2);" onclick="delLien(${i})">✕</span></div>`;
+  }).join('');document.getElementById('s-nl').textContent=`(${liens.length})`;}
+  const ld=document.getElementById('s-leaders');
+  if(ld){const pos=eleves.filter(e=>e.leader==='pos'),neg=eleves.filter(e=>e.leader==='neg');
+    const inf=eleves.filter(e=>e.leader==='inf');
+    ld.innerHTML=[
+      ...pos.map(e=>`<span style="display:flex;align-items:center;gap:4px;padding:3px 7px;border-radius:8px;background:#D1FAE5;color:#14532D;">⭐ ${e.p} ${e.n?e.n[0]+'.':''}</span>`),
+      ...neg.map(e=>`<span style="display:flex;align-items:center;gap:4px;padding:3px 7px;border-radius:8px;background:#FEE2E2;color:#991B1B;">⚠ ${e.p} ${e.n?e.n[0]+'.':''}</span>`),
+      ...inf.map(e=>`<span style="display:flex;align-items:center;gap:4px;padding:3px 7px;border-radius:8px;background:#EDE9FE;color:#7C3AED;">💜 ${e.p} ${e.n?e.n[0]+'.':''}</span>`),
+    ].join('')||'<span style="color:var(--t2);">Aucun leader défini</span>';}
+  const st=document.getElementById('s-stats');
+  if(st){const a=liens.filter(l=>l.ty==='affin').length,t=liens.filter(l=>l.ty==='tension').length,iso=eleves.filter(e=>!liens.some(l=>l.f===e.id||l.t===e.id)).length,boys=eleves.filter(e=>e.sx==='M').length,girls=eleves.filter(e=>e.sx==='F').length;
+    st.innerHTML=`<span>👥 ${eleves.length} élèves (${boys}G/${girls}F)</span><span style="color:#1a1a2e;">💙 ${a} affinité(s)</span><span style="color:var(--rg);">⚡ ${t} tension(s)</span>${iso?`<span style="color:var(--or);">⚠ ${iso} isolé(s)</span>`:''}`;}
+}
+function clickNode(id){
+  if(!selEl){selEl=id;}
+  else if(selEl===id){selEl=null;}
+  else{
+    const exExact=liens.findIndex(l=>l.f===selEl&&l.t===id&&l.ty===linkT);
+    if(exExact>=0){liens.splice(exExact,1);}
+    else{liens.push({f:selEl,t:id,ty:linkT,i:linkI});}
+    selEl=null;
+  }
+  rSocio();saveData();
+}
+function delLien(i){liens.splice(i,1);rSocio();saveData();}
+function clearLiens(){if(confirm('Effacer tous les liens ?')){liens=[];sgrouping=[];rSocio();}}
+function toggleNotes(){showN=!showN;rSocio();}
+function setLI(v,btn){linkI=v;document.querySelectorAll('.ib').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+
+function rSocio(){
+  const wrap=document.getElementById('sw'),svg=document.getElementById('svg');if(!wrap||!svg)return;
+  const W=Math.max(wrap.clientWidth||900,900),H=Math.max(wrap.clientHeight||700,700);
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  document.getElementById('shi').style.display=eleves.length?'none':'block';
+  document.getElementById('s-nb').textContent=`(${eleves.length})`;
+
+  // Scores
+  const aff={},ten={},navg={};
+  eleves.forEach(e=>{aff[e.id]=0;ten[e.id]=0;});
+  liens.forEach(l=>{
+    if(l.ty==='affin'&&aff[l.t]!==undefined)aff[l.t]+=(l.i||1);
+    if(l.ty==='tension'){if(ten[l.t]!==undefined)ten[l.t]+=(l.i||1);if(ten[l.f]!==undefined)ten[l.f]+=(l.i||1);}
+  });
+  eleves.forEach(e=>{const mn=notes.filter(n=>n.p.toLowerCase()===e.p.toLowerCase());navg[e.id]=mn.length?mn.reduce((a,n)=>a+n.v,0)/mn.length:null;});
+
+  // Filter liens by vue
+  const vueLiens = curVue==='affin'?liens.filter(l=>l.ty==='affin')
+    :curVue==='tension'?liens.filter(l=>l.ty==='tension')
+    :curVue==='neutre'?liens.filter(l=>l.ty==='neutre')
+    :liens;
+
+  // Gender color — boys: #3B8BD4, girls: #E91E8C, unknown: #888
+  const gColor=e=>e.sx==='M'?'#3B8BD4':e.sx==='F'?'#E91E8C':'#888888';
+  // Node color: leaders override gender
+  const nColor=e=>e.leader==='pos'?'#16A34A':e.leader==='neg'?'#C0392B':e.leader==='inf'?'#7C3AED':gColor(e);
+
+  // Subgroup colors for sgroup view
+  const sgColors=['#3B8BD4','#E91E8C','#1D9E75','#E67A2B','#8B44AD','#D4A017','#0891B2','#BE185D'];
+
+  let h=`<defs>
+    <marker id="ma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 2L8 5L2 8" fill="none" stroke="#1a1a2e" stroke-width="2" stroke-linecap="round"/></marker>
+    <marker id="mt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 2L8 5L2 8" fill="none" stroke="#C0392B" stroke-width="2" stroke-linecap="round"/></marker>
+  </defs>`;
+
+  // Draw subgroup halos in sgroup view
+  if(curVue==='sgroup'&&sgrouping.length){
+    sgrouping.forEach((grp,gi)=>{
+      const members=eleves.filter(e=>grp.includes(e.id));
+      if(members.length<2)return;
+      const cx=members.reduce((s,e)=>s+e.x,0)/members.length;
+      const cy=members.reduce((s,e)=>s+e.y,0)/members.length;
+      const r=members.reduce((mx,e)=>Math.max(mx,Math.sqrt((e.x-cx)**2+(e.y-cy)**2)),0)+36;
+      const c=sgColors[gi%sgColors.length];
+      h+=`<ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r*.75}" fill="${c}" opacity="0.08" stroke="${c}" stroke-width="1.5" stroke-dasharray="6 4"/>
+          <text x="${cx}" y="${cy-r*.7+12}" text-anchor="middle" fill="${c}" font-size="10" font-weight="700" font-family="system-ui,sans-serif" opacity="0.7">Groupe ${gi+1}</text>`;
+    });
+  }
+
+  // Draw liens
+  vueLiens.forEach(l=>{
+    const f=eleves.find(e=>e.id===l.f),t=eleves.find(e=>e.id===l.t);if(!f||!t)return;
+    const dx=t.x-f.x,dy=t.y-f.y,d=Math.sqrt(dx*dx+dy*dy)||1,R=20;
+    const x1=f.x+(dx/d)*R,y1=f.y+(dy/d)*R,x2=t.x-(dx/d)*(R+7),y2=t.y-(dy/d)*(R+7);
+    const i=l.i||1,sw=i===3?2.5:i===2?1.5:0.8,op=i===3?0.9:i===2?0.65:0.35;
+    if(l.ty==='affin')h+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#1a1a2e" stroke-width="${sw}" opacity="${op}" marker-end="url(#ma)"/>`;
+    else if(l.ty==='tension')h+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#C0392B" stroke-width="${sw}" stroke-dasharray="${i===3?'7 3':i===2?'4 4':'2 5'}" opacity="${op}" marker-end="url(#mt)"/>`;
+    else h+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#888" stroke-width="${sw*.7}" stroke-dasharray="2 6" opacity="${op}"/>`;
+  });
+
+  // ── Draw nodes ──────────────────────────────────────────────────────────
+  eleves.forEach(e=>{
+    const a=aff[e.id]||0, tsc=ten[e.id]||0;
+    const hasL=liens.some(l=>l.f===e.id||l.t===e.id);
+    const isSel=selEl===e.id;
+    const isLP=e.leader==='pos', isLN=e.leader==='neg', isLI=e.leader==='inf';
+
+    // Fixed radius — no growth from affinity score (reduces overlap)
+    const R=22;
+
+    const nc=nColor(e);
+    const avg=showN&&navg[e.id]!==null?navg[e.id]:null;
+    const nc2=avg!==null?(avg>=14?'#14532D':avg>=10?'#D4A017':'#C0392B'):null;
+    const isF=e.sx==='F';
+
+    h+=`<g class="snd" style="cursor:pointer;" onclick="clickNode(${e.id})">`;
+
+    // Selection halo
+    if(isSel) h+=`<circle cx="${e.x}" cy="${e.y}" r="${R+12}" fill="${nc}" opacity="0.18"/>`;
+
+    // Leader outer rings (very visible, large)
+    if(isLP){
+      h+=`<circle cx="${e.x}" cy="${e.y}" r="${R+11}" fill="none" stroke="#15803D" stroke-width="3" opacity="0.5"/>`;
+      h+=`<circle cx="${e.x}" cy="${e.y}" r="${R+6}"  fill="none" stroke="#15803D" stroke-width="2" opacity="0.8"/>`;
+    }
+    if(isLN){
+      h+=`<circle cx="${e.x}" cy="${e.y}" r="${R+11}" fill="none" stroke="#991B1B" stroke-width="3" opacity="0.5"/>`;
+      h+=`<circle cx="${e.x}" cy="${e.y}" r="${R+6}"  fill="none" stroke="#991B1B" stroke-width="2" opacity="0.8"/>`;
+    }
+    if(isLI){
+      h+=`<circle cx="${e.x}" cy="${e.y}" r="${R+11}" fill="none" stroke="#7C3AED" stroke-width="3" opacity="0.5"/>`;
+      h+=`<circle cx="${e.x}" cy="${e.y}" r="${R+6}"  fill="none" stroke="#7C3AED" stroke-width="2" opacity="0.8"/>`;
+    }
+
+    // Tension halo (only if not already a leader-neg)
+    if(tsc>0&&!isLN&&!isLI){
+      h+=`<circle cx="${e.x}" cy="${e.y}" r="${R+5}" fill="none" stroke="#C0392B" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.4"/>`;
+    }
+
+    // White background disc — separates node from background lines
+    h+=`<circle cx="${e.x}" cy="${e.y}" r="${R+1}" fill="white" opacity="0.85"/>`;
+
+    // Main shape: circle (garçon/unknown) or rounded-square (fille)
+    const strokeExtra=isLP?` stroke="#15803D" stroke-width="2.5"`:isLN?` stroke="#991B1B" stroke-width="2.5"`:isLI?` stroke="#7C3AED" stroke-width="2.5"`:!hasL?` stroke="#aaa" stroke-width="1.5" stroke-dasharray="4 3"`:` stroke="white" stroke-width="1.5"`;
+    if(isF){
+      h+=`<rect x="${e.x-R}" y="${e.y-R}" width="${R*2}" height="${R*2}" rx="${R*0.4}" fill="${nc}" opacity="0.95"${strokeExtra}/>`;
+    } else {
+      h+=`<circle cx="${e.x}" cy="${e.y}" r="${R}" fill="${nc}" opacity="0.95"${strokeExtra}/>`;
+    }
+
+    // Affinity score badge (top-right small circle)
+    if(a>0){
+      h+=`<circle cx="${e.x+R-1}" cy="${e.y-R+1}" r="9" fill="white" stroke="${nc}" stroke-width="1.5"/>`;
+      h+=`<text x="${e.x+R-1}" y="${e.y-R+2}" text-anchor="middle" dominant-baseline="central" fill="${nc}" font-size="8" font-weight="700" font-family="system-ui,sans-serif">${a}</text>`;
+    }
+
+    // Average grade badge (top-left small circle)
+    if(avg!==null){
+      h+=`<circle cx="${e.x-R+1}" cy="${e.y-R+1}" r="9" fill="white" stroke="${nc2}" stroke-width="1.5"/>`;
+      h+=`<text x="${e.x-R+1}" y="${e.y-R+2}" text-anchor="middle" dominant-baseline="central" fill="${nc2}" font-size="7.5" font-weight="700" font-family="system-ui,sans-serif">${avg.toFixed(0)}</text>`;
+    }
+
+    // Leader icon above (emoji, always visible)
+    if(isLP) h+=`<text x="${e.x}" y="${e.y-R-8}" text-anchor="middle" font-size="14" font-family="system-ui,sans-serif">⭐</text>`;
+    if(isLN) h+=`<text x="${e.x}" y="${e.y-R-8}" text-anchor="middle" font-size="14" font-family="system-ui,sans-serif">⚠️</text>`;
+    if(isLI) h+=`<text x="${e.x}" y="${e.y-R-8}" text-anchor="middle" font-size="14" font-family="system-ui,sans-serif">💜</text>`;
+
+    // FULL NAME displayed in two lines if needed (no truncation)
+    const prenom=e.p||'';
+    const nomAffiche=e.n?e.n.split(' ')[0]:''; // first word of surname to save space
+    if(nomAffiche){
+      // Two lines: prenom + nom initial
+      h+=`<text x="${e.x}" y="${e.y-3}" text-anchor="middle" fill="white" font-size="9" font-weight="700" font-family="system-ui,sans-serif" pointer-events="none">${prenom}</text>`;
+      h+=`<text x="${e.x}" y="${e.y+8}" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="7.5" font-family="system-ui,sans-serif" pointer-events="none">${nomAffiche}</text>`;
+    } else {
+      h+=`<text x="${e.x}" y="${e.y+1}" text-anchor="middle" dominant-baseline="central" fill="white" font-size="9" font-weight="700" font-family="system-ui,sans-serif" pointer-events="none">${prenom}</text>`;
+    }
+
+    // Leader label BELOW node (always shown, never cut)
+    if(isLP) h+=`<text x="${e.x}" y="${e.y+R+14}" text-anchor="middle" fill="#15803D" font-size="8.5" font-weight="700" font-family="system-ui,sans-serif">LEADER +</text>`;
+    if(isLN) h+=`<text x="${e.x}" y="${e.y+R+14}" text-anchor="middle" fill="#991B1B"  font-size="8.5" font-weight="700" font-family="system-ui,sans-serif">LEADER −</text>`;
+    if(isLI) h+=`<text x="${e.x}" y="${e.y+R+14}" text-anchor="middle" fill="#7C3AED"  font-size="8.5" font-weight="700" font-family="system-ui,sans-serif">INFLUENT</text>`;
+
+    h+=`</g>`;
+  });
+
+  svg.innerHTML=h;enableDrag();rSocioSide();applyTransform();
+}
+
+// ── ZOOM / PAN ────────────────────────────────────────────────────────────
+function applyTransform(){
+  const svg=document.getElementById('svg');
+  if(!svg)return;
+  // Apply zoom+pan via SVG transform on a group wrapper
+  let g=svg.querySelector('g#root');
+  if(!g){g=document.createElementNS('http://www.w3.org/2000/svg','g');g.id='root';while(svg.firstChild)g.appendChild(svg.firstChild);svg.appendChild(g);}
+  g.setAttribute('transform',`translate(${panX},${panY}) scale(${zoomK})`);
+  const pct=document.getElementById('zoom-pct');
+  if(pct)pct.textContent=Math.round(zoomK*100)+'%';
+}
+function zoomSocio(delta){
+  const wrap=document.getElementById('sw');
+  const W=(wrap||{}).clientWidth||900, H=(wrap||{}).clientHeight||700;
+  const cx=W/2, cy=H/2;
+  const oldK=zoomK;
+  zoomK=Math.max(0.3,Math.min(3, zoomK+delta));
+  // Zoom toward center
+  panX=cx-(cx-panX)*(zoomK/oldK);
+  panY=cy-(cy-panY)*(zoomK/oldK);
+  applyTransform();
+}
+function resetZoom(){zoomK=1;panX=0;panY=0;applyTransform();}
+function fitAll(){
+  if(!eleves.length){resetZoom();return;}
+  const wrap=document.getElementById('sw');
+  const W=(wrap||{}).clientWidth||900, H=(wrap||{}).clientHeight||700;
+  const xs=eleves.map(e=>e.x), ys=eleves.map(e=>e.y);
+  const minX=Math.min(...xs)-40, maxX=Math.max(...xs)+40;
+  const minY=Math.min(...ys)-40, maxY=Math.max(...ys)+40;
+  const scaleX=W/(maxX-minX), scaleY=H/(maxY-minY);
+  zoomK=Math.min(scaleX,scaleY,2)*0.9;
+  panX=W/2 - (minX+(maxX-minX)/2)*zoomK;
+  panY=H/2 - (minY+(maxY-minY)/2)*zoomK;
+  applyTransform();
+}
+
+// Pan: maintenir clic gauche enfoncé sur fond (pas sur un nœud) pour se déplacer
+document.addEventListener('DOMContentLoaded',()=>{
+  const wrap=document.getElementById('sw');
+  if(!wrap)return;
+
+  // NO wheel zoom — only buttons control zoom
+
+  // Pan: left-click drag on the background (not on a node)
+  wrap.addEventListener('mousedown',ev=>{
+    if(ev.button!==0)return;
+    // If clicking directly on SVG background or the root group (not a node)
+    const t=ev.target;
+    const isBackground=(t.tagName==='svg'||t.id==='root'||t.tagName==='line'||t.tagName==='ellipse');
+    if(isBackground){
+      isPanning=true;
+      panStartX=ev.clientX-panX;
+      panStartY=ev.clientY-panY;
+      wrap.style.cursor='grabbing';
+      ev.preventDefault();
+    }
+  });
+  document.addEventListener('mousemove',ev=>{
+    if(!isPanning)return;
+    panX=ev.clientX-panStartX;
+    panY=ev.clientY-panStartY;
+    applyTransform();
+  });
+  document.addEventListener('mouseup',()=>{
+    if(isPanning){
+      isPanning=false;
+      const w=document.getElementById('sw');
+      if(w)w.style.cursor='';
+    }
+  });
+  // Touch pan (mobile)
+  let touchStartX=0,touchStartY=0,touchPanX=0,touchPanY=0,isTouchPanning=false;
+  wrap.addEventListener('touchstart',ev=>{
+    if(ev.touches.length===1){
+      isTouchPanning=true;
+      touchStartX=ev.touches[0].clientX;touchStartY=ev.touches[0].clientY;
+      touchPanX=panX;touchPanY=panY;
+    }
+  },{passive:true});
+  wrap.addEventListener('touchmove',ev=>{
+    if(!isTouchPanning||ev.touches.length!==1)return;
+    panX=touchPanX+(ev.touches[0].clientX-touchStartX);
+    panY=touchPanY+(ev.touches[0].clientY-touchStartY);
+    applyTransform();
+  },{passive:true});
+  wrap.addEventListener('touchend',()=>{isTouchPanning=false;});
+});
+
+// ── VUE CONTROLS ─────────────────────────────────────────────
+let curVue='cercle';
+let sgrouping=[];
+function setVue(vue,btn){
+  curVue=vue;
+  document.querySelectorAll('.vbtn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  closeRegroupPanel();
+  if(vue==='cercle')doCercle();
+  else if(vue==='force')doForce();
+  else if(vue==='affin'||vue==='tension'||vue==='neutre'){rSocio();}
+  else if(vue==='sgroup'){doSgroup();}
+}
+function doSgroup(){
+  // Simple community detection: find connected components by affinity
+  const ids=eleves.map(e=>e.id);
+  const visited=new Set();const groups=[];
+  const affLiens=liens.filter(l=>l.ty==='affin');
+  ids.forEach(id=>{
+    if(visited.has(id))return;
+    const grp=[id];visited.add(id);
+    let q=[id];
+    while(q.length){const cur=q.shift();
+      affLiens.filter(l=>l.f===cur||l.t===cur).forEach(l=>{const other=l.f===cur?l.t:l.f;if(!visited.has(other)){visited.add(other);grp.push(other);q.push(other);}});
+    }
+    groups.push(grp);
+  });
+  sgrouping=groups;
+  // Position groups in clusters — spread widely, prevent intra-group overlap
+  const W=(document.getElementById('sw')||{}).clientWidth||900;
+  const H=Math.max((document.getElementById('sw')||{}).clientHeight||650,650);
+  const ng=groups.length;
+  groups.forEach((grp,gi)=>{
+    const angle=2*Math.PI*gi/ng-Math.PI/2;
+    const clusterR=Math.min(W,H)*0.36;
+    const gcx=W/2+(ng>1?clusterR*Math.cos(angle):0);
+    const gcy=H/2+(ng>1?clusterR*Math.sin(angle):0);
+    const m=grp.length;
+    // Inner circle radius: ensure ~55px between nodes
+    const innerR=m>1?Math.max(55, (m*55)/(2*Math.PI)):0;
+    grp.forEach((id,mi)=>{
+      const e=eleves.find(el=>el.id===id);if(!e)return;
+      const a2=2*Math.PI*mi/m;
+      e.x=gcx+(m>1?innerR*Math.cos(a2):0);
+      e.y=gcy+(m>1?innerR*Math.sin(a2):0);
+    });
+  });
+  rSocio();
+}
+
+// ── REGROUPEMENT ASSISTÉ ──────────────────────────────────────
+const NB_GROUPES=4;
+function regroup(type){
+  if(!eleves.length){document.getElementById('regroup-result').textContent='Aucun élève dans la classe.';return;}
+  closeRegroupPanel();
+  const panel=document.getElementById('regroup-panel');
+  const rptitle=document.getElementById('rp-title');
+  const rpicon=document.getElementById('rp-icon');
+  const rpbody=document.getElementById('rp-body');
+  panel.style.display='block';
+
+  const n=eleves.length;
+  const k=Math.max(2,Math.min(NB_GROUPES,Math.floor(n/3)));
+  let groups,title,icon,explain;
+
+  if(type==='affin'){
+    icon='💙';title='Équipes par affinités maximales';
+    // Greedy: put strongly connected students together
+    groups=greedyAffin(k);
+    explain='Les élèves qui se choisissent mutuellement sont dans le même groupe. Idéal pour un travail collaboratif où la motivation est clé.';
+  } else if(type==='balance'){
+    icon='⚖️';title='Sous-groupes équilibrés';
+    // Mix high-affinity cliques by alternating
+    groups=greedyBalance(k);
+    explain='Les cliques d\'affinité sont dispersées pour créer des groupes hétérogènes. Favorise les rencontres entre élèves peu liés.';
+  } else if(type==='isolés'){
+    icon='🔗';title='Intégrer les élèves isolés';
+    groups=greedyIsolated(k);
+    explain='Les élèves sans lien sont placés avec leurs pairs les plus neutres. Chaque isolé reçoit un rôle dans un groupe.';
+  } else {
+    icon='🛡';title='Réduire les conflits';
+    groups=greedyConflict(k);
+    explain='Les élèves en tension forte sont dans des groupes différents. Priorité à la séparation des rejets mutuels.';
+  }
+
+  // Display groups
+  const colors=['#3B8BD4','#E91E8C','#1D9E75','#E67A2B','#8B44AD','#D4A017'];
+  let html=`<div style="font-size:.78rem;color:var(--t2);margin-bottom:.4rem;">${explain}</div>`;
+  groups.forEach((grp,gi)=>{
+    const names=grp.map(id=>{const e=eleves.find(el=>el.id===id);return e?e.p:'?';});
+    const c=colors[gi%colors.length];
+    html+=`<div style="padding:.45rem .65rem;border-radius:var(--rs);border:1px solid ${c}40;background:${c}10;margin-bottom:.3rem;">
+      <div style="font-weight:700;font-size:.75rem;color:${c};margin-bottom:.2rem;">Groupe ${gi+1} (${grp.length} élèves)</div>
+      <div>${names.map(n=>`<span class="sg-chip" style="background:${c}20;color:${c};">${n}</span>`).join('')}</div>
+    </div>`;
+  });
+  rpbody.innerHTML=html;
+  rptitle.textContent=title;rpicon.textContent=icon;
+
+  // Update sgrouping and redraw
+  sgrouping=groups;
+  curVue='sgroup';
+  document.querySelectorAll('.vbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('vbtn-sgroup').classList.add('active');
+  // Position clusters
+  const W=(document.getElementById('sw')||{}).clientWidth||800;
+  const H=Math.max((document.getElementById('sw')||{}).clientHeight||560,560);
+  groups.forEach((grp,gi)=>{
+    const angle=2*Math.PI*gi/groups.length-Math.PI/2;
+    const clR=Math.min(W,H)*0.36;
+    const gcx=W/2+(groups.length>1?clR*Math.cos(angle):0);
+    const gcy=H/2+(groups.length>1?clR*Math.sin(angle):0);
+    const m=grp.length;
+    const ir=m>1?Math.max(55,(m*55)/(2*Math.PI)):0;
+    grp.forEach((id,mi)=>{
+      const e=eleves.find(el=>el.id===id);if(!e)return;
+      const a2=2*Math.PI*mi/m;
+      e.x=gcx+(m>1?ir*Math.cos(a2):0);e.y=gcy+(m>1?ir*Math.sin(a2):0);
+    });
+  });
+  rSocio();
+}
+
+function closeRegroupPanel(){document.getElementById('regroup-panel').style.display='none';}
+
+// ── ALGORITHMES DE REGROUPEMENT ───────────────────────────────
+function affinScore(a,b){
+  return liens.filter(l=>((l.f===a&&l.t===b)||(l.f===b&&l.t===a))&&l.ty==='affin').reduce((s,l)=>s+(l.i||1),0);
+}
+function tensionScore(a,b){
+  return liens.filter(l=>((l.f===a&&l.t===b)||(l.f===b&&l.t===a))&&l.ty==='tension').reduce((s,l)=>s+(l.i||1),0);
+}
+function isIsolated(id){return !liens.some(l=>l.f===id||l.t===id);}
+
+function greedyAffin(k){
+  // Build groups by starting with most connected pairs
+  const ids=[...eleves.map(e=>e.id)];
+  const groups=Array.from({length:k},()=>[]);
+  // Sort by total affinity score desc
+  const sorted=[...ids].sort((a,b)=>{
+    const sa=ids.reduce((s,x)=>s+affinScore(a,x),0);
+    const sb=ids.reduce((s,x)=>s+affinScore(b,x),0);
+    return sb-sa;
+  });
+  sorted.forEach((id,i)=>groups[i%k].push(id));
+  // Swap to improve: move each member to the group where they have most affinity
+  for(let iter=0;iter<20;iter++){
+    let changed=false;
+    ids.forEach(id=>{
+      const curG=groups.findIndex(g=>g.includes(id));
+      const scores=groups.map((g,gi)=>{
+        if(gi===curG&&g.length<=1)return -99;
+        return g.reduce((s,x)=>s+affinScore(id,x),0);
+      });
+      const best=scores.indexOf(Math.max(...scores));
+      if(best!==curG){groups[curG].splice(groups[curG].indexOf(id),1);groups[best].push(id);changed=true;}
+    });
+    if(!changed)break;
+  }
+  return groups.filter(g=>g.length>0);
+}
+
+function greedyBalance(k){
+  // Find affinity cliques first, then distribute them
+  const ids=[...eleves.map(e=>e.id)];
+  const groups=Array.from({length:k},()=>[]);
+  // Detect cliques (connected components by affinity)
+  const visited=new Set();const cliques=[];
+  const affL=liens.filter(l=>l.ty==='affin'&&l.i>=2);
+  ids.forEach(id=>{
+    if(visited.has(id))return;
+    const c=[id];visited.add(id);let q=[id];
+    while(q.length){const cur=q.shift();affL.filter(l=>l.f===cur||l.t===cur).forEach(l=>{const o=l.f===cur?l.t:l.f;if(!visited.has(o)){visited.add(o);c.push(o);q.push(o);}});}
+    cliques.push(c);
+  });
+  // Distribute clique members across groups (snake draft)
+  let dir=1,gi=0;
+  cliques.forEach(clique=>{
+    clique.forEach(id=>{groups[gi].push(id);gi+=dir;if(gi>=k||gi<0){dir*=-1;gi+=dir;}});
+  });
+  return groups.filter(g=>g.length>0);
+}
+
+function greedyIsolated(k){
+  const ids=[...eleves.map(e=>e.id)];
+  const isolated=ids.filter(isIsolated);
+  const connected=ids.filter(id=>!isIsolated(id));
+  const groups=Array.from({length:Math.min(k,Math.max(isolated.length,1))},()=>[]);
+  connected.forEach((id,i)=>groups[i%groups.length].push(id));
+  // Place each isolated in the group with least tension toward them
+  isolated.forEach(iso=>{
+    const best=groups.reduce((bi,grp,gi)=>{
+      const score=-grp.reduce((s,x)=>s+tensionScore(iso,x),0)+grp.reduce((s,x)=>s+affinScore(iso,x),0);
+      return score>(bi.score??-Infinity)?{gi,score}:bi;
+    },{gi:0,score:-Infinity}).gi;
+    groups[best].unshift(iso);
+  });
+  return groups.filter(g=>g.length>0);
+}
+
+function greedyConflict(k){
+  const ids=[...eleves.map(e=>e.id)];
+  const groups=Array.from({length:k},()=>[]);
+  // Sort by most tensions first (they need to be spread out)
+  const sorted=[...ids].sort((a,b)=>{
+    const ta=ids.reduce((s,x)=>s+tensionScore(a,x),0);
+    const tb=ids.reduce((s,x)=>s+tensionScore(b,x),0);
+    return tb-ta;
+  });
+  sorted.forEach(id=>{
+    // Place in the group with minimum total tension
+    const best=groups.reduce((bi,grp,gi)=>{
+      const score=grp.reduce((s,x)=>s+tensionScore(id,x),0);
+      return score<(bi.score??Infinity)?{gi,score}:bi;
+    },{gi:0,score:Infinity}).gi;
+    groups[best].push(id);
+  });
+  return groups.filter(g=>g.length>0);
+}
+
+
+function exportSVG(){const s=document.getElementById('svg');const b=new Blob([s.outerHTML],{type:'image/svg+xml'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='sociogramme.svg';a.click();}
+
+// ─── QUESTIONNAIRE SOCIO ──────────────────────────────────────
+function applySocioQuestionnaire(){
+  const eid=parseInt(document.getElementById('sq-el').value);
+  const e=eleves.find(el=>el.id===eid);if(!e){document.getElementById('sq-result').innerHTML='<div class="al ar">Sélectionnez un élève.</div>';return;}
+  let count=0;
+  const addLien=(noms,type,intensity)=>{
+    noms.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean).forEach(nm=>{
+      const target=eleves.find(el=>el.p.toLowerCase().includes(nm)||el.n.toLowerCase().includes(nm));
+      if(!target||target.id===eid)return;
+      const ex=liens.find(l=>(l.f===eid&&l.t===target.id)||(l.f===target.id&&l.t===eid));
+      if(ex){if(type==='tension'){ex.ty='tension';ex.i=Math.max(ex.i||1,intensity);}else if(type==='affin'&&ex.ty==='affin'){ex.i=Math.max(ex.i||1,intensity);}}
+      else{liens.push({f:eid,t:target.id,ty:type,i:intensity});}count++;
+    });
+  };
+  const q1=document.getElementById('sq-q1').value;if(q1)addLien(q1,'affin',3);
+  const q2=document.getElementById('sq-q2').value;if(q2)addLien(q2,'affin',2);
+  const q3=document.getElementById('sq-q3').value;if(q3)addLien(q3,'affin',1);
+  const q5=document.getElementById('sq-q5').value;if(q5){addLien(q5,'affin',2);const t=eleves.find(el=>el.p.toLowerCase().includes(q5.toLowerCase().trim()));if(t&&!t.leader)t.leader='pos';}
+  const q6=document.getElementById('sq-q6').value;if(q6)addLien(q6,'tension',2);
+  const q8=document.getElementById('sq-q8').value;if(q8){addLien(q8,'tension',3);const t=eleves.find(el=>el.p.toLowerCase().includes(q8.toLowerCase().trim()));if(t&&t.leader!=='pos')t.leader='neg';}
+  const q9=document.getElementById('sq-q9').value;if(q9)addLien(q9,'affin',2);
+  const q10=document.getElementById('sq-q10').value;if(q10){const t=eleves.find(el=>el.p.toLowerCase().includes(q10.toLowerCase().trim()));if(t&&!t.leader)t.leader='pos';}
+  const q11=parseInt(document.getElementById('sq-q11').value);
+  const obs=document.getElementById('sq-obs').value;
+  if(obs){if(!e.np)e.np=[];e.np.push({tx:'[Q socio] '+obs,src:'Observation PP',dt:new Date().toISOString().slice(0,10)});}
+  if(q11&&q11<=2){if(!e.np)e.np=[];e.np.push({tx:`[Q socio] Bien-être déclaré : ${q11}/5 — signal d'alerte`,src:'Questionnaire socio',dt:new Date().toISOString().slice(0,10)});}
+  ['sq-q1','sq-q2','sq-q3','sq-q5','sq-q6','sq-q8','sq-q9','sq-q10','sq-obs'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sq-q11').value='';
+  rSocio();rEtbl();
+  document.getElementById('sq-result').innerHTML=`<div class="al as">✓ ${count} lien(s) créé(s) ou mis à jour pour ${e.p} ${e.n}.</div>`;
+}
+
+// ─── RECOMMANDATIONS ──────────────────────────────────────────
+function rRec(){
+  const c=document.getElementById('rec-list');if(!c)return;
+  if(!recs.length){c.innerHTML='<div class="al ai">Aucune recommandation. Cliquez sur "+ Nouvelle date" pour commencer.</div>';return;}
+  c.innerHTML=recs.map((r,ri)=>{
+    const total=r.entries.length;
+    const done=r.entries.filter(en=>en.done).length;
+    const pct=total?Math.round(done/total*100):0;
+    return `<div class="rec-item">
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;flex-wrap:wrap;">
+      <div class="rec-date">📅 ${r.date}</div>
+      <div style="display:flex;align-items:center;gap:.4rem;margin-left:auto;">
+        <span style="font-size:.72rem;color:var(--t2);">${done}/${total} fait${done>1?'s':''}</span>
+        <div style="width:80px;height:6px;border-radius:3px;background:var(--bd);overflow:hidden;"><div style="height:100%;width:${pct}%;background:var(--vt);border-radius:3px;transition:width .3s;"></div></div>
+        <button class="btn bxs bd2" onclick="delRec(${ri})">Supprimer</button>
+      </div>
+    </div>
+    ${r.entries.map((en,ei)=>`<div class="rec-entry" title="${en.done?'Cliquer pour marquer comme à faire':'Cliquer sur l\'encoche pour marquer comme fait'}">
+      <div class="rec-status ${en.done?'done':''}" onclick="toggleRecDone(${ri},${ei})" title="${en.done?'Marquer comme à faire':'Marquer comme fait'}"></div>
+      <div class="rec-bar ${en.done?'done':'todo'}"></div>
+      <div class="rec-txt ${en.done?'done':''}" contenteditable="true" onblur="updateRecEntry(${ri},${ei},this.textContent)" style="outline:none;min-width:0;">${en.text||en}</div>
+    </div>`).join('')}
+    <div style="margin-top:.45rem;">
+      <textarea class="rec-new" placeholder="+ Ajouter une recommandation… (Entrée pour valider)" onkeydown="handleRecKey(event,${ri},this)" onblur="addRecEntry(${ri},this)" rows="1"></textarea>
+    </div>
+  </div>`;
+  }).join('');
+}
+function addRecDate(){
+  const d=new Date().toLocaleDateString('fr-FR');
+  recs.unshift({date:d,entries:[]});rRec();saveData();
+  setTimeout(()=>{const areas=document.querySelectorAll('.rec-new');if(areas[0])areas[0].focus();},100);
+}
+function addRecEntry(ri,textarea){
+  const val=textarea.value.trim();
+  if(!val)return;
+  recs[ri].entries.push({text:val,done:false});textarea.value='';rRec();saveData();
+}
+function handleRecKey(event,ri,textarea){
+  if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();addRecEntry(ri,textarea);}
+}
+function updateRecEntry(ri,ei,val){
+  const trimmed=val.trim();if(!trimmed||!recs[ri])return;
+  if(typeof recs[ri].entries[ei]==='string')recs[ri].entries[ei]={text:trimmed,done:false};
+  else recs[ri].entries[ei].text=trimmed;
+}
+function toggleRecDone(ri,ei){
+  if(!recs[ri])return;
+  const en=recs[ri].entries[ei];
+  if(typeof en==='string')recs[ri].entries[ei]={text:en,done:true};
+  else en.done=!en.done;
+  rRec();saveData();
+}
+function delRec(ri){if(confirm('Supprimer ce bloc ?')){recs.splice(ri,1);rRec();saveData();}}
+
+// ─── EXPORT PDF ───────────────────────────────────────────────
+function exportFichePDF(){
+  const e=eleves.find(el=>el.id===curFiche);if(!e){alert('Aucun élève sélectionné');return;}
+  const {jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const W=210,M=15,lh=6;let y=M;
+  const line=(txt,size=10,bold=false,color=[30,30,30])=>{
+    doc.setFontSize(size);doc.setFont('helvetica',bold?'bold':'normal');doc.setTextColor(...color);
+    doc.text(txt,M,y);y+=lh;
+  };
+  const sep=()=>{doc.setDrawColor(220,228,235);doc.line(M,y,W-M,y);y+=4;};
+  // Header
+  doc.setFillColor(28,63,110);doc.rect(0,0,W,28,'F');
+  doc.setFontSize(16);doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);
+  doc.text(`${e.p} ${e.n}`,M,12);
+  doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(147,197,253);
+  doc.text('Fiche élève · Classe de 4ème · PP EPS',M,19);
+  doc.setTextColor(147,197,253);doc.text(new Date().toLocaleDateString('fr-FR'),W-M-20,19);
+  y=35;
+  // Dispositifs
+  const disps=['pap','ppre','pai','pps'].filter(k=>e[k]);
+  if(disps.length){const DL={pap:'PAP',ppre:'PPRE',pai:'PAI',pps:'PPS'};doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(28,63,110);doc.text('Dispositifs : '+disps.map(k=>DL[k]).join(' · '),M,y);y+=7;}
+  // Infos
+  line('INFORMATIONS',9,true,[28,63,110]);sep();
+  const infos=[[`Naissance`,e.dn||'—'],[`Sexe`,e.sx||'—'],[`PP précédent`,e.pp||'—'],[`Responsable 1`,e.r1||'—'],[`Responsable 2`,e.r2||'—'],[`Tél. 1`,e.t1||'—'],[`Tél. 2`,e.t2||'—'],[`Email`,e.em||'—'],[`Modèle médiatique`,e.mm||'—'],[`Sport 1`,e.s1?(e.s1+(e.sv1?' — '+e.sv1:'')):'—'],[`Sport 2`,e.s2?(e.s2+(e.sv2?' — '+e.sv2:'')):'—'],[`Loisir 1`,e.l1||'—'],[`Loisir 2`,e.l2||'—']];
+  infos.filter(([,v])=>v!=='—').forEach(([k,v])=>{
+    doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(80,80,80);doc.text(k+' :',M,y);
+    doc.setFont('helvetica','normal');doc.setTextColor(30,30,30);doc.text(v,M+38,y);y+=lh;
+  });y+=3;
+  // Stats suivi
+  const myEv=events.filter(ev=>ev.eid===e.id);
+  const myAb=absences.filter(a=>a.eid===e.id);
+  if(myEv.length||myAb.length){
+    line('SUIVI',9,true,[28,63,110]);sep();
+    const co=myEv.filter(ev=>ev.ty==='Colle').length,mo=myEv.filter(ev=>ev.ty==='Mot dans carnet').length,ap=myEv.filter(ev=>ev.ty==='Appel parents').length,inc=myEv.filter(ev=>ev.ty==='Incident').length,ra=myEv.filter(ev=>ev.ty==='Rapport').length,fe=myEv.filter(ev=>ev.ty==='Félicitations').length;
+    const absJ=myAb.filter(a=>a.ty==='Absence journée').length,absDJ=myAb.filter(a=>a.ty==='Absence demi-journée').length,ret=myAb.filter(a=>a.ty==='Retard').length;
+    doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(30,30,30);
+    doc.text(`Colles: ${co}  |  Mots: ${mo}  |  Appels: ${ap}  |  Incidents: ${inc}  |  Rapports: ${ra}  |  Félicitations: ${fe}`,M,y);y+=lh;
+    doc.text(`Absences journée: ${absJ}  |  Demi-journées: ${absDJ}  |  Retards: ${ret}`,M,y);y+=lh+2;
+    myEv.slice(0,8).forEach(ev=>{
+      if(y>270){doc.addPage();y=M;}
+      doc.setFontSize(8.5);doc.setFont('helvetica','bold');doc.setTextColor(80,80,80);doc.text(`${ev.dt} — ${ev.ty}`,M,y);
+      if(ev.ds){doc.setFont('helvetica','normal');doc.setTextColor(50,50,50);doc.text(ev.ds.slice(0,80),M+42,y);}y+=5;
+    });y+=2;
+  }
+  // Notes scolaires
+  const myNt=notes.filter(n=>n.p.toLowerCase()===e.p.toLowerCase());
+  if(myNt.length){
+    line('NOTES SCOLAIRES',9,true,[28,63,110]);sep();
+    const mats=[...new Set(myNt.map(n=>n.m))];
+    mats.forEach(m=>{
+      if(y>270){doc.addPage();y=M;}
+      const ns=myNt.filter(n=>n.m===m);const moy=ns.reduce((a,n)=>a+n.v,0)/ns.length;
+      doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(80,80,80);doc.text(m+' :',M,y);
+      doc.setFont('helvetica','normal');doc.setTextColor(30,30,30);doc.text(`Moy. ${moy.toFixed(1)}/20`,M+35,y);y+=lh;
+    });y+=2;
+  }
+  // Dispositifs détail
+  ['pap','ppre','pai','pps'].filter(k=>e[k]&&e[k+'d']).forEach(k=>{
+    if(y>265){doc.addPage();y=M;}
+    const DL={pap:'PAP',ppre:'PPRE',pai:'PAI',pps:'PPS'};
+    line(DL[k],9,true,[28,63,110]);sep();
+    doc.setFontSize(8.5);doc.setFont('helvetica','normal');doc.setTextColor(50,50,50);
+    const lines=doc.splitTextToSize(e[k+'d'],W-M*2);lines.forEach(l=>{doc.text(l,M,y);y+=5;});y+=2;
+  });
+  doc.save(`fiche-${e.p}-${e.n}.pdf`);
+}
+
+function exportAllPDF(){
+  if(!eleves.length){alert('Aucun élève dans la classe');return;}
+  const {jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const W=210,M=15,lh=5.5;
+  eleves.forEach((e,ei)=>{
+    if(ei>0)doc.addPage();
+    doc.setFillColor(28,63,110);doc.rect(0,0,W,24,'F');
+    doc.setFontSize(14);doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);doc.text(`${e.p} ${e.n}`,M,11);
+    doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(147,197,253);doc.text('Fiche élève · 4ème · PP EPS',M,17);
+    let y=30;
+    const info=(k,v)=>{if(!v||v==='—')return;doc.setFontSize(8.5);doc.setFont('helvetica','bold');doc.setTextColor(80,80,80);doc.text(k+' :',M,y);doc.setFont('helvetica','normal');doc.setTextColor(30,30,30);doc.text(String(v).slice(0,70),M+32,y);y+=lh;};
+    info('PP précédent',e.pp);info('Responsable 1',e.r1);info('Responsable 2',e.r2);info('Tél.',e.t1||e.t2);
+    info('Sport 1',e.s1+(e.sv1?' — '+e.sv1:''));info('Sport 2',e.s2+(e.sv2?' — '+e.sv2:''));
+    info('Modèle méd.',e.mm);
+    const disps=['pap','ppre','pai','pps'].filter(k=>e[k]);
+    if(disps.length){info('Dispositifs',disps.map(k=>k.toUpperCase()).join(', '));}
+    const myEv=events.filter(ev=>ev.eid===e.id);const myAb=absences.filter(a=>a.eid===e.id);
+    const co=myEv.filter(ev=>ev.ty==='Colle').length,ap=myEv.filter(ev=>ev.ty==='Appel parents').length,inc=myEv.filter(ev=>ev.ty==='Incident').length;
+    const absJ=myAb.filter(a=>a.ty==='Absence journée').length,ret=myAb.filter(a=>a.ty==='Retard').length;
+    info('Colles/Incidents',`${co} colle(s) · ${inc} incident(s) · ${ap} appel(s) parents`);
+    info('Absences/Retards',`${absJ} journée(s) · ${ret} retard(s)`);
+  });
+  doc.save('classe-4eme-fiches.pdf');
+}
+
+function exportRecPDF(){
+  if(!recs.length){alert('Aucune recommandation à exporter');return;}
+  const {jsPDF}=window.jspdf;const doc=new jsPDF();
+  let y=20;
+  doc.setFontSize(14);doc.setFont('helvetica','bold');doc.text('Recommandations & rapports des élèves',14,y);y+=10;
+  recs.forEach(r=>{
+    if(y>260){doc.addPage();y=20;}
+    doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(46,109,180);doc.text(r.date,14,y);y+=6;
+    r.entries.forEach(en=>{
+      if(y>270){doc.addPage();y=20;}
+      const txt=typeof en==='string'?en:(en.text||'');
+      const isDone=typeof en==='string'?false:(en.done||false);
+      doc.setFont('helvetica','normal');doc.setFontSize(9.5);
+      doc.setTextColor(isDone?150:30,isDone?150:30,isDone?150:30);
+      const prefix=isDone?'✓ ':'○ ';
+      const lines=doc.splitTextToSize(prefix+txt,180);lines.forEach(l=>{doc.text(l,18,y);y+=5;});
+    });
+    y+=4;
+  });
+  doc.save('recommandations-classe.pdf');
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// PERSISTANCE LOCALE (localStorage) — Firebase-ready
+// ═══════════════════════════════════════════════════════════════
+const STORAGE_KEY='vdc4eme_v1';
+
+function saveData(){
+  try{
+    const data={eleves,notes,events,absences,liens,bilans,recs,savedAt:new Date().toISOString()};
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+    showSaveIndicator();
+  }catch(e){console.warn('Save failed:',e);}
+}
+
+function loadData(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw)return false;
+    const data=JSON.parse(raw);
+    if(data.eleves)eleves=data.eleves;
+    if(data.notes)notes=data.notes;
+    if(data.events)events=data.events;
+    if(data.absences)absences=data.absences;
+    if(data.liens)liens=data.liens;
+    if(data.bilans)bilans=data.bilans;
+    if(data.recs)recs=data.recs;
+    console.log('Data loaded from localStorage, saved at:',data.savedAt);
+    return true;
+  }catch(e){console.warn('Load failed:',e);return false;}
+}
+
+function clearData(){
+  if(!confirm('Effacer TOUTES les données locales ? (élèves, suivi, sociogramme…)\nCette action est irréversible.'))return;
+  localStorage.removeItem(STORAGE_KEY);
+  eleves=[];notes=[];events=[];absences=[];liens=[];bilans={};recs=[];
+  rCards(null);rEtbl();rSuv();rAbs();rSocio();rRec();
+  showMsg('Données effacées.','w');
+}
+
+function exportJSON(){
+  const data={eleves,notes,events,absences,liens,bilans,recs,exportedAt:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`vdc4eme_${new Date().toISOString().slice(0,10)}.json`;a.click();
+}
+
+function importJSON(input){
+  const file=input.files[0];if(!file)return;
+  const r=new FileReader();r.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(data.eleves)eleves=data.eleves;
+      if(data.notes)notes=data.notes;
+      if(data.events)events=data.events;
+      if(data.absences)absences=data.absences;
+      if(data.liens)liens=data.liens;
+      if(data.bilans)bilans=data.bilans;
+      if(data.recs)recs=data.recs;
+      saveData();rCards(null);rEtbl();rNtabs();rSuv();rAbs();rSocio();rRec();
+      showMsg('✓ Sauvegarde restaurée avec succès.','s');
+    }catch(err){showMsg('⚠ Fichier JSON invalide : '+err.message,'w');}
+    input.value='';
+  };r.readAsText(file);
+}
+
+// Auto-save every 60 seconds
+setInterval(saveData,60000);
+
+// Visual save indicator (top right corner)
+function showSaveIndicator(){
+  let ind=document.getElementById('save-ind');
+  if(!ind){ind=document.createElement('div');ind.id='save-ind';
+    ind.style.cssText='position:fixed;bottom:1rem;right:1rem;background:#1D9E75;color:white;padding:5px 12px;border-radius:20px;font-size:.72rem;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;';
+    document.body.appendChild(ind);}
+  ind.textContent='💾 Sauvegardé';ind.style.opacity='1';
+  setTimeout(()=>ind.style.opacity='0',1800);
+}
+
+// Load persisted data on startup
+const hadData=loadData();
+rCards(null);
+if(hadData){rEtbl();rNtabs();rSuv();rAbs();rRec();}
+rSocio();curVue='cercle';sgrouping=[];
+if(hadData){const nb=document.getElementById('nb-badge');if(nb)nb.textContent=eleves.length+' élève'+(eleves.length>1?'s':'');}
+document.getElementById('ev-dt')&&(document.getElementById('ev-dt').value=new Date().toISOString().slice(0,10));
+document.getElementById('bl-dt')&&(document.getElementById('bl-dt').value=new Date().toISOString().slice(0,10));
+document.getElementById('ab-dt')&&(document.getElementById('ab-dt').value=new Date().toISOString().slice(0,10));
+</script>
+</body>
+</html>
